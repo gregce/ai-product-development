@@ -1,0 +1,1429 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>How product development works in an AI world — Greg Ceccarelli · Alpine SG 2026</title>
+<meta name="description" content="A talk for Alpine SG portfolio-company product leaders on the shift from code-centric to intent-centric product development, using Stoa's own repo as the case study." />
+<style>
+  :root {
+    --ink:        #0b0f14;
+    --ink-2:      #0e141b;
+    --ink-3:      #161b22;
+    --line:       #1f2630;
+    --line-2:     #30363d;
+    --fg:         #e6edf3;
+    --fg-2:       #c9d1d9;
+    --mute:       #7d8590;
+    --mute-2:     #545d68;
+    --accent:     #e35a2c;   /* Stoa orange */
+    --accent-2:   #ff7e55;
+    --accent-dim: rgba(227, 90, 44, 0.12);
+    --blue:       #58a6ff;
+    --green:      #7ee787;
+    --yellow:     #ffd866;
+    --purple:     #d2a8ff;
+    --red:        #ff7b72;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; }
+  html { scroll-behavior: auto; }
+  body {
+    background: var(--ink);
+    color: var(--fg);
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-feature-settings: "ss01", "cv01", "cv11";
+    line-height: 1.5;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  code, .mono {
+    font-family: ui-monospace, "SF Mono", Menlo, "JetBrains Mono", monospace;
+    font-feature-settings: "zero", "ss01";
+  }
+
+  /* ---------- layout chrome -------------------------------------------- */
+
+  .chrome-top {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 40;
+    display: flex; align-items: center; gap: 16px;
+    padding: 14px 28px;
+    background: linear-gradient(180deg, rgba(11,15,20,0.9) 0%, rgba(11,15,20,0.0) 100%);
+    pointer-events: none;
+  }
+  .brand {
+    display: flex; align-items: baseline; gap: 10px;
+    font-size: 12px; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--mute);
+    pointer-events: auto;
+  }
+  .brand .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent); display: inline-block;
+    transform: translateY(1px);
+    box-shadow: 0 0 12px var(--accent);
+  }
+  .brand strong { color: var(--fg); font-weight: 600; }
+  .progress-track {
+    flex: 1; height: 1.5px; background: var(--line);
+    margin: 0 0 0 12px;
+    overflow: hidden; pointer-events: auto;
+  }
+  .progress-fill {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .chrome-bottom {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 40;
+    padding: 14px 28px 18px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 24px;
+    pointer-events: none;
+    background: linear-gradient(0deg, rgba(11,15,20,0.9) 0%, rgba(11,15,20,0.0) 100%);
+  }
+  .hint {
+    font-size: 11px; color: var(--mute-2); letter-spacing: 0.04em;
+    pointer-events: auto;
+  }
+  .hint kbd {
+    display: inline-block;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10px;
+    padding: 2px 6px;
+    background: var(--ink-3);
+    border: 1px solid var(--line-2);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    color: var(--fg-2);
+    margin: 0 2px;
+  }
+  .dots {
+    display: flex; gap: 8px; justify-content: center;
+    pointer-events: auto;
+  }
+  .dot-btn {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--line-2); border: 0; padding: 0;
+    cursor: pointer; transition: all 0.2s ease;
+  }
+  .dot-btn:hover { background: var(--mute); }
+  .dot-btn.active {
+    background: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-dim);
+    width: 24px; border-radius: 4px;
+  }
+  .counter {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11px;
+    color: var(--mute);
+    text-align: right;
+    letter-spacing: 0.04em;
+    pointer-events: auto;
+    font-variant-numeric: tabular-nums;
+  }
+  .counter .current { color: var(--fg); }
+
+  /* ---------- slide stage ----------------------------------------------- */
+
+  .deck {
+    position: relative;
+    width: 100vw; height: 100vh;
+    overflow: hidden;
+  }
+  .slide {
+    position: absolute; inset: 0;
+    padding: 80px 96px 120px;
+    display: flex; flex-direction: column;
+    opacity: 0;
+    transform: translateY(12px);
+    pointer-events: none;
+    transition: opacity 0.45s ease, transform 0.45s ease;
+    overflow: auto;
+  }
+  .slide.active {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+  .slide.prev {
+    transform: translateY(-8px);
+  }
+
+  .slide-meta {
+    display: flex; align-items: baseline; gap: 14px;
+    color: var(--mute);
+    font-size: 11px; letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+  .slide-meta .num {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .slide-meta .bar {
+    flex: 0 0 48px; height: 1.5px; background: var(--accent);
+  }
+
+  /* ---------- typography ------------------------------------------------ */
+
+  .h1 {
+    font-family: "Inter", sans-serif;
+    font-size: clamp(48px, 6.4vw, 104px);
+    font-weight: 700;
+    letter-spacing: -0.028em;
+    line-height: 1.02;
+    margin: 0 0 24px;
+  }
+  .h2 {
+    font-size: clamp(32px, 4vw, 60px);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+    margin: 0 0 24px;
+  }
+  .h3 {
+    font-size: clamp(20px, 2vw, 26px);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+    margin: 0 0 12px;
+  }
+  .kicker {
+    color: var(--accent);
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  .lede {
+    font-size: clamp(18px, 1.5vw, 22px);
+    color: var(--fg-2);
+    max-width: 58ch;
+    line-height: 1.55;
+  }
+  .body {
+    font-size: clamp(15px, 1.05vw, 17px);
+    color: var(--fg-2);
+    max-width: 68ch;
+    line-height: 1.6;
+  }
+  .body p { margin: 0 0 14px; }
+  .body strong { color: var(--fg); font-weight: 600; }
+  .body .hl {
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .tiny { font-size: 12px; color: var(--mute); letter-spacing: 0.02em; }
+
+  .accent { color: var(--accent); }
+
+  /* ---------- reusable blocks ------------------------------------------ */
+
+  .card {
+    border: 1px solid var(--line);
+    background: var(--ink-2);
+    border-radius: 8px;
+    padding: 20px 22px;
+  }
+  .card.accent {
+    border-color: var(--accent);
+    background: var(--accent-dim);
+  }
+  .grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+  .grid4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 3px 10px;
+    background: var(--ink-3);
+    border: 1px solid var(--line-2);
+    border-radius: 99px;
+    font-size: 11px;
+    color: var(--fg-2);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    letter-spacing: 0.02em;
+  }
+  .pill.accent {
+    background: var(--accent-dim);
+    border-color: var(--accent);
+    color: var(--accent-2);
+  }
+
+  .metric {
+    display: flex; flex-direction: column; gap: 4px;
+    padding: 16px 20px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--ink-2);
+  }
+  .metric .value {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: clamp(26px, 2.6vw, 38px);
+    color: var(--fg);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .metric .label {
+    font-size: 11px;
+    color: var(--mute);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* table */
+  table.basic {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    color: var(--fg-2);
+  }
+  table.basic thead th {
+    text-align: left;
+    font-size: 10.5px;
+    color: var(--mute);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    border-bottom: 1px solid var(--line-2);
+    padding: 10px 12px;
+  }
+  table.basic td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  table.basic td.num {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-variant-numeric: tabular-nums;
+    color: var(--fg);
+    white-space: nowrap;
+  }
+  table.basic tr:last-child td { border-bottom: 0; }
+  table.basic td strong { color: var(--fg); font-weight: 600; }
+
+  /* strike-through card for slide 5 */
+  .kill-card {
+    border: 1px solid var(--line);
+    background: var(--ink-2);
+    border-radius: 8px;
+    padding: 18px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .kill-card .label {
+    font-size: 10px;
+    color: var(--red);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .kill-card.live .label { color: var(--green); }
+  .kill-card .what {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--fg);
+    position: relative;
+    display: inline-block;
+  }
+  .kill-card .what::after {
+    content: "";
+    position: absolute;
+    top: 53%; left: -4px; right: -4px;
+    height: 2px;
+    background: var(--red);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.8s 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .slide.active .kill-card:not(.live) .what::after {
+    transform: scaleX(1);
+  }
+  .kill-card.live {
+    border-color: var(--accent);
+    background: var(--accent-dim);
+  }
+  .kill-card.live .what { color: var(--fg); }
+  .kill-card .why {
+    color: var(--mute); font-size: 13px; margin-top: 8px;
+    line-height: 1.5;
+  }
+  .kill-card.live .why { color: var(--fg-2); }
+
+  /* ---------- SVG / chart common ------------------------------------- */
+
+  svg .axis-line { stroke: var(--line-2); stroke-width: 1; }
+  svg .axis-tick { stroke: var(--line); stroke-width: 1; }
+  svg .axis-label { fill: var(--mute); font-size: 10px; letter-spacing: 0.04em; font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+  svg .bar-label { fill: var(--fg-2); font-size: 11px; font-family: "Inter", sans-serif; }
+  svg .bar-val { fill: var(--fg); font-size: 11px; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-variant-numeric: tabular-nums; }
+  svg .ttl { fill: var(--fg); font-size: 13px; font-weight: 600; font-family: "Inter", sans-serif; }
+
+  /* slide 1 specific */
+  .title-slide {
+    justify-content: center;
+  }
+  .title-slide .overline {
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+  .title-slide .h1 em {
+    color: var(--accent);
+    font-style: normal;
+  }
+  .title-slide .h1 em::after {
+    content: "·";
+    color: var(--accent);
+    margin-left: 8px;
+  }
+  .title-slide .byline {
+    margin-top: 48px;
+    color: var(--mute);
+    font-size: 14px;
+    letter-spacing: 0.02em;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .title-slide .byline strong { color: var(--fg); }
+  .title-slide .receipt {
+    margin-top: 24px;
+    color: var(--fg-2);
+    max-width: 52ch;
+    font-size: 18px;
+    font-style: italic;
+    border-left: 2px solid var(--accent);
+    padding-left: 18px;
+    line-height: 1.5;
+  }
+
+  /* slide 3 timeline */
+  .timeline-wrap {
+    margin-top: 12px;
+    padding: 32px 8px 12px;
+  }
+  .timeline-bar {
+    position: relative;
+    height: 48px;
+    margin-top: 48px;
+    border-radius: 6px;
+    overflow: visible;
+    display: flex;
+  }
+  .timeline-seg {
+    height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12px;
+    color: var(--fg);
+    letter-spacing: 0.04em;
+    position: relative;
+  }
+  .timeline-seg.ilt {
+    background: repeating-linear-gradient(
+      45deg,
+      var(--accent-dim) 0,
+      var(--accent-dim) 10px,
+      transparent 10px,
+      transparent 20px
+    );
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    flex: 4;
+  }
+  .timeline-seg.dora {
+    background: rgba(88, 166, 255, 0.1);
+    border: 1px solid var(--blue);
+    color: var(--blue);
+    flex: 2;
+    border-left: 0;
+  }
+  .timeline-marker {
+    position: absolute;
+    top: -32px; bottom: -24px;
+    width: 1.5px;
+    background: var(--fg-2);
+  }
+  .timeline-marker::before {
+    content: "";
+    position: absolute;
+    top: 0; left: -4px;
+    width: 9px; height: 9px;
+    background: var(--fg);
+    border-radius: 50%;
+  }
+  .timeline-marker .ml {
+    position: absolute; top: -22px; left: 14px;
+    font-size: 11px;
+    color: var(--fg-2);
+    white-space: nowrap;
+  }
+  .timeline-marker.ilt-start { left: 0; }
+  .timeline-marker.ilt-start::before { background: var(--accent); }
+  .timeline-marker.commit { left: 66.66%; }
+  .timeline-marker.commit::before { background: var(--blue); }
+  .timeline-marker.prod { left: 100%; }
+  .timeline-marker.prod::before { background: var(--green); }
+
+  /* slide 4 stacks */
+  .stack {
+    display: flex; flex-direction: column; gap: 2px;
+    align-items: stretch;
+    max-width: 360px;
+  }
+  .stack .layer {
+    padding: 24px 28px;
+    border: 1px solid var(--line);
+    background: var(--ink-2);
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 18px;
+    letter-spacing: -0.005em;
+    color: var(--fg);
+    text-align: center;
+    position: relative;
+  }
+  .stack .layer small {
+    display: block;
+    font-weight: 400;
+    font-size: 11px;
+    color: var(--mute);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 3px;
+  }
+  .stack .layer.intent {
+    border-color: var(--accent);
+    background: var(--accent-dim);
+    color: var(--accent);
+  }
+  .stack .layer.intent small { color: var(--accent-2); }
+  .stack-label {
+    font-size: 12px; color: var(--mute);
+    letter-spacing: 0.14em; text-transform: uppercase;
+    text-align: center; margin-bottom: 14px;
+  }
+
+  /* slide 7 pipeline */
+  .pipeline {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: stretch;
+    gap: 16px;
+    margin-top: 12px;
+  }
+  .pipeline-node {
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 16px 18px;
+    position: relative;
+  }
+  .pipeline-node.claude {
+    border-color: var(--accent);
+    background: var(--accent-dim);
+  }
+  .pipeline-node h4 {
+    margin: 0 0 8px;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mute);
+    font-weight: 500;
+  }
+  .pipeline-node.claude h4 { color: var(--accent); }
+  .pipeline-node .title-line {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--fg);
+    margin-bottom: 4px;
+  }
+  .pipeline-node .sub {
+    font-size: 12.5px;
+    color: var(--mute);
+    line-height: 1.55;
+  }
+  .pipeline-arrow {
+    display: flex; align-items: center; justify-content: center;
+    color: var(--line-2);
+    font-size: 24px;
+    min-width: 28px;
+  }
+
+  /* slide 8 bands */
+  .bands-row {
+    display: grid;
+    grid-template-columns: 120px 160px 1fr;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .bands-row .band-name {
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .bands-row .band-ilt {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 13px;
+    color: var(--fg);
+  }
+  .bands-row .band-desc {
+    color: var(--mute);
+    font-size: 13px;
+  }
+  .bands-row.elite .band-name { color: var(--accent); }
+  .bands-row.high  .band-name { color: var(--green); }
+  .bands-row.median .band-name { color: var(--yellow); }
+  .bands-row.low   .band-name { color: var(--red); }
+
+  /* slide 9 chevrons */
+  .chevron-row {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 2px;
+    margin-top: 20px;
+  }
+  .chev {
+    position: relative;
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    padding: 20px 22px 18px;
+    clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 50%, calc(100% - 18px) 100%, 0 100%, 18px 50%);
+    min-height: 180px;
+  }
+  .chev:first-child { clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 50%, calc(100% - 18px) 100%, 0 100%); }
+  .chev:last-child { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 18px 50%); }
+  .chev .phase {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .chev h5 {
+    margin: 0 0 10px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--fg);
+    letter-spacing: -0.005em;
+  }
+  .chev .role {
+    display: flex; gap: 8px; margin-top: 10px;
+    flex-wrap: wrap;
+  }
+  .chev .role span {
+    display: inline-block; padding: 2px 8px;
+    font-size: 10.5px;
+    border-radius: 3px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    letter-spacing: 0.04em;
+  }
+  .chev .role .human { background: rgba(126, 231, 135, 0.15); color: var(--green); }
+  .chev .role .ai    { background: rgba(88, 166, 255, 0.15); color: var(--blue); }
+  .chev.test {
+    border-color: var(--accent);
+    background: linear-gradient(0deg, var(--accent-dim), var(--ink-2));
+  }
+  .chev .bottom-note {
+    position: absolute; bottom: 8px; left: 22px; right: 22px;
+    font-size: 11px; color: var(--mute);
+    line-height: 1.4;
+  }
+
+  /* slide 10 takeaways */
+  .take-card {
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 24px;
+    display: flex; flex-direction: column; gap: 10px;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .take-card::before {
+    content: attr(data-num);
+    position: absolute;
+    top: 14px; right: 20px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 42px;
+    color: var(--line-2);
+    font-weight: 700;
+    line-height: 1;
+    transition: color 0.3s ease;
+  }
+  .take-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .take-card:hover::before { color: var(--accent); }
+  .take-card h4 {
+    margin: 0; font-size: 18px; font-weight: 600;
+    color: var(--fg); letter-spacing: -0.005em;
+    padding-right: 40px;
+  }
+  .take-card p { margin: 0; color: var(--mute); font-size: 13.5px; line-height: 1.5; }
+  .take-card .path {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11.5px;
+    color: var(--accent);
+    margin-top: 4px;
+    letter-spacing: -0.01em;
+  }
+
+  .moves {
+    margin-top: 32px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  .move {
+    padding: 16px 18px;
+    border-top: 2px solid var(--accent);
+    background: var(--ink-2);
+  }
+  .move .num {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10px; letter-spacing: 0.16em;
+    color: var(--accent); text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .move h5 { margin: 0 0 6px; font-size: 15px; color: var(--fg); font-weight: 600; }
+  .move p { margin: 0; color: var(--mute); font-size: 12.5px; line-height: 1.5; }
+
+  .pull {
+    font-size: clamp(22px, 2vw, 28px);
+    font-weight: 500;
+    line-height: 1.35;
+    color: var(--fg);
+    letter-spacing: -0.01em;
+    max-width: 40ch;
+    padding-left: 22px;
+    border-left: 3px solid var(--accent);
+    margin: 20px 0;
+  }
+  .pull cite {
+    display: block;
+    font-style: normal;
+    font-size: 13px;
+    color: var(--mute);
+    letter-spacing: 0.04em;
+    margin-top: 12px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+
+  .tag {
+    display: inline-block;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10.5px;
+    padding: 2px 6px;
+    background: var(--ink-3);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    color: var(--fg-2);
+    letter-spacing: 0.02em;
+    margin-right: 4px;
+  }
+
+  /* colors for theme bars */
+  .theme-design { fill: var(--accent); }
+  .theme-impl   { fill: var(--blue); }
+
+  /* end-card */
+  .end-card {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12px;
+    color: var(--mute);
+    letter-spacing: 0.04em;
+  }
+  .end-card strong { color: var(--fg); }
+
+  @media (max-width: 900px) {
+    .slide { padding: 60px 28px 100px; }
+    .grid2, .grid3, .grid4 { grid-template-columns: 1fr; }
+    .chevron-row { grid-template-columns: repeat(2, 1fr); }
+    .moves { grid-template-columns: 1fr; }
+  }
+  @media print {
+    body { overflow: auto; background: white; color: black; }
+    .chrome-top, .chrome-bottom { display: none; }
+    .slide { position: relative; inset: auto; opacity: 1 !important; page-break-after: always; height: auto; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- top chrome: brand + progress -->
+<div class="chrome-top">
+  <div class="brand">
+    <span class="dot"></span>
+    <span><strong>How product development works in an AI world</strong> · Alpine SG · 2026</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progress"></div></div>
+</div>
+
+<!-- slide deck -->
+<main class="deck" id="deck">
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 1 — Title                                               -->
+  <!-- ============================================================ -->
+  <section class="slide title-slide active" data-slide="1" id="s1">
+    <div class="overline">A talk for Alpine SG portfolio-company product leaders</div>
+    <h1 class="h1">How product<br />development<br />works in an <em>AI</em> world.</h1>
+    <p class="lede">Not a prediction. A practice.</p>
+    <div class="receipt">
+      Everything on these slides is drawn from one repo we shipped over the last 13 months.
+    </div>
+    <div class="byline">
+      <strong>Greg Ceccarelli</strong> &middot; Co-founder, Stoa / SpecStory &middot; April 2026
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 2 — The question                                        -->
+  <!-- ============================================================ -->
+  <section class="slide" data-slide="2" id="s2">
+    <div class="slide-meta"><span class="bar"></span><span class="num">02</span><span>The question</span></div>
+    <h2 class="h2">You've been asking four things.<br />We're answering one.</h2>
+    <div class="grid2" style="gap: 18px; max-width: 1200px;">
+      <div class="card">
+        <div class="kicker" style="margin-bottom: 6px;">01</div>
+        <div style="font-size: 20px; font-weight: 600; color: var(--fg-2);">"How do I jolt my team to accelerate?"</div>
+      </div>
+      <div class="card">
+        <div class="kicker" style="margin-bottom: 6px;">02</div>
+        <div style="font-size: 20px; font-weight: 600; color: var(--fg-2);">"How do I go from individual AI to a team-wide system?"</div>
+      </div>
+      <div class="card accent">
+        <div class="kicker" style="margin-bottom: 6px;">03 &nbsp;→ today</div>
+        <div style="font-size: 20px; font-weight: 700; color: var(--fg);">"How should <em>product development</em> work in an AI world?"</div>
+      </div>
+      <div class="card">
+        <div class="kicker" style="margin-bottom: 6px;">04</div>
+        <div style="font-size: 20px; font-weight: 600; color: var(--fg-2);">"How do I measure productivity beyond lines of code?"</div>
+      </div>
+    </div>
+
+    <div style="margin-top: 36px; max-width: 900px;">
+      <div class="kicker">The sub-questions inside today's theme</div>
+      <ul style="list-style: none; padding: 0; margin: 0; font-size: 16px; color: var(--fg-2); line-height: 1.9;">
+        <li>&mdash; Are <span class="hl">PRDs</span> the future? <span class="tiny">(AirDNA)</span></li>
+        <li>&mdash; What does end-to-end AI product development <span class="hl">actually look like</span>? <span class="tiny">(Bitfocus)</span></li>
+        <li>&mdash; What <span class="hl">bridges</span> product-AI workflows and engineering-AI workflows? <span class="tiny">(Bitfocus)</span></li>
+        <li>&mdash; What happens <span class="hl">after</span> the prototype &mdash; security, handoff, release? <span class="tiny">(Visual Care)</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 3 — The shift nobody priced in                          -->
+  <!-- ============================================================ -->
+  <section class="slide" data-slide="3" id="s3">
+    <div class="slide-meta"><span class="bar"></span><span class="num">03</span><span>The shift nobody priced in</span></div>
+    <h2 class="h2">Two collapses happened<br />on very different clocks.</h2>
+
+    <div style="max-width: 900px; margin-top: 12px;">
+      <table class="basic">
+        <thead>
+          <tr><th>Phase</th><th>2015</th><th>2026</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Implementation</strong></td><td class="num">days</td><td class="num" style="color: var(--accent);">hours <span style="color:var(--mute);font-size:11px;">(agents)</span></td></tr>
+          <tr><td><strong>Deploy</strong></td><td class="num">weeks</td><td class="num" style="color: var(--accent);">minutes <span style="color:var(--mute);font-size:11px;">(CI/CD)</span></td></tr>
+          <tr><td><strong>Intent capture</strong></td><td class="num">weeks</td><td class="num" style="color: var(--red);">weeks still</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="body" style="margin-top: 28px; max-width: 70ch;">
+      The bottleneck moved. <strong>DORA can't see it by design</strong> &mdash; DORA's clock starts at <code>git commit</code>. The expensive thing now happens <em>before</em> commit. That gap has a name.
+    </p>
+
+    <div style="margin-top: 12px; max-width: 960px;">
+      <div class="kicker">The new metric</div>
+      <div style="font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: clamp(18px, 1.5vw, 22px); color: var(--accent); padding: 14px 18px; border: 1px solid var(--accent); border-radius: 6px; background: var(--accent-dim); display: inline-block;">
+        ILT = t(first commit) − t(product decision captured)
+      </div>
+    </div>
+
+    <div class="timeline-wrap" style="max-width: 960px;">
+      <div class="timeline-bar">
+        <div class="timeline-seg ilt">Intent Lead Time</div>
+        <div class="timeline-seg dora">DORA Lead Time</div>
+        <div class="timeline-marker ilt-start"><span class="ml">decision captured</span></div>
+        <div class="timeline-marker commit"><span class="ml">first commit</span></div>
+        <div class="timeline-marker prod"><span class="ml">prod running</span></div>
+      </div>
+      <div class="tiny" style="margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);">ILT ends exactly where DORA's clock starts. No overlap. No gap. Two metrics, one pipeline, end to end.</div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 4 — From code-centric to intent-centric                 -->
+  <!-- ============================================================ -->
+  <section class="slide" data-slide="4" id="s4">
+    <div class="slide-meta"><span class="bar"></span><span class="num">04</span><span>The stack</span></div>
+    <h2 class="h2">From code-centric<br />to intent-centric.</h2>
+
+    <div class="pull">
+      "Specifying requirements so precisely that a machine can execute them is programming. Such a specification <span class="accent">is code</span>."
+      <cite>— Robert C. Martin, <em>Clean Code</em>, 2008. He was early. In the agent era, load-bearing.</cite>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; margin-top: 32px; max-width: 1100px;">
+      <div>
+        <div class="stack-label">Old stack</div>
+        <div class="stack">
+          <div class="layer">Code <small>imperative, written</small></div>
+          <div class="layer">Tests <small>verified at runtime</small></div>
+        </div>
+        <p class="tiny" style="margin-top: 18px; max-width: 30ch;">Spec was a PDF nobody re-opened. Implementation was the expensive thing, so implementation became the artifact.</p>
+      </div>
+      <div>
+        <div class="stack-label">New stack <span style="color: var(--accent);">(from the whitepaper)</span></div>
+        <div class="stack">
+          <div class="layer intent">Intent <small>declared, versioned, live</small></div>
+          <div class="layer">Code <small>one valid implementation</small></div>
+          <div class="layer">Tests <small>executable spec of behavior</small></div>
+        </div>
+        <p class="tiny" style="margin-top: 18px; max-width: 30ch;">Intent is a first-class artifact, versioned in the repo. The spec <em>is</em> the assignment &mdash; picked up directly by humans and agents.</p>
+      </div>
+    </div>
+
+    <p class="body" style="margin-top: 32px; max-width: 80ch;">
+      This kills <span class="hl">"are PRDs the future?"</span> as a question. PRDs aren't going away. The <strong>format</strong> is. Static Word doc becomes a living markdown artifact in the same repo as the code &mdash; read by humans and agents on the same line.
+    </p>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 5 — Opinionated cut                                     -->
+  <!-- ============================================================ -->
+  <section class="slide" data-slide="5" id="s5">
+    <div class="slide-meta"><span class="bar"></span><span class="num">05</span><span>The opinionated cut</span></div>
+    <h2 class="h2">Three die. One lives.</h2>
+
+    <div class="grid4" style="margin-top: 24px;">
+      <div class="kill-card">
+        <div class="label">dies ×</div>
+        <div class="what">Tickets</div>
+        <div class="why">as the unit of work. Sequencing latency goes to zero when the picker is an agent.</div>
+      </div>
+      <div class="kill-card">
+        <div class="label">dies ×</div>
+        <div class="what">Long-lived branches</div>
+        <div class="why">as the unit of collaboration. GitFlow assumed slow coders. Agents reconcile nothing.</div>
+      </div>
+      <div class="kill-card">
+        <div class="label">dies ×</div>
+        <div class="what">PRs as review</div>
+        <div class="why">scaffolding from the slow-implementation era. Now drag, not gate.</div>
+      </div>
+      <div class="kill-card live">
+        <div class="label">lives ✓</div>
+        <div class="what">Trunk</div>
+        <div class="why">One source of truth. Specs + code + tests versioned together. Near-instant implementation eliminates the need to defer integration.</div>
+      </div>
+    </div>
+
+    <div class="pull" style="margin-top: 48px; max-width: 64ch;">
+      "In a truly intent-driven workflow, sequencing, pickup, and activation will <span class="accent">collapse to zero</span>."
+      <cite>— Intent Lead Time guide, April 2026</cite>
+    </div>
+
+    <p class="body tiny" style="max-width: 70ch; margin-top: 18px;">
+      Your tickets-per-engineer counts drop while throughput climbs. That's the signal. The scaffolding around code was all sized for the old bottleneck. Remove it.
+    </p>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 6 — Stoa as receipt                                     -->
+  <!-- ============================================================ -->
+  <section class="slide" data-slide="6" id="s6">
+    <div class="slide-meta"><span class="bar"></span><span class="num">06</span><span>Stoa as receipt</span></div>
+    <h2 class="h2">We don't pitch this.<br />We live in it.</h2>
+    <p class="body" style="max-width: 76ch;">Everything on this slide was mined, minutes ago, from the Stoa repo by the four Python scripts in <code>scripts/</code>. They are <span class="hl">in this repo</span>. Run them yourself.</p>
+
+    <div class="grid4" style="margin-top: 18px;">
+      <div class="metric"><div class="value" id="m-design">168</div><div class="label">Design docs · <span id="r-design">Jan 2025 → Apr 2026</span></div></div>
+      <div class="metric"><div class="value" id="m-impl">177</div><div class="label">Implementation docs · <span id="r-impl">Sep 2025 → Apr 2026</span></div></div>
+      <div class="metric"><div class="value" id="m-asbuilt"><span id="v-asbuilt">10,672</span></div><div class="label">Lines of AS-BUILT · across <span id="v-asbuilt-n">5</span> components</div></div>
+      <div class="metric"><div class="value" id="m-intent">7,589</div><div class="label">"Intent" <em style="font-style: normal;">the word itself</em> &middot; occurrences</div></div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; margin-top: 32px; align-items: start;">
+      <div>
+        <div class="kicker">Themes: design docs vs implementation docs</div>
+        <svg id="theme-chart" viewBox="0 0 640 420" style="width: 100%; height: auto;"></svg>
+        <p class="tiny" style="margin-top: 8px; max-width: 60ch;">
+          Architecture is intentionally <strong>over-specified vs. over-built</strong> (52 design → 28 impl). Billing/auth flips it (3 → 26) &mdash; that's "after the prototype" territory: security, handoff, release. Everyone has it; few document it.
+        </p>
+      </div>
+      <div>
+        <div class="kicker">Docs written per month</div>
+        <svg id="month-chart" viewBox="0 0 520 360" style="width: 100%; height: auto;"></svg>
+        <p class="tiny" style="margin-top: 8px; max-width: 60ch;">
+          <strong>March 2026</strong> &mdash; 38 design docs, 46 implementation docs &mdash; was our push into native Windows, the Intent→Stoa rebrand, and the meeting-document surface. The docs track the surges; they don't lag them.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 7 — Agentic release                                     -->
+  <!-- ============================================================ -->
+  <section class="slide" data-slide="7" id="s7">
+    <div class="slide-meta"><span class="bar"></span><span class="num">07</span><span>Live demo · the agentic release</span></div>
+    <h2 class="h2">A <em class="accent" style="font-style: normal;">dev → main</em> release PR<br />that writes itself.</h2>
+    <p class="body" style="max-width: 74ch;">
+      Humans don't read release diffs. Our fix: <strong>the PR writes itself</strong>. Four files in <code>.github/workflows/</code>, running on every push to <code>dev</code>. This is the concrete example you can copy tonight. It's in your takeaways.
+    </p>
+
+    <div class="pipeline" style="margin-top: 26px;">
+      <div class="pipeline-node">
+        <h4>01 · Orchestrator</h4>
+        <div class="title-line">release-pr-sync.yml</div>
+        <div class="sub">On every push to <code>dev</code>: find-or-create the one standing "Release dev to main" PR.</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-node claude">
+        <h4>02 · Agent</h4>
+        <div class="title-line">release-pr-body.md <span class="tag">gh-aw</span></div>
+        <div class="sub">Claude, bounded to <code>{repos, pull_requests}</code>. Reads the full accumulated diff + touched <code>docs/design/</code> and <code>docs/implementation/</code>. One allowed output: <code>update-pull-request</code>.</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-node">
+        <h4>03 · Outputs</h4>
+        <div class="title-line">PR body + #slack-stream</div>
+        <div class="sub">Structured release: Highlights, Major Change Areas, Operational Notes, Commits. Same body fanned to Slack with mrkdwn rewriting.</div>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; margin-top: 36px; align-items: start;">
+      <div>
+        <div class="kicker">Proof it runs</div>
+        <table class="basic">
+          <thead><tr><th>PR</th><th>Title</th><th>State</th><th>Lifespan</th></tr></thead>
+          <tbody id="pr-rows"></tbody>
+        </table>
+        <p class="tiny" style="margin-top: 8px;">Last five "Release dev to main" PRs from <code>specstoryai/stoa</code>. 4 of 5 merged; #16 currently open. Two merged in under 10 minutes &mdash; because the agent had already written the summary humans would have put off.</p>
+      </div>
+      <div>
+        <div class="kicker">Guardrails</div>
+        <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: var(--fg-2); line-height: 1.7;">
+          <li>✓ One standing PR from <code>dev</code> into <code>main</code>. Always fresh.</li>
+          <li>✓ <code>main-from-dev-only.yml</code> rejects any PR into main whose head ≠ <code>dev</code>.</li>
+          <li>✓ Agent has bounded tool access. No shell. One safe output.</li>
+          <li>✓ The <em>prompt</em> is a markdown file humans edit. The YAML is compiled by <code>gh aw compile</code>.</li>
+          <li>✓ Slack gets the same canonical body. No duplicate writing.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 8 — A metric you can use on Monday                       -->
+  <!-- ============================================================ -->
+  <section class="slide" data-slide="8" id="s8">
+    <div class="slide-meta"><span class="bar"></span><span class="num">08</span><span>A metric you can use on Monday</span></div>
+    <h2 class="h2">Intent Lead Time.<br />Four sub-metrics.<br />Three go to zero.</h2>
+
+    <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; margin-top: 16px; align-items: start;">
+      <div>
+        <div class="kicker">Sub-components</div>
+        <table class="basic">
+          <thead><tr><th>Sub-metric</th><th>Clock</th><th>What slows it</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Capture</strong> latency</td><td>decision made → recorded</td><td>"we'll document it later"</td></tr>
+            <tr><td><strong>Sequencing</strong> latency</td><td>artifact → ticket</td><td>triage queue, sprint cadence</td></tr>
+            <tr><td><strong>Pickup</strong> latency</td><td>ticket → assigned</td><td>backlog prioritization</td></tr>
+            <tr><td><strong>Activation</strong> latency</td><td>assigned → first commit</td><td>spec ambiguity</td></tr>
+          </tbody>
+        </table>
+        <p class="tiny" style="margin-top: 14px;">Only the first is load-bearing in an intent-driven workflow. Sequencing / pickup / activation are scaffolding from the assembly-line era. <strong>When the picker is an agent, the spec <em>is</em> the assignment.</strong></p>
+      </div>
+      <div>
+        <div class="kicker">Bands</div>
+        <div class="bands-row elite">
+          <div class="band-name">Elite</div>
+          <div class="band-ilt">&lt; 1 hour</div>
+          <div class="band-desc">Intent captured live. Agents in the decision session.</div>
+        </div>
+        <div class="bands-row high">
+          <div class="band-name">High</div>
+          <div class="band-ilt">1 hour → 1 day</div>
+          <div class="band-desc">Structured specs. Same-day ticket flow.</div>
+        </div>
+        <div class="bands-row median">
+          <div class="band-name">Median</div>
+          <div class="band-ilt">1 → 3 weeks</div>
+          <div class="band-desc">Meeting → doc → ticket → assign → commit.</div>
+        </div>
+        <div class="bands-row low">
+          <div class="band-name">Low</div>
+          <div class="band-ilt">&gt; 4 weeks</div>
+          <div class="band-desc">Decisions surface in Slack and never get structured.</div>
+        </div>
+        <p class="tiny" style="margin-top: 14px;">First-principles estimates, not benchmark data. A metric lives or dies by what gets measured against it.</p>
+      </div>
+    </div>
+
+    <div class="pull" style="margin-top: 28px; max-width: 60ch;">
+      "DORA gave us the metrics for the DevOps era. Intent Lead Time is the metric for the <span class="accent">agentic era</span>."
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 9 — Journey map                                         -->
+  <!-- ============================================================ -->
+  <section class="slide" data-slide="9" id="s9">
+    <div class="slide-meta"><span class="bar"></span><span class="num">09</span><span>Journey map</span></div>
+    <h2 class="h2">Where AI fits across the PDLC<br />(and where it doesn't).</h2>
+    <p class="body" style="max-width: 76ch;">
+      Humans own the two endpoints. Humans own the <span class="hl">test spec</span>. Agents own the four middles. The SPEC → BUILD handoff is the one to automate first &mdash; that's where your ILT wins live.
+    </p>
+
+    <div class="chevron-row">
+      <div class="chev">
+        <div class="phase">01 · Ideation</div>
+        <h5>Problem sensing</h5>
+        <p class="tiny" style="margin: 0;">Customer context, market signal, strategy.</p>
+        <div class="role"><span class="human">Human</span></div>
+      </div>
+      <div class="chev">
+        <div class="phase">02 · Intent capture</div>
+        <h5>Live meeting</h5>
+        <p class="tiny" style="margin: 0;">Agents attend. Decisions timestamped, owner attributed, source-linked.</p>
+        <div class="role"><span class="human">Human</span><span class="ai">Agent</span></div>
+      </div>
+      <div class="chev">
+        <div class="phase">03 · Spec</div>
+        <h5>Markdown, in repo</h5>
+        <p class="tiny" style="margin: 0;">PRDs + design docs drafted live, versioned with the code.</p>
+        <div class="role"><span class="human">Human</span><span class="ai">Agent</span></div>
+      </div>
+      <div class="chev">
+        <div class="phase">04 · Build</div>
+        <h5>Agent in sandbox</h5>
+        <p class="tiny" style="margin: 0;">Local CLI or cloud. Full session context. Humans intervene when needed.</p>
+        <div class="role"><span class="ai">Agent</span></div>
+      </div>
+      <div class="chev test">
+        <div class="phase">05 · Test</div>
+        <h5>Human-owned spec</h5>
+        <p class="tiny" style="margin: 0;">"Never let AI specify your tests." Agents implement; humans declare correct behavior.</p>
+        <div class="role"><span class="human">Human spec</span><span class="ai">Agent impl</span></div>
+      </div>
+      <div class="chev">
+        <div class="phase">06 · Release</div>
+        <h5>Agentic PR</h5>
+        <p class="tiny" style="margin: 0;">Release body is written by the agent from the diff + intent. Human reviews, one click.</p>
+        <div class="role"><span class="human">Human</span><span class="ai">Agent</span></div>
+      </div>
+    </div>
+
+    <div style="margin-top: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 1200px;">
+      <div class="card">
+        <div class="kicker" style="color: var(--green);">Sacred rule</div>
+        <div style="font-size: 18px; font-weight: 600; color: var(--fg);">Never let AI specify your tests.</div>
+        <p class="tiny" style="margin-top: 8px;">Tests encode shared domain judgment about what "correct" means. Ceding that cedes control. Agents implement; humans specify.</p>
+      </div>
+      <div class="card">
+        <div class="kicker">Automate first</div>
+        <div style="font-size: 18px; font-weight: 600; color: var(--fg);">The SPEC → BUILD handoff.</div>
+        <p class="tiny" style="margin-top: 8px;">That's where activation latency lives. If the spec is picked up by the agent without a human re-routing it, most of your ILT disappears.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 10 — Takeaways                                           -->
+  <!-- ============================================================ -->
+  <section class="slide" data-slide="10" id="s10">
+    <div class="slide-meta"><span class="bar"></span><span class="num">10</span><span>Take it home</span></div>
+    <h2 class="h2">Three to steal.<br />Three moves this week.</h2>
+
+    <div class="grid3" style="margin-top: 20px;">
+      <a href="takeaways/release-pr-automation/" class="take-card" data-num="01">
+        <h4>Agentic release-PR workflow</h4>
+        <p>Drop-in GitHub Actions + gh-aw prompt. Your release notes write themselves tonight.</p>
+        <div class="path">takeaways/release-pr-automation/</div>
+      </a>
+      <a href="takeaways/intent-driven-prd-template.md" class="take-card" data-num="02">
+        <h4>Intent-driven PRD template</h4>
+        <p>The shape of a PRD an agent can actually pick up. Four sections. No ticket required.</p>
+        <div class="path">takeaways/intent-driven-prd-template.md</div>
+      </a>
+      <a href="takeaways/ai-pdlc-journey-map.md" class="take-card" data-num="03">
+        <h4>AI-PDLC journey map</h4>
+        <p>Poster version of slide 9. Which tool, which phase, who owns what, every step.</p>
+        <div class="path">takeaways/ai-pdlc-journey-map.md</div>
+      </a>
+    </div>
+
+    <div class="moves">
+      <div class="move">
+        <div class="num">Move 01</div>
+        <h5>Measure ILT for one feature.</h5>
+        <p>Anything is a baseline. t(first commit) − t(decision).</p>
+      </div>
+      <div class="move">
+        <div class="num">Move 02</div>
+        <h5>Put one canonical workflow under the agent.</h5>
+        <p>Release notes, incident summaries, RFC intake. Let it write the body.</p>
+      </div>
+      <div class="move">
+        <div class="num">Move 03</div>
+        <h5>Version your intent.</h5>
+        <p>One markdown doc, in the repo, with the decision timestamp in the commit.</p>
+      </div>
+    </div>
+
+    <div class="pull" style="margin-top: 40px; font-size: clamp(22px, 2vw, 30px);">
+      The clock starts the moment your team agrees.
+    </div>
+
+    <div class="end-card" style="margin-top: 32px; display: flex; gap: 32px; align-items: baseline; flex-wrap: wrap;">
+      <span><strong>Greg Ceccarelli</strong></span>
+      <span>Stoa / SpecStory</span>
+      <span><a href="https://withstoa.com/guides/intent-lead-time">withstoa.com/guides/intent-lead-time</a></span>
+      <span><a href="https://specstory.com/whitepapers/beyond-code-centric-specstory-2025.pdf">Beyond Code-Centric (2025)</a></span>
+      <span style="color: var(--mute);">· deck: github.com/gregceccarelli/ai-product-development</span>
+    </div>
+  </section>
+
+</main>
+
+<!-- bottom chrome: dots + counter + hint -->
+<div class="chrome-bottom">
+  <div class="hint">
+    <kbd>←</kbd><kbd>→</kbd> navigate &nbsp; <kbd>Space</kbd> next &nbsp; <kbd>Home</kbd> / <kbd>End</kbd> jump
+  </div>
+  <div class="dots" id="dots"></div>
+  <div class="counter"><span class="current" id="cur">01</span> &nbsp;/&nbsp; <span id="total">10</span></div>
+</div>
+
+<!-- Inlined analysis data. Generated by scripts/ in this repo.
+     See /Users/gdc/ai-product-development/data/ for the full JSON blobs. -->
+<script id="slide-data" type="application/json">{"design":{"total":168,"range":{"first":"2025-01-16","last":"2026-04-18"}},"impl":{"total":177,"range":{"first":"2025-09-15","last":"2026-04-19"}},"as_built":{"components":[{"name":"stoa-cli","lines":3250,"last_updated":"2026-04-13","diagrams":21,"code_fences":50},{"name":"stoa-web","lines":3133,"last_updated":"2026-04-14","diagrams":19,"code_fences":46},{"name":"stoa-web-supabase","lines":2237,"last_updated":"2026-04-12","diagrams":10,"code_fences":55},{"name":"stoa-desktop-mac","lines":1087,"last_updated":"2026-04-12","diagrams":8,"code_fences":13},{"name":"stoa-desktop-windows","lines":965,"last_updated":"2026-04-12","diagrams":7,"code_fences":12}],"totals":{"lines":10672,"components":5,"ascii_diagrams":65,"code_fences":176,"top_level_bullets":908}},"months":[{"month":"2025-09","design":22,"impl":15},{"month":"2025-10","design":23,"impl":20},{"month":"2025-11","design":17,"impl":34},{"month":"2025-12","design":20,"impl":4},{"month":"2026-01","design":13,"impl":12},{"month":"2026-02","design":13,"impl":11},{"month":"2026-03","design":38,"impl":46},{"month":"2026-04","design":20,"impl":35}],"themes":[{"theme":"platform_arch","design":52,"impl":28},{"theme":"agents","design":40,"impl":32},{"theme":"crdt","design":26,"impl":32},{"theme":"meetings_voice","design":21,"impl":23},{"theme":"cli_terminal","design":18,"impl":26},{"theme":"p2p_sync","design":18,"impl":11},{"theme":"ui_ux","design":12,"impl":10},{"theme":"version_history","design":12,"impl":11},{"theme":"billing_auth","design":3,"impl":26},{"theme":"desktop","design":6,"impl":7},{"theme":"provenance","design":4,"impl":3},{"theme":"community_forum","design":2,"impl":1}],"top_term_intent_total":7589,"release":{"workflows":[{"name":"release-pr-sync.yml","role":"Push-to-dev hook that finds or opens the single standing dev\u2192main release PR, delegates the body rewrite to the agentic workflow, then posts the rewritten summary to Slack. This is the orchestrator.","lines":152},{"name":"release-pr-body.md","role":"gh-aw agentic prompt: instructs Claude to read the generated main\u2194dev diff context and rewrite the release PR body into a structured human-readable summary.","lines":105},{"name":"release-pr-body.lock.yml","role":"Generated lock file produced by `gh aw compile` from release-pr-body.md. Do not edit by hand \u2014 it is the actual YAML GitHub Actions runs.","lines":1284},{"name":"main-from-dev-only.yml","role":"Branch-protection workflow: rejects any PR into main whose head is not `dev`. Guarantees main only ever receives changes through the standing release PR.","lines":35}],"recent_prs":[{"createdAt":"2026-04-19T22:21:40Z","mergedAt":null,"number":16,"state":"OPEN","title":"Release dev to main"},{"createdAt":"2026-04-17T15:07:30Z","mergedAt":"2026-04-18T15:21:42Z","number":14,"state":"MERGED","title":"Release dev to main"},{"createdAt":"2026-04-17T03:59:49Z","mergedAt":"2026-04-17T04:07:06Z","number":13,"state":"MERGED","title":"Release dev to main"},{"createdAt":"2026-04-16T21:13:56Z","mergedAt":"2026-04-16T21:20:45Z","number":12,"state":"MERGED","title":"Release dev to main"},{"createdAt":"2026-04-16T04:30:13Z","mergedAt":"2026-04-16T20:15:26Z","number":11,"state":"MERGED","title":"Release dev to main"}],"dev_ahead":[{"sha":"652b63a1","subject":"fix: require bound guest session for guest principals"},{"sha":"482fe846","subject":"feat: allow guests to use agents in hosted sessions"}],"agentic":{"engine":"claude","toolsets":["repos","pull_requests"],"safe_outputs":["update-pull-request"],"instruction_char_count":1793,"instructions":"# release-pr-body\n\nRewrite the body of release pull request #${{ inputs.pr_number }} so it reflects\nthe **current total accumulated diff from `main` to `dev`**.\n\n## Required source of truth\n\nUse these sources in this order:\n\n1. Read `.github/workflows/.release-pr-context.md`.\n2. Use the commit range and changed files in that context as the canonical scope.\n3. If helpful, read any referenced files under:\n   - `docs/changelogs/`\n   - `docs/implementation/`\n   - `docs/design/`\n\nDo **not** summarize only the latest push. The goal is a full release summary for\neverything currently on `dev` that is not yet on `main`.\n\n## What the PR body should contain\n\nWrite a readable, comprehensive release body with this structure:\n\n1. A short opening paragraph summarizing the release.\n2. `## Highlights`\n   - 3-6 concise bullets for the most important changes.\n3. `## Major Change Areas`\n   - group related work into clear themes\n   - for each theme, include a short paragraph or a few bullets\n4. `## Operational Notes`\n   - migrations, deploy implications, env/config changes, follow-up validation, or risks\n   - if there are no notable operational notes, say that explicitly\n5. `## Commits`\n   - compact bullet list of commits, grouped by theme when possible\n\n## Style\n\n- Optimize for humans reviewing a release PR.\n- Be specific, but avoid changelog spam.\n- Prefer grouping and synthesis over repeating every commit subject verbatim.\n- Mention docs, migration, or infra changes when they matter operationally.\n- Avoid speculation beyond what the commit range and touched docs support.\n\n## Final action\n\nUse `update_pull_request` exactly once with:\n\n- `pull_request_number`: `${{ inputs.pr_number }}`\n- `operation`: `\"replace\"`\n- `body`: the full rewritten markdown body\n\nDo not update the PR title."},"talking_points":["Every push to `dev` triggers a workflow that guarantees a single standing release PR into `main` is current.","The PR body itself is rewritten by Claude, over a gh-aw prompt with bounded tool access (repos + pull_requests) and a one-shot `update-pull-request` safe output.","A sibling workflow enforces that `main` only ever accepts PRs from `dev`, so the agentic summary is the canonical release narrative, not a nice-to-have.","The rewritten body is also fanned out to Slack with `## Header`\u2192`*Header*` conversion and a 2.8KB cap \u2014 so the LLM's release note becomes the channel post.","`release-pr-body.lock.yml` is machine-generated from the prompt .md by `gh aw compile`; the humans edit the prompt, the tooling owns the YAML."]}}</script>
+
+<script>
+(function () {
+  "use strict";
+
+  // ----- data ---------------------------------------------------------
+
+  const DATA = JSON.parse(document.getElementById("slide-data").textContent);
+
+  // ----- slide navigation --------------------------------------------
+
+  const deck   = document.getElementById("deck");
+  const slides = [...deck.querySelectorAll(".slide")];
+  const dots   = document.getElementById("dots");
+  const total  = slides.length;
+  let current  = 0;
+
+  document.getElementById("total").textContent = String(total).padStart(2, "0");
+  for (let i = 0; i < total; i++) {
+    const btn = document.createElement("button");
+    btn.className = "dot-btn" + (i === 0 ? " active" : "");
+    btn.setAttribute("aria-label", "Slide " + (i + 1));
+    btn.addEventListener("click", () => go(i));
+    dots.appendChild(btn);
+  }
+
+  function go(idx) {
+    if (idx < 0 || idx >= total || idx === current) return;
+    slides[current].classList.remove("active");
+    slides[current].classList.add("prev");
+    slides[idx].classList.remove("prev");
+    slides[idx].classList.add("active");
+    dots.children[current].classList.remove("active");
+    dots.children[idx].classList.add("active");
+    current = idx;
+    document.getElementById("cur").textContent = String(idx + 1).padStart(2, "0");
+    document.getElementById("progress").style.width = ((idx + 1) / total * 100) + "%";
+    window.location.hash = "s" + (idx + 1);
+  }
+
+  document.addEventListener("keydown", (e) => {
+    if (e.target && (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA")) return;
+    switch (e.key) {
+      case "ArrowRight": case " ": case "PageDown": case "j": go(current + 1); e.preventDefault(); break;
+      case "ArrowLeft":  case "PageUp":   case "k": go(current - 1); e.preventDefault(); break;
+      case "Home": go(0); e.preventDefault(); break;
+      case "End":  go(total - 1); e.preventDefault(); break;
+      default:
+        if (/^[1-9]$/.test(e.key)) { go(parseInt(e.key, 10) - 1); e.preventDefault(); }
+        else if (e.key === "0") { go(9); e.preventDefault(); }
+    }
+  });
+
+  // touch / swipe
+  let tx = 0, ty = 0;
+  document.addEventListener("touchstart", (e) => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+  document.addEventListener("touchend", (e) => {
+    const dx = e.changedTouches[0].clientX - tx;
+    const dy = e.changedTouches[0].clientY - ty;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) go(current + (dx < 0 ? 1 : -1));
+  }, { passive: true });
+
+  // deep link (#s3)
+  const m = /^#s(\d+)$/.exec(window.location.hash);
+  if (m) { const idx = parseInt(m[1], 10) - 1; if (idx > 0) setTimeout(() => go(idx), 0); }
+
+  document.getElementById("progress").style.width = (1 / total * 100) + "%";
+
+  // ----- slide 6: theme bar chart ------------------------------------
+
+  function drawThemes() {
+    const svg = document.getElementById("theme-chart");
+    if (!svg) return;
+    const W = 640, H = 420;
+    const m = { top: 24, right: 140, bottom: 12, left: 150 };
+    const innerW = W - m.left - m.right;
+    const rowH = (H - m.top - m.bottom) / DATA.themes.length;
+    const maxVal = Math.max(...DATA.themes.map(t => Math.max(t.design, t.impl)));
+    const barH = Math.min(rowH * 0.36, 14);
+
+    const themeLabel = {
+      platform_arch: "platform / arch",
+      agents: "agents",
+      crdt: "crdt / automerge",
+      meetings_voice: "meetings / voice",
+      cli_terminal: "cli / terminal",
+      p2p_sync: "p2p / sync",
+      ui_ux: "ui / ux",
+      version_history: "version history",
+      billing_auth: "billing / auth",
+      desktop: "desktop",
+      provenance: "provenance",
+      community_forum: "community forum",
+    };
+
+    let svgHtml = "";
+    // legend
+    svgHtml += `<g transform="translate(${m.left},6)">`;
+    svgHtml += `<rect width="10" height="10" class="theme-design"/><text x="16" y="9" fill="#c9d1d9" font-size="11" font-family="Inter">design</text>`;
+    svgHtml += `<rect x="78" width="10" height="10" class="theme-impl"/><text x="94" y="9" fill="#c9d1d9" font-size="11" font-family="Inter">implementation</text>`;
+    svgHtml += `</g>`;
+
+    DATA.themes.forEach((t, i) => {
+      const y = m.top + i * rowH + rowH / 2;
+      const wDesign = (t.design / maxVal) * innerW;
+      const wImpl   = (t.impl   / maxVal) * innerW;
+      svgHtml += `<text x="${m.left - 10}" y="${y}" class="bar-label" text-anchor="end" dominant-baseline="middle">${themeLabel[t.theme] || t.theme}</text>`;
+      svgHtml += `<rect x="${m.left}" y="${y - barH - 1}" width="${wDesign}" height="${barH}" class="theme-design"/>`;
+      svgHtml += `<rect x="${m.left}" y="${y + 1}" width="${wImpl}" height="${barH}" class="theme-impl"/>`;
+      svgHtml += `<text x="${m.left + wDesign + 6}" y="${y - 3}" class="bar-val" dominant-baseline="middle" fill="#e35a2c">${t.design}</text>`;
+      svgHtml += `<text x="${m.left + wImpl   + 6}" y="${y + barH + 3}" class="bar-val" dominant-baseline="middle" fill="#58a6ff">${t.impl}</text>`;
+    });
+
+    svg.innerHTML = svgHtml;
+  }
+
+  // ----- slide 6: month chart ----------------------------------------
+
+  function drawMonths() {
+    const svg = document.getElementById("month-chart");
+    if (!svg) return;
+    const W = 520, H = 360;
+    const m = { top: 30, right: 16, bottom: 48, left: 40 };
+    const innerW = W - m.left - m.right;
+    const innerH = H - m.top - m.bottom;
+    const months = DATA.months;
+    const maxVal = Math.max(...months.flatMap(d => [d.design, d.impl]));
+    const groupW = innerW / months.length;
+    const barW   = Math.min(14, groupW * 0.35);
+
+    let svgHtml = "";
+    // y grid (4 ticks)
+    const yTicks = [0, 0.25, 0.5, 0.75, 1].map(t => t * maxVal);
+    yTicks.forEach(v => {
+      const y = m.top + innerH - (v / maxVal) * innerH;
+      svgHtml += `<line x1="${m.left}" x2="${W - m.right}" y1="${y}" y2="${y}" class="axis-tick"/>`;
+      svgHtml += `<text x="${m.left - 6}" y="${y + 3}" class="axis-label" text-anchor="end">${Math.round(v)}</text>`;
+    });
+
+    // bars
+    months.forEach((d, i) => {
+      const cx = m.left + (i + 0.5) * groupW;
+      const hD = (d.design / maxVal) * innerH;
+      const hI = (d.impl / maxVal) * innerH;
+      const yD = m.top + innerH - hD;
+      const yI = m.top + innerH - hI;
+      svgHtml += `<rect x="${cx - barW - 1}" y="${yD}" width="${barW}" height="${hD}" class="theme-design"/>`;
+      svgHtml += `<rect x="${cx + 1}" y="${yI}" width="${barW}" height="${hI}" class="theme-impl"/>`;
+      // month label
+      const shortMo = d.month.slice(5) + " '" + d.month.slice(2, 4);
+      svgHtml += `<text x="${cx}" y="${H - m.bottom + 14}" class="axis-label" text-anchor="middle">${shortMo}</text>`;
+    });
+
+    // axis line
+    svgHtml += `<line x1="${m.left}" x2="${W - m.right}" y1="${m.top + innerH}" y2="${m.top + innerH}" class="axis-line"/>`;
+
+    // legend top
+    svgHtml += `<g transform="translate(${m.left},10)">`;
+    svgHtml += `<rect width="10" height="10" class="theme-design"/><text x="16" y="9" fill="#c9d1d9" font-size="11" font-family="Inter">design/month</text>`;
+    svgHtml += `<rect x="110" width="10" height="10" class="theme-impl"/><text x="126" y="9" fill="#c9d1d9" font-size="11" font-family="Inter">impl/month</text>`;
+    svgHtml += `</g>`;
+
+    svg.innerHTML = svgHtml;
+  }
+
+  // ----- slide 7: PR table --------------------------------------------
+
+  function drawPRs() {
+    const rows = document.getElementById("pr-rows");
+    if (!rows) return;
+    rows.innerHTML = DATA.release.recent_prs.map(pr => {
+      const created = new Date(pr.createdAt);
+      const merged  = pr.mergedAt ? new Date(pr.mergedAt) : null;
+      const life = merged ? humanizeDuration(merged - created) : "open";
+      const state = pr.state === "MERGED" ? `<span style="color: var(--green); font-weight: 600;">● merged</span>` : `<span style="color: var(--blue); font-weight: 600;">● open</span>`;
+      return `<tr>
+        <td class="num">#${pr.number}</td>
+        <td>${pr.title}</td>
+        <td>${state}</td>
+        <td class="num">${life}</td>
+      </tr>`;
+    }).join("");
+  }
+
+  function humanizeDuration(ms) {
+    const h = Math.round(ms / 3600000);
+    if (h < 1) return Math.round(ms / 60000) + "m";
+    if (h < 24) return h + "h";
+    const d = Math.round(h / 24);
+    return d + "d";
+  }
+
+  // draw once; data is static
+  drawThemes();
+  drawMonths();
+  drawPRs();
+
+  // redraw on resize (SVG already scales, but if we added more dynamic things later)
+  window.addEventListener("resize", () => { drawThemes(); drawMonths(); });
+})();
+</script>
+
+</body>
+</html>
