@@ -46,7 +46,7 @@ Two collapses happened, on very different clocks:
 | Phase | 2015 | 2026 |
 |---|---|---|
 | Implementation | days to weeks | **hours** (agents) |
-| Deploy | weeks | **hours to days** (CI/CD) |
+| Deploy | hours to days | **minutes** (CI/CD) |
 | Intent capture | weeks | **weeks still** |
 
 The bottleneck moved. DORA can't see it by design — DORA's clock starts at `git commit`. The expensive thing now happens *before* commit.
