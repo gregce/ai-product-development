@@ -677,7 +677,9 @@
     border: 1px solid var(--line);
     padding: 20px 22px 18px;
     clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 50%, calc(100% - 18px) 100%, 0 100%, 18px 50%);
-    min-height: 180px;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
   }
   .chev:first-child { clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 50%, calc(100% - 18px) 100%, 0 100%); }
   .chev:last-child { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 18px 50%); }
@@ -697,7 +699,9 @@
     letter-spacing: -0.005em;
   }
   .chev .role {
-    display: flex; gap: 8px; margin-top: 10px;
+    display: flex; gap: 8px;
+    margin-top: auto;
+    padding-top: 12px;
     flex-wrap: wrap;
   }
   .chev .role span {
