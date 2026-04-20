@@ -6,14 +6,14 @@ standing, self-writing artifact. Copy the three workflow files into your repo's
 
 ## What's in the kit
 
-- **`release-pr-sync.yml`** — on every push to `dev`, finds or creates the
+- **`release-pr-sync.yml`**: on every push to `dev`, finds or creates the
   standing "Release dev to main" PR. One PR per release cycle, not one per
   push. Delegates the body rewrite to the agentic workflow.
-- **`release-pr-body.md`** — a [gh-aw](https://github.github.com/gh-aw/) prompt.
+- **`release-pr-body.md`**: a [gh-aw](https://github.github.com/gh-aw/) prompt.
   The agent reads the accumulated diff plus any referenced spec / design /
   implementation markdown and rewrites the PR body with Highlights, Major
   Change Areas, Operational Notes, and Commits.
-- **`main-from-dev-only.yml`** — rejects any PR into `main` whose head isn't
+- **`main-from-dev-only.yml`**: rejects any PR into `main` whose head isn't
   `dev`. The agent's summary isn't nice-to-have; it's canonical.
 
 ## One-time setup

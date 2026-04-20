@@ -12,11 +12,11 @@
 
 ## Preface
 
-This template is not invented. It is distilled from `~168` design docs the Stoa team actually shipped with, of which `30` were read closely for this exemplar. The sample spans every month from 2025-09 through 2026-04, every major theme (platform, CRDT, agents, voice, CLI, UI, sync, billing, auth), and every size from 40-line one-page proposals to 2000-line architecture specs. Every section that follows appeared in at least half the docs reviewed; every section is labeled with how often it showed up in the sample so you know which parts are table stakes and which are situational. The one opinionated move the template makes is adding frontmatter — Stoa docs do not currently use it, and this is the single highest-leverage change an author could make for agent readability.
+This template is not invented. It is distilled from `~168` design docs the Stoa team actually shipped with, of which `30` were read closely for this exemplar. The sample spans every month from 2025-09 through 2026-04, every major theme (platform, CRDT, agents, voice, CLI, UI, sync, billing, auth), and every size from 40-line one-page proposals to 2000-line architecture specs. Every section that follows appeared in at least half the docs reviewed; every section is labeled with how often it showed up in the sample so you know which parts are table stakes and which are situational. The one opinionated move the template makes is adding frontmatter: Stoa docs do not currently use it, and this is the single highest-leverage change an author could make for agent readability.
 
 ---
 
-## A. Frontmatter (recommended, currently at 0% in corpus — argue for it)
+## A. Frontmatter (recommended, currently at 0% in corpus; argue for it)
 
 Stoa's design docs today encode status, date, and authorship as a loose block of bold-then-colon lines under the `H1`. That works for humans, is semi-structured, and is invisible to any tool that isn't a person reading top-to-bottom. Switch to YAML frontmatter. It costs nothing, parses everywhere, and a planning agent can load `title`, `status`, and `touches` in one pass without regexing prose.
 
@@ -39,13 +39,13 @@ references:              # other design docs, implementation docs, or ADRs this 
 
 Key-by-key:
 
-- `title` — one declarative phrase. The same wording that belongs in the filename slug and the `H1`. One line, no trailing period.
-- `owner` — exactly one human, by email. Stoa docs often list "Greg, with Claude (scribe)" in prose; the frontmatter should collapse that to the accountable party only.
-- `decided_at` — the moment product agreed. ISO 8601 with timezone. This is **the timestamp that starts the Intent Lead Time clock**; every other date in the doc is secondary.
-- `status` — one of six. Most corpus docs land on `draft`, `in-review`, or mark themselves shipped after the fact via prose. Making this a field lets tools query "what's in flight right now."
-- `touches` — the paths, packages, or surfaces this feature changes. Lets an agent pre-grep. `~60%` of the sampled docs list these inline in prose; hoisting them into frontmatter makes them queryable.
-- `intent_lead_time_start` — usually identical to `decided_at`, but sometimes earlier (e.g. the decision was made verbally in a meeting before the doc was committed). Be honest here; ILT is a measurement, not a vanity metric.
-- `references` — other docs this one depends on or supersedes. `~50%` of the sampled docs include a `Related` section or inline `Builds on:` line; frontmatter makes the graph explicit.
+- `title`: one declarative phrase. The same wording that belongs in the filename slug and the `H1`. One line, no trailing period.
+- `owner`: exactly one human, by email. Stoa docs often list "Greg, with Claude (scribe)" in prose; the frontmatter should collapse that to the accountable party only.
+- `decided_at`: the moment product agreed. ISO 8601 with timezone. This is **the timestamp that starts the Intent Lead Time clock**; every other date in the doc is secondary.
+- `status`: one of six. Most corpus docs land on `draft`, `in-review`, or mark themselves shipped after the fact via prose. Making this a field lets tools query "what's in flight right now."
+- `touches`: the paths, packages, or surfaces this feature changes. Lets an agent pre-grep. `~60%` of the sampled docs list these inline in prose; hoisting them into frontmatter makes them queryable.
+- `intent_lead_time_start`: usually identical to `decided_at`, but sometimes earlier (e.g. the decision was made verbally in a meeting before the doc was committed). Be honest here; ILT is a measurement, not a vanity metric.
+- `references`: other docs this one depends on or supersedes. `~50%` of the sampled docs include a `Related` section or inline `Builds on:` line; frontmatter makes the graph explicit.
 
 ---
 
@@ -55,13 +55,13 @@ The heading names below are the ones Stoa authors actually use most often in the
 
 ### 1. `## Purpose` or `## Overview` or `## What This Is`  *(in ~85% of docs)*
 
-One to three paragraphs, above the fold. The single most important section in the whole doc. State what this thing is, who it is for, and — if it's easy to say in one sentence — what shipping it looks like. Best corpus examples: `2026-04-06-WORKTHREADS.md` opens with "Workthreads are a new Stoa-owned primitive for durable work context." `2026-04-14-PRELAUNCH-PERFORMANCE-KISS-PLAN.md` opens with "This doc proposes the smallest behavior-preserving performance work to do before the public release."
+One to three paragraphs, above the fold. The single most important section in the whole doc. State what this thing is, who it is for, and, if it's easy to say in one sentence, what shipping it looks like. Best corpus examples: `2026-04-06-WORKTHREADS.md` opens with "Workthreads are a new Stoa-owned primitive for durable work context." `2026-04-14-PRELAUNCH-PERFORMANCE-KISS-PLAN.md` opens with "This doc proposes the smallest behavior-preserving performance work to do before the public release."
 
 > Example placeholder: "This doc proposes adding a `--since` filter to `stoa log` so customers running against long-lived repositories can scope output by recency. The change is ~80 lines across one command package and one parsing utility; it is a small, testable surface with no migration risk."
 
 ### 2. `## Problem` or `## Context` or `## Current State`  *(in ~75% of docs)*
 
-What is broken today, in concrete terms. Link to real filenames, real tables, real behaviors. The corpus convention is to be ruthlessly specific — cite file paths with line numbers, name specific tables and columns, point at the exact buttons that don't work. `2026-04-17-RESTORE-VERSION-UX.md` spends its opening section listing a table of five UI surfaces and exactly where Restore is/isn't reachable in each; that specificity is what makes the rest of the doc implementable.
+What is broken today, in concrete terms. Link to real filenames, real tables, real behaviors. The corpus convention is to be ruthlessly specific: cite file paths with line numbers, name specific tables and columns, point at the exact buttons that don't work. `2026-04-17-RESTORE-VERSION-UX.md` spends its opening section listing a table of five UI surfaces and exactly where Restore is/isn't reachable in each; that specificity is what makes the rest of the doc implementable.
 
 **When to skip:** pure research docs or vision docs (e.g. `2025-09-17-INTENT-VS-GIT.md`) skip this because they're comparative, not corrective. Everything else includes it.
 
@@ -69,7 +69,7 @@ What is broken today, in concrete terms. Link to real filenames, real tables, re
 
 ### 3. `## Goals` and `## Non-Goals`  *(goals in ~70%; non-goals in ~35%)*
 
-Numbered or bulleted list of what shipping this means. Non-goals is the single best weapon against scope creep on the agent side — about a third of the sampled docs include one, and those are the docs that hand off cleanest. `2026-04-16-COMMUNITY-FORUM-DESIGN.md` makes an art of it: eight explicit non-goals including "typing indicators (wrong modality for async long-form)." Name what you are not building and why.
+Numbered or bulleted list of what shipping this means. Non-goals is the single best weapon against scope creep on the agent side; about a third of the sampled docs include one, and those are the docs that hand off cleanest. `2026-04-16-COMMUNITY-FORUM-DESIGN.md` makes an art of it: eight explicit non-goals including "typing indicators (wrong modality for async long-form)." Name what you are not building and why.
 
 > Example placeholder:
 > **Goals**
@@ -82,7 +82,7 @@ Numbered or bulleted list of what shipping this means. Non-goals is the single b
 > - Natural-language relative time ("yesterday", "last Tuesday").
 > - Changing default `stoa log` output when `--since` is absent.
 
-### 4. `## Proposal` or `## Design` or `## Chosen Approach` or `## What We're Building`  *(in ~90% of docs — this is the core)*
+### 4. `## Proposal` or `## Design` or `## Chosen Approach` or `## What We're Building`  *(in ~90% of docs; this is the core)*
 
 The meat. How the thing works. Every corpus doc earns its keep here, but the best ones do three things the weaker ones don't:
 
@@ -96,7 +96,7 @@ The meat. How the thing works. Every corpus doc earns its keep here, but the bes
 
 Testable conditions. Corpus practice is split: about a third of docs have a dedicated section, and another big chunk inline the criteria into phase descriptions or requirement numbering (`R1`, `R2`... as in `2026-03-13-TOPICS-REDESIGN.md` and `2026-03-23-MEETING-NARRATIVE-AND-SEARCH-RESULTS.md`). Either is fine; **having nothing is not**. This is the section most commonly missing from docs that failed to hand off.
 
-Label each criterion by owner. `[human]` means a human defined what correct looks like (usually because it encodes domain judgment the agent can't derive). `[agent]` means the agent can implement or verify it from the outcome + codebase context alone. This labeling is original to this template — the corpus does not do it, but the frequent hand-off friction Greg sees suggests it would help.
+Label each criterion by owner. `[human]` means a human defined what correct looks like (usually because it encodes domain judgment the agent can't derive). `[agent]` means the agent can implement or verify it from the outcome + codebase context alone. This labeling is original to this template; the corpus does not do it, but the frequent hand-off friction Greg sees suggests it would help.
 
 > Example placeholder:
 > - `[human]` Invalid `--since` input errors with a message listing accepted formats. Match `stoa digest` error wording.
@@ -106,18 +106,18 @@ Label each criterion by owner. `[human]` means a human defined what correct look
 
 ### 6. `## Phases` or `## Implementation Plan` or `## Rollout`  *(in ~55% of docs)*
 
-Numbered milestones, each with its own deliverable and — ideally — acceptance bar. The corpus convention is Phase 1 / Phase 2 / Phase 3 with optional "Phase N: Defer until measurement justifies it" at the end. `2026-04-14-PRELAUNCH-PERFORMANCE-KISS-PLAN.md` uses this structure rigorously: Changes 1-6 ordered by implementation priority, plus an explicit "Defer these until production data exists" list.
+Numbered milestones, each with its own deliverable and, ideally, an acceptance bar. The corpus convention is Phase 1 / Phase 2 / Phase 3 with optional "Phase N: Defer until measurement justifies it" at the end. `2026-04-14-PRELAUNCH-PERFORMANCE-KISS-PLAN.md` uses this structure rigorously: Changes 1-6 ordered by implementation priority, plus an explicit "Defer these until production data exists" list.
 
 **When to skip:** single-atomic-change docs (e.g. `2025-09-16-AUTOMATIC_FILE_MOVE_SOLUTION.md`, `2026-01-21-TOOLBAR-AND-KEYBOARD-SHORTCUTS.md`). If the whole feature lands in one PR, don't manufacture phases.
 
 > Example placeholder:
-> - **Phase 1 — Duration + timestamp parsing.** Extend `ParseSinceSpec` in `stoa-cli/pkg/utils/timefmt.go`. Ship with table-driven unit tests.
-> - **Phase 2 — Wire into `stoa log`.** Add `--since` flag in `stoa-cli/pkg/cli/log.go`; short-circuit the journal reader once the cutoff is crossed.
-> - **Phase 3 — Docs pass.** Update `--help`, `stoa-cli/README.md`, man-page generator. Confirm changelog entry.
+> - **Phase 1, duration + timestamp parsing.** Extend `ParseSinceSpec` in `stoa-cli/pkg/utils/timefmt.go`. Ship with table-driven unit tests.
+> - **Phase 2, wire into `stoa log`.** Add `--since` flag in `stoa-cli/pkg/cli/log.go`; short-circuit the journal reader once the cutoff is crossed.
+> - **Phase 3, docs pass.** Update `--help`, `stoa-cli/README.md`, man-page generator. Confirm changelog entry.
 
 ### 7. `## Open Questions` or `## Unresolved`  *(in ~17% of docs, but strongly predictive of clean hand-off)*
 
-A short bulleted list of things that aren't decided yet, each with a tag for who has to decide and a deadline if it blocks implementation. The corpus is sparse here — only about one in six sampled docs uses an explicit section — but the docs that *do* include one are disproportionately the ones that got matching implementation docs in `docs/implementation/`. Writing open questions down is a leading indicator of successful hand-off.
+A short bulleted list of things that aren't decided yet, each with a tag for who has to decide and a deadline if it blocks implementation. The corpus is sparse here (only about one in six sampled docs uses an explicit section), but the docs that *do* include one are disproportionately the ones that got matching implementation docs in `docs/implementation/`. Writing open questions down is a leading indicator of successful hand-off.
 
 > Example placeholder:
 > - `[product]` Do we accept `--since "-7d"` (with leading minus) in addition to `--since 7d`? Default: no, but flag the decision. Needed by 2026-05-01.
@@ -136,8 +136,8 @@ Other docs, issues, external links. Paired with the `references` key in frontmat
 
 ## C. Worked example
 
-Below is a filled-in PRD using the template. The feature is fictional — a
-per-team invite-link system — and the example is deliberately short. Its
+Below is a filled-in PRD using the template. The feature is fictional, a
+per-team invite-link system, and the example is deliberately short. Its
 purpose is not to demonstrate a production-grade spec; it is to show what
 every section looks like when an author fills it in without cruft.
 
@@ -161,7 +161,7 @@ references:
 ## Purpose
 
 Workspace admins need a self-service way to invite teammates. Today, the
-only path is a one-off email from the admin panel — there is no URL an
+only path is a one-off email from the admin panel. There is no URL an
 admin can paste into Slack or embed in onboarding docs. This PRD proposes
 a per-team invite-link primitive: revocable, optionally time-limited,
 optionally seat-capped.
@@ -183,7 +183,7 @@ usage, so a single leaked URL is unbounded exposure.
 
 ## Non-Goals
 
-- Personalized invite emails — the email-only path already covers that.
+- Personalized invite emails; the email-only path already covers that.
 - Per-role links (admin vs member). One link grants `member`.
 - Cross-team links. One link, one team.
 
@@ -205,9 +205,9 @@ Add `team_invite_links`:
 
 ### API
 
-- `POST /api/v1/teams/:teamId/invite-links` — create; admin-only.
-- `DELETE /api/v1/invite-links/:id` — revoke; idempotent.
-- `POST /api/v1/invites/accept` — body `{ token }`; joins the current
+- `POST /api/v1/teams/:teamId/invite-links`: create; admin-only.
+- `DELETE /api/v1/invite-links/:id`: revoke; idempotent.
+- `POST /api/v1/invites/accept`: body `{ token }`; joins the current
   user to the team. Rejects expired, revoked, or over-cap tokens.
 
 ### UI
@@ -243,7 +243,7 @@ button opens a modal with expiry and seat-cap pickers.
 
 ## References
 
-- `docs/design/2026-03-18-ORG-MEMBERSHIP-REFACTOR.md` — the membership
+- `docs/design/2026-03-18-ORG-MEMBERSHIP-REFACTOR.md`: the membership
   primitives this builds on.
 ```
 
@@ -275,13 +275,13 @@ The following table reports how often each heading appeared in the 30 design doc
 
 A subset of the sampled design docs had a matching `docs/implementation/*.md` sibling (e.g. `2025-10-25-STAGING-AND-BRANCHING-ANALYSIS.md` → `2025-10-25-EPISODE-IMPLEMENTATION-PLAN.md`). The implementation docs consistently added three things the design docs tended to lack:
 
-1. **A phased roadmap with status checkboxes** — `[x] Phase 1 done`, `[▶] Phase 2 in flight`, `[ ] Phase 3`. Implementation docs are living trackers; design docs are decision captures. The template above lets you pre-seed Phase bullets so the sibling plan inherits the shape.
-2. **Explicit pointers to the existing-code starting position** — not just "the journal lives at `pkg/journal/`" but "`pkg/journal/journal.go:114`, function `StreamReverse`". Design docs are usually one level less specific. Getting more specific in the design doc saves the agent's first exploratory round.
-3. **A testing section** — an explicit `## Testing Strategy` or `## Test Criteria` appeared in most implementation docs but only a handful of design docs. Most design docs inline testable conditions into acceptance criteria; a few omit testability altogether. The template pushes testability into `Acceptance criteria` by requiring each bullet to be verifiable.
+1. **A phased roadmap with status checkboxes.** `[x] Phase 1 done`, `[▶] Phase 2 in flight`, `[ ] Phase 3`. Implementation docs are living trackers; design docs are decision captures. The template above lets you pre-seed Phase bullets so the sibling plan inherits the shape.
+2. **Explicit pointers to the existing-code starting position.** Not just "the journal lives at `pkg/journal/`" but "`pkg/journal/journal.go:114`, function `StreamReverse`". Design docs are usually one level less specific. Getting more specific in the design doc saves the agent's first exploratory round.
+3. **A testing section.** An explicit `## Testing Strategy` or `## Test Criteria` appeared in most implementation docs but only a handful of design docs. Most design docs inline testable conditions into acceptance criteria; a few omit testability altogether. The template pushes testability into `Acceptance criteria` by requiring each bullet to be verifiable.
 
 ### The one thing the best docs did
 
-They committed to an option. Every strong doc in the corpus has a moment where it stops surveying and says "Greg picked Option D" or "We are going with the schema-isolated `community` Postgres schema" or "Do NOT implement Git-style staging." Docs that read like comparative research but never land on a verdict are the docs that stall. If your PRD has not picked a path by the end of the `Design` section, it is not ready for an agent to execute; it is still a brainstorm. This is the single most important editorial discipline, and the template enforces it via the `Proposal / Design / Chosen Approach` heading — the word "Chosen" is not decorative.
+They committed to an option. Every strong doc in the corpus has a moment where it stops surveying and says "Greg picked Option D" or "We are going with the schema-isolated `community` Postgres schema" or "Do NOT implement Git-style staging." Docs that read like comparative research but never land on a verdict are the docs that stall. If your PRD has not picked a path by the end of the `Design` section, it is not ready for an agent to execute; it is still a brainstorm. This is the single most important editorial discipline, and the template enforces it via the `Proposal / Design / Chosen Approach` heading: the word "Chosen" is not decorative.
 
 ### Anti-patterns from weaker docs
 
@@ -297,10 +297,10 @@ They committed to an option. Every strong doc in the corpus has a moment where i
 
 Once the PRD is written:
 
-1. **Commit it to `docs/design/<YYYY-MM-DD>-<SLUG>.md`.** The filename carries the date. The filename slug matches the `title` field. The commit itself — not the file's mtime — is when `decided_at` gets the Intent Lead Time clock running, so be honest about the timestamp: if product decided on Tuesday but the doc didn't land until Friday, `decided_at` is Tuesday.
-2. **Open the coding agent in plan mode** (Claude Code's `/plan`, Cursor's plan mode, Codex's review mode — whichever tool this agent uses). Point it at the PRD path. Ask it to draft an implementation plan as a sibling doc in `docs/implementation/`.
+1. **Commit it to `docs/design/<YYYY-MM-DD>-<SLUG>.md`.** The filename carries the date. The filename slug matches the `title` field. The commit itself, not the file's mtime, is when `decided_at` gets the Intent Lead Time clock running, so be honest about the timestamp: if product decided on Tuesday but the doc didn't land until Friday, `decided_at` is Tuesday.
+2. **Open the coding agent in plan mode** (Claude Code's `/plan`, Cursor's plan mode, Codex's review mode, whichever tool this agent uses). Point it at the PRD path. Ask it to draft an implementation plan as a sibling doc in `docs/implementation/`.
 3. **The sibling implementation doc** should inherit the phases from the PRD, add the file-level specifics (function names, test file layout, migration numbers), and track status with checkboxes as work lands. The PRD stays frozen; the implementation doc is the living artifact.
-4. **When the implementation lands**, the commit message should reference the PRD path (`Ref: docs/design/2026-04-19-TEAM-INVITE-LINKS.md`). Every ILT dashboard or report pulls from this reference — a commit that references a PRD-with-a-`decided_at` is a commit that can be measured. A commit that doesn't, can't.
+4. **When the implementation lands**, the commit message should reference the PRD path (`Ref: docs/design/2026-04-19-TEAM-INVITE-LINKS.md`). Every ILT dashboard or report pulls from this reference. A commit that references a PRD-with-a-`decided_at` is a commit that can be measured. A commit that doesn't, can't.
 5. **When the feature ships**, update the PRD's `status` to `shipped` in a small commit. This is the last touch the PRD gets. Future readers open the file, see `status: shipped`, and trust the contents were what was actually built.
 
 The PRD is the contract. The agent is the vendor. The sibling implementation doc is the work order. Git is the audit trail.
@@ -311,10 +311,10 @@ The PRD is the contract. The agent is the vendor. The sibling implementation doc
 
 From Greg's whitepaper *"A practical AI product development lifecycle"*:
 
-> "The throughput of a modern product team is no longer bounded by how fast engineers can type. It is bounded by how fast the team can agree — on a goal, on a constraint, on what 'done' means. Every minute between decision and execution is a minute of inventory."
+> "The throughput of a modern product team is no longer bounded by how fast engineers can type. It is bounded by how fast the team can agree: on a goal, on a constraint, on what 'done' means. Every minute between decision and execution is a minute of inventory."
 
 From the *"Intent Lead Time"* field guide:
 
 > "You cannot manage what you do not measure. ILT is the stopwatch that starts when product commits to an outcome and stops when code referencing that outcome lands. Every PRD that doesn't capture `decided_at` is a stopwatch that never started."
 
-A PRD that honors both of these is a PRD that an agent can pick up, execute, and close the loop on — without the hand-off friction that used to sit between "we decided" and "we shipped."
+A PRD that honors both of these is a PRD that an agent can pick up, execute, and close the loop on, without the hand-off friction that used to sit between "we decided" and "we shipped."

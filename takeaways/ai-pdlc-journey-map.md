@@ -17,7 +17,7 @@ Lead Time each phase moves.
 
 Humans own the two endpoints and the test *specification*. Agents own the four
 middles and the test *implementation*. The handoff between Spec and Build is
-the one to automate first — that's where the ILT wins live.
+the one to automate first. That's where the ILT wins live.
 
 ---
 
@@ -37,12 +37,12 @@ thread with enough signal. Messy by design. Not yet structured.
 - Discovery: user interviews, Mixpanel / Amplitude / PostHog event data,
   session-replay tools (FullStory, LogRocket).
 
-**ILT sub-metric moved.** None directly — but the *clarity* of the problem
+**ILT sub-metric moved.** None directly, but the *clarity* of the problem
 statement here caps how fast Capture can be in the next phase. Murky
 ideation = long Capture latency downstream.
 
 **Watch out for.** Dropping straight from ideation into Build (vibe-coding a
-prototype before the problem is named). It looks fast. It isn't — the ILT
+prototype before the problem is named). It looks fast. It isn't. The ILT
 clock hasn't started because nothing has been decided yet.
 
 ---
@@ -65,13 +65,13 @@ agreed to what, when?"
 - Decision logs: markdown in-repo, ADR tooling (adr-tools), Linear's
   "decisions" field, Notion decision database.
 
-**ILT sub-metric moved.** **Capture latency** — decision made → decision
+**ILT sub-metric moved.** **Capture latency**: decision made → decision
 recorded. In the old world this was "we'll document it later" (weeks). With
 agent-attended capture it drops to seconds.
 
 **Watch out for.** Capturing *conversation* instead of *decisions*. A
-transcript isn't intent. The distillation to a single sentence — "we decided
-X because Y" — is what an agent downstream can actually pick up.
+transcript isn't intent. The distillation to a single sentence ("we decided
+X because Y") is what an agent downstream can actually pick up.
 
 ---
 
@@ -94,7 +94,7 @@ interactive surface. Versioned in the repo if possible. Timestamped.
 - Diagram tools when the spec needs architecture: Excalidraw, Mermaid in
   markdown, Miro for collaboration.
 
-**ILT sub-metric moved.** **Sequencing latency** — artifact exists → ticket
+**ILT sub-metric moved.** **Sequencing latency**: artifact exists → ticket
 created (or in an agent-driven workflow, → agent pickup). When the PRD *is*
 the assignment, sequencing collapses to zero.
 
@@ -123,7 +123,7 @@ commits referencing the PRD, and the PR itself.
 - Pair-agent review: a second model reviewing the first's output before
   commit (e.g. GPT-5 checking Claude-generated code, or vice versa).
 
-**ILT sub-metric moved.** **Pickup latency** — work available → work started.
+**ILT sub-metric moved.** **Pickup latency**: work available → work started.
 Agents don't queue, don't triage, don't wait for the next sprint. Pickup
 collapses to roughly the cost of dispatching a prompt.
 
@@ -140,7 +140,7 @@ you can have in the new stack.
 of what to test (the sacred rule). Agents own the *implementation* of that
 specification.
 
-**Artifact.** A test suite — unit, integration, end-to-end — co-versioned
+**Artifact.** A test suite (unit, integration, end-to-end) co-versioned
 with the spec and code. Plus manual/exploratory test notes where the domain
 demands it.
 
@@ -154,7 +154,7 @@ demands it.
   acceptance criteria (like the `[human]` lines in the PRD template).
 - Load / chaos: k6, Locust, Gremlin, Chaos Mesh.
 
-**ILT sub-metric moved.** **Activation latency** — assigned → first
+**ILT sub-metric moved.** **Activation latency**: assigned → first
 executable. When tests are co-versioned with the spec, "done" is
 unambiguous. No back-and-forth on what "works" means.
 
@@ -187,7 +187,7 @@ announcement, the merged release, and the deploy trace that follows.
   observability (Datadog, Honeycomb, Sentry) feeding back into Ideation
   for the next cycle.
 
-**ILT sub-metric moved.** **Activation latency**, continued — the last mile
+**ILT sub-metric moved.** **Activation latency**, continued. The last mile
 from "code merged" to "users experiencing the change." Agentic release PRs
 collapse the handoff between engineering and the rest of the org.
 
@@ -204,7 +204,7 @@ Run one finger along the chevron at the top. Each phase has an owner, an
 artifact, a cluster of tools, and exactly one ILT sub-metric it moves.
 Your job as a leader is to figure out *which phase your team is slowest at*
 and instrument that one first. All four ILT sub-metrics can go to roughly
-zero in an intent-driven workflow — but only if you measure them.
+zero in an intent-driven workflow, but only if you measure them.
 
 For the metric definitions: see slide 8 of the deck and the
 [Intent Lead Time guide](https://withstoa.com/guides/intent-lead-time).
