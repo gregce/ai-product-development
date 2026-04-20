@@ -7,7 +7,7 @@ Built for a live talk to Alpine SG portfolio-company product leaders in April 20
 
 ## The thesis in one paragraph
 
-Coding agents collapsed implementation from days to hours. CI/CD had already collapsed deploys to minutes. The *intent-capture* phase — meetings, decisions, PRDs, tickets — didn't collapse at all. DORA can't see it: DORA's clock starts at `git commit`. That gap has a name now: **Intent Lead Time**. This repo is the argument, with receipts from one repo we shipped over the last 13 months.
+Coding agents collapsed implementation from days to hours. CI/CD had already collapsed deploys to minutes. The *intent-capture* phase — meetings, decisions, PRDs, tickets — didn't collapse at all. DORA can't see it: DORA's clock starts at `git commit`. That gap has a name now: **Intent Lead Time**. This repo is the argument, with receipts from one repo we shipped over the last 7 months.
 
 ## Deck
 

@@ -13,7 +13,7 @@
 > Not a prediction. A practice.
 > Greg Ceccarelli · Stoa / SpecStory · Alpine SG · April 2026.
 
-Kicker line under the title: *Everything on these slides is drawn from one repo we shipped over the last 13 months.*
+Kicker line under the title: *Examples on these slides are drawn from one repo we shipped over the last 7 months.*
 
 Visual: full-bleed dark title, accent orange (Stoa brand `#e35a2c`) on the word **Intent**. Subtle grid.
 
@@ -45,8 +45,8 @@ Two collapses happened, on very different clocks:
 
 | Phase | 2015 | 2026 |
 |---|---|---|
-| Implementation | days | **hours** (agents) |
-| Deploy | weeks | **minutes** (CI/CD) |
+| Implementation | days to weeks | **hours** (agents) |
+| Deploy | weeks | **hours to days** (CI/CD) |
 | Intent capture | weeks | **weeks still** |
 
 The bottleneck moved. DORA can't see it by design — DORA's clock starts at `git commit`. The expensive thing now happens *before* commit.
@@ -99,7 +99,7 @@ Visual: four icons with strike-throughs on three; fourth (trunk) in orange and u
 
 ## Slide 6 — Stoa as receipt
 
-We don't pitch this. We live in it. Here's our repo over 13 months, entirely mined by the scripts that produced this talk.
+We don't pitch this. We live in it. Here's our repo over 7 months, entirely mined by the scripts that produced this talk.
 
 - **168 design docs** in `docs/design/` · earliest 2025-01-16, latest 2026-04-18.
 - **177 implementation docs** in `docs/implementation/` · earliest 2025-09-15, latest 2026-04-19.
