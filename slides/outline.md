@@ -1,6 +1,6 @@
 # Slide outline — How product development works in an AI world
 
-**Audience.** Product leaders from Alpine SG and portfolio companies (Actabl, AirDNA, ThinkLP, Ethisphere, Visual Care, Bitfocus).
+**Audience.** Alpine SG product leaders.
 **Length.** 10 slides, ~25 min + live demo + Q&A.
 **Tone.** Opinionated. Receipts, not slogans. Use Stoa's own repo as the live case study.
 **Thread.** Coding collapsed. Deploy collapsed. Intent didn't. Here's what to do about it, and here are three artifacts you can take home.
@@ -30,10 +30,10 @@ Product leaders have been asking four things. We're answering one of them today.
 
 Sub-questions inside today's theme:
 
-- Are PRDs the future? *(AirDNA)*
-- What does end-to-end AI product development actually look like? *(Bitfocus)*
-- What bridges product-AI workflows and engineering-AI workflows? *(Bitfocus)*
-- What happens *after* the prototype — security, handoff, release? *(Visual Care)*
+- Are PRDs the future?
+- What does end-to-end AI product development actually look like?
+- What bridges product-AI workflows and engineering-AI workflows?
+- What happens *after* the prototype — security, handoff, release?
 
 Visual: 2×2 grid of the four questions, one highlighted.
 
@@ -115,7 +115,7 @@ Thematic breakdown (design vs. impl):
 | Meetings / voice | 21 | 23 | parity — new product surface |
 | CLI / terminal | 18 | 26 | implementation-heavy (as you'd expect) |
 | P2P / sync | 18 | 11 | design-heavy (as you'd expect — sync is the hard part) |
-| Billing / auth | 3 | 26 | the "security and handoff" gap the Visual Care question hit — design-light, impl-heavy |
+| Billing / auth | 3 | 26 | the "security and handoff" gap — design-light, impl-heavy |
 
 Top term across 345 combined docs: **"intent"** (7,589 occurrences). The word itself carries the team.
 
@@ -149,7 +149,7 @@ Visual: vertical pipeline diagram. dev push → sync workflow → gh-aw agentic 
 
 ## Slide 8 — A metric you can use on Monday
 
-AirDNA's product leader asked for "objective metrics beyond lines of code." Here's one.
+Leaders have been asking for "objective metrics beyond lines of code." Here's one.
 
 **Intent Lead Time — four sub-components:**
 

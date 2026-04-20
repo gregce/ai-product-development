@@ -1,7 +1,7 @@
 # How product development works in an AI world
 
 A 10-slide deck, four analysis scripts, and three copy-me takeaway artifacts.
-Built for a live talk to Alpine SG portfolio-company product leaders in April 2026.
+Built for a live talk to Alpine SG product leaders in April 2026.
 
 **Live deck.** Open [`index.html`](./index.html) in any browser — or view it on GitHub Pages once the repo is pushed public. Arrow keys to navigate. Single self-contained file; no build step.
 
