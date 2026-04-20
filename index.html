@@ -520,51 +520,150 @@
     text-align: center; margin-bottom: 14px;
   }
 
-  /* slide 7 pipeline */
+  /* slide 7 pipeline — three-stage agentic flow */
   .pipeline {
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    grid-template-columns: 1fr 64px 1.3fr 64px 1fr;
     align-items: stretch;
-    gap: 16px;
-    margin-top: 12px;
-  }
-  .pipeline-node {
-    background: var(--ink-2);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 16px 18px;
+    gap: 0;
+    margin-top: 36px;
     position: relative;
   }
-  .pipeline-node.claude {
-    border-color: var(--accent);
-    background: var(--accent-dim);
+  /* rail behind the cards for visual continuity */
+  .pipeline::before {
+    content: "";
+    position: absolute;
+    left: 8%; right: 8%;
+    top: 50%; height: 1px;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      var(--line-2) 12%,
+      var(--line-2) 88%,
+      transparent 100%);
+    z-index: 0;
   }
-  .pipeline-node h4 {
-    margin: 0 0 8px;
-    font-size: 13px;
-    letter-spacing: 0.1em;
+  .pipeline-node {
+    position: relative;
+    z-index: 1;
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 22px 22px 18px;
+    display: flex; flex-direction: column;
+    min-height: 230px;
+  }
+  .pipeline-node.hero {
+    border-color: var(--accent);
+    background:
+      radial-gradient(ellipse at top, rgba(227, 90, 44, 0.14) 0%, transparent 60%),
+      var(--ink-2);
+    transform: translateY(-10px);
+    box-shadow:
+      0 0 0 1px rgba(227, 90, 44, 0.35),
+      0 20px 48px -16px rgba(227, 90, 44, 0.28);
+  }
+  .pipeline-node .badge {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: var(--ink-3);
+    border: 1.5px solid var(--line-2);
+    color: var(--fg-2);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 18px;
+    font-variant-numeric: tabular-nums;
+  }
+  .pipeline-node.hero .badge {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--ink);
+  }
+  .pipeline-node .role {
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--mute);
-    font-weight: 500;
-  }
-  .pipeline-node.claude h4 { color: var(--accent); }
-  .pipeline-node .title-line {
-    font-size: 16px;
     font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .pipeline-node.hero .role { color: var(--accent); }
+  .pipeline-node .file {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 14px;
     color: var(--fg);
-    margin-bottom: 4px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 10px;
+    word-break: break-word;
   }
-  .pipeline-node .sub {
+  .pipeline-node .meta-row {
+    display: flex; flex-wrap: wrap; gap: 4px;
+    margin-bottom: 12px;
+  }
+  .pipeline-node .meta-row .mini-tag {
+    display: inline-block;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10px;
+    letter-spacing: 0.02em;
+    padding: 2px 7px;
+    border-radius: 3px;
+    background: rgba(227, 90, 44, 0.14);
+    color: var(--accent);
+    border: 1px solid rgba(227, 90, 44, 0.3);
+  }
+  .pipeline-node .meta-row .mini-tag.neutral {
+    background: var(--ink-3);
+    border-color: var(--line-2);
+    color: var(--fg-2);
+  }
+  .pipeline-node .desc {
     font-size: 12.5px;
+    line-height: 1.6;
     color: var(--mute);
-    line-height: 1.55;
+    flex: 1;
   }
-  .pipeline-arrow {
-    display: flex; align-items: center; justify-content: center;
+  .pipeline-node.hero .desc { color: var(--fg-2); }
+  .pipeline-node .out {
+    margin-top: 14px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--line-2);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11px;
+    color: var(--fg-2);
+    letter-spacing: -0.005em;
+  }
+  .pipeline-node .out .accent { color: var(--accent); font-weight: 600; }
+  /* connector: arrow + above/below captions */
+  .pipeline-connector {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .pipeline-connector svg {
+    width: 100%; height: 20px;
+    overflow: visible;
     color: var(--line-2);
-    font-size: 24px;
-    min-width: 28px;
   }
+  .pipeline-connector.hot svg { color: var(--accent); }
+  .pipeline-connector .cap {
+    position: absolute;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-align: center;
+    white-space: nowrap;
+    color: var(--mute);
+    line-height: 1.35;
+  }
+  .pipeline-connector .cap.top    { bottom: calc(50% + 12px); }
+  .pipeline-connector .cap.bottom { top:    calc(50% + 12px); }
+  .pipeline-connector.hot .cap.top    { color: var(--accent); }
+  .pipeline-connector.hot .cap.bottom { color: var(--accent); }
 
   /* slide 8 bands */
   .bands-row {
@@ -996,23 +1095,59 @@
       Humans don't read release diffs. Our fix: <strong>the PR writes itself</strong>. Four files in <code>.github/workflows/</code>, running on every push to <code>dev</code>. This is the concrete example you can copy tonight. It's in your takeaways.
     </p>
 
-    <div class="pipeline" style="margin-top: 26px;">
+    <div class="pipeline">
+      <!-- 01 · orchestrator -->
       <div class="pipeline-node">
-        <h4>01 · Orchestrator</h4>
-        <div class="title-line">release-pr-sync.yml</div>
-        <div class="sub">On every push to <code>dev</code>: find-or-create the one standing "Release dev to main" PR.</div>
+        <div class="badge">01</div>
+        <div class="role">Orchestrator</div>
+        <div class="file">release-pr-sync.yml</div>
+        <div class="meta-row"><span class="mini-tag neutral">GitHub Actions</span></div>
+        <div class="desc">On every push to <code>dev</code>, find-or-create the single standing <em>"Release dev to main"</em> PR &mdash; one PR per release cycle, not one per push.</div>
+        <div class="out">trigger &nbsp;<span class="accent">push → dev</span></div>
       </div>
-      <div class="pipeline-arrow">→</div>
-      <div class="pipeline-node claude">
-        <h4>02 · Agent</h4>
-        <div class="title-line">release-pr-body.md <span class="tag">gh-aw</span></div>
-        <div class="sub">Claude, bounded to <code>{repos, pull_requests}</code>. Reads the full accumulated diff + touched <code>docs/design/</code> and <code>docs/implementation/</code>. One allowed output: <code>update-pull-request</code>.</div>
+
+      <!-- connector 1 -->
+      <div class="pipeline-connector hot">
+        <span class="cap top">delegates</span>
+        <svg viewBox="0 0 100 20" preserveAspectRatio="none" aria-hidden="true">
+          <line x1="2" y1="10" x2="90" y2="10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+          <polyline points="82,5 94,10 82,15" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" fill="none" vector-effect="non-scaling-stroke" />
+        </svg>
+        <span class="cap bottom">workflow_call</span>
       </div>
-      <div class="pipeline-arrow">→</div>
+
+      <!-- 02 · agent (hero) -->
+      <div class="pipeline-node hero">
+        <div class="badge">02</div>
+        <div class="role">Agent &middot; Claude</div>
+        <div class="file">release-pr-body.md</div>
+        <div class="meta-row">
+          <span class="mini-tag">gh-aw</span>
+          <span class="mini-tag neutral">engine: claude</span>
+          <span class="mini-tag neutral">tools: repos &middot; pull_requests</span>
+        </div>
+        <div class="desc">Reads the full <code>main…dev</code> diff plus every touched <code>docs/design/</code> and <code>docs/implementation/</code> file. Synthesizes a structured release narrative: Highlights, Major Change Areas, Operational Notes, Commits.</div>
+        <div class="out">safe output &nbsp;<span class="accent">update-pull-request · 1×</span></div>
+      </div>
+
+      <!-- connector 2 -->
+      <div class="pipeline-connector hot">
+        <span class="cap top">writes body</span>
+        <svg viewBox="0 0 100 20" preserveAspectRatio="none" aria-hidden="true">
+          <line x1="2" y1="10" x2="90" y2="10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+          <polyline points="82,5 94,10 82,15" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" fill="none" vector-effect="non-scaling-stroke" />
+        </svg>
+        <span class="cap bottom">mrkdwn fanout</span>
+      </div>
+
+      <!-- 03 · outputs -->
       <div class="pipeline-node">
-        <h4>03 · Outputs</h4>
-        <div class="title-line">PR body + #slack-stream</div>
-        <div class="sub">Structured release: Highlights, Major Change Areas, Operational Notes, Commits. Same body fanned to Slack with mrkdwn rewriting.</div>
+        <div class="badge">03</div>
+        <div class="role">Outputs</div>
+        <div class="file">PR body &nbsp;+&nbsp; <span style="color:var(--mute);">#release-stream</span></div>
+        <div class="meta-row"><span class="mini-tag neutral">human-readable</span><span class="mini-tag neutral">agent-written</span></div>
+        <div class="desc">The PR body is the canonical release narrative &mdash; same content is reshaped to Slack mrkdwn and posted to the release channel. Humans review the summary, click merge.</div>
+        <div class="out">reviewer &nbsp;<span class="accent">merges in minutes</span></div>
       </div>
     </div>
 
