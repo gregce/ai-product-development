@@ -1,0 +1,169 @@
+name: release-pr-sync
+
+# Find-or-create a standing release PR from `dev` -> `main` whenever `dev`
+# moves, then hand the body off to an agentic workflow (release-pr-body) to
+# rewrite with a human-readable release summary.
+#
+# If your branches aren't `dev` -> `main`, change the two places noted below.
+# Everything else is generic.
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      # CHANGE ME: the branch your team merges to before releasing.
+      - dev
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  # One sync in flight at a time. Newer pushes cancel older jobs so the body
+  # the agent rewrites is always against the latest tip of the base branch.
+  group: release-pr-sync
+  cancel-in-progress: true
+
+jobs:
+  ensure-release-pr:
+    runs-on: ubuntu-latest
+    outputs:
+      should_update: ${{ steps.diff.outputs.should_update }}
+      pr_number: ${{ steps.pr.outputs.pr_number }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Fetch base and target refs
+        # CHANGE ME: match the two branches this release pipeline spans.
+        run: git fetch origin main dev --no-tags --depth=100
+
+      - name: Determine whether target is behind source
+        id: diff
+        run: |
+          # Count non-merge commits currently on `dev` but not on `main`. If
+          # zero, there's nothing to release and we skip the rest.
+          AHEAD_COUNT="$(git rev-list --count --no-merges origin/main..origin/dev)"
+          echo "ahead_count=${AHEAD_COUNT}" >> "$GITHUB_OUTPUT"
+
+          if [[ "${AHEAD_COUNT}" -gt 0 ]]; then
+            echo "should_update=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "should_update=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Find or create release PR
+        id: pr
+        if: steps.diff.outputs.should_update == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          # A single standing PR per release pair. If one already exists, reuse
+          # it -- the agentic rewrite step will refresh the body in place.
+          EXISTING_PR="$(gh pr list --repo "${REPO}" --base main --head dev --state open --json number --jq '.[0].number // ""')"
+
+          if [[ -n "${EXISTING_PR}" ]]; then
+            echo "Found existing PR #${EXISTING_PR}"
+            echo "pr_number=${EXISTING_PR}" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # First release of the cycle: create the PR with a placeholder body.
+          # The agent overwrites this within ~30s via `update-pull-request`.
+          PR_URL="$(gh pr create \
+            --repo "${REPO}" \
+            --base main \
+            --head dev \
+            --title "Release dev to main" \
+            --body "Generating release summary...")"
+
+          PR_NUMBER="${PR_URL##*/}"
+          echo "Created PR #${PR_NUMBER}"
+          echo "pr_number=${PR_NUMBER}" >> "$GITHUB_OUTPUT"
+
+  rewrite-body:
+    needs: ensure-release-pr
+    if: needs.ensure-release-pr.outputs.should_update == 'true'
+    # Calls the compiled gh-aw workflow. You edit `release-pr-body.md` and run
+    # `gh aw compile` to regenerate this `.lock.yml` file -- humans own the
+    # prompt, tooling owns the YAML.
+    uses: ./.github/workflows/release-pr-body.lock.yml
+    secrets: inherit
+    permissions:
+      contents: read
+      pull-requests: write
+    with:
+      pr_number: ${{ needs.ensure-release-pr.outputs.pr_number }}
+
+  # TODO(slack): uncomment once you wire up SLACK_WEBHOOK_URL in repo secrets.
+  #
+  # Posts the freshly-rewritten PR body to a Slack channel as a follow-up to
+  # GitHub's native PR activity. Runs only after the agentic rewrite succeeds
+  # so we never post the "Generating release summary..." placeholder.
+  #
+  # notify-slack:
+  #   needs: [ensure-release-pr, rewrite-body]
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     contents: read
+  #     pull-requests: read
+  #   steps:
+  #     - name: Post release PR summary to Slack
+  #       env:
+  #         GH_TOKEN: ${{ github.token }}
+  #         REPO: ${{ github.repository }}
+  #         PR_NUMBER: ${{ needs.ensure-release-pr.outputs.pr_number }}
+  #         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  #       run: |
+  #         set -euo pipefail
+  #
+  #         # Staged rollout: no-op cleanly until the webhook secret exists.
+  #         if [[ -z "${SLACK_WEBHOOK_URL}" ]]; then
+  #           echo "SLACK_WEBHOOK_URL not set; skipping Slack notification."
+  #           exit 0
+  #         fi
+  #
+  #         gh pr view "${PR_NUMBER}" --repo "${REPO}" --json title,url,body > pr.json
+  #
+  #         PR_TITLE="$(jq -r '.title' pr.json)"
+  #         PR_URL="$(jq -r '.url' pr.json)"
+  #
+  #         # Convert GitHub `## Header` to Slack mrkdwn `*Header*`, clip to
+  #         # 40 lines AND ~2800 bytes (comfortably under Slack's 3000-char
+  #         # per-section limit). Temp files, not chained pipes: `head -c`
+  #         # closing the pipe under `set -o pipefail` fails upstream steps.
+  #         jq -r '.body' pr.json | sed -E 's/^#{1,6} (.+)$/*\1*/' > body.md
+  #         BODY_BYTES="$(wc -c < body.md)"
+  #         head -n 40 body.md > body_lines.md
+  #         head -c 2800 body_lines.md > preview.txt
+  #         PREVIEW_BYTES="$(wc -c < preview.txt)"
+  #
+  #         if [[ "${PREVIEW_BYTES}" -lt "${BODY_BYTES}" ]]; then
+  #           printf "\n\n... _(truncated -- read the full summary in the PR)_" >> preview.txt
+  #         fi
+  #
+  #         HEADER="*<${PR_URL}|${PR_TITLE}>* -- release PR #${PR_NUMBER} body updated"
+  #
+  #         jq -n \
+  #           --arg header "${HEADER}" \
+  #           --rawfile preview preview.txt \
+  #           --arg username "Release Bot" \
+  #           --arg icon ":memo:" \
+  #           '{
+  #             username: $username,
+  #             icon_emoji: $icon,
+  #             attachments: [
+  #               {
+  #                 color: "#2c7be5",
+  #                 blocks: [
+  #                   { "type": "section", "text": { "type": "mrkdwn", "text": $header } },
+  #                   { "type": "section", "text": { "type": "mrkdwn", "text": $preview } }
+  #                 ]
+  #               }
+  #             ]
+  #           }' > payload.json
+  #
+  #         curl -sS -X POST -H 'Content-type: application/json' --data @payload.json "${SLACK_WEBHOOK_URL}"

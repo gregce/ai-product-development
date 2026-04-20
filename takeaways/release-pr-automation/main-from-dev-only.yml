@@ -1,0 +1,46 @@
+name: main-from-dev-only
+
+# Branch-protection guardrail: refuse any PR targeting `main` whose head isn't
+# `dev`. With the release-pr-sync workflow in place, the release PR is the
+# only valid path to main, and its body is the agent's canonical summary.
+# This rule makes that contract enforceable -- no one sneaks in a side PR.
+#
+# Pair this with a GitHub branch-protection rule on `main` that requires this
+# check to pass before merging. Without the branch-protection rule this
+# workflow only flags violations; with it, violations can't merge.
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      # CHANGE ME: your protected release target.
+      - main
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - edited
+      - ready_for_review
+
+permissions:
+  contents: read
+
+concurrency:
+  group: main-from-dev-only-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  enforce:
+    name: enforce main PR source
+    runs-on: ubuntu-latest
+    steps:
+      - name: Reject non-dev PRs into main
+        run: |
+          echo "Base branch: ${{ github.base_ref }}"
+          echo "Head branch: ${{ github.head_ref }}"
+
+          # CHANGE ME: if your integration branch isn't `dev`, swap it here.
+          if [ "${{ github.head_ref }}" != "dev" ]; then
+            echo "::error::Pull requests into main must come from dev. Current head branch is '${{ github.head_ref }}'."
+            exit 1
+          fi
