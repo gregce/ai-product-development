@@ -3,7 +3,7 @@
 A 10-slide deck, four analysis scripts, and three copy-me takeaway artifacts.
 Built for a live talk to Alpine SG product leaders in April 2026.
 
-**Live deck.** Open [`index.html`](./index.html) in any browser — or view it on GitHub Pages once the repo is pushed public. Arrow keys to navigate. Single self-contained file; no build step.
+**Live deck.** [gregce.github.io/ai-product-development](https://gregce.github.io/ai-product-development/) — or open [`index.html`](./index.html) locally. Arrow keys to navigate. Single self-contained file; no build step.
 
 ## The thesis in one paragraph
 
