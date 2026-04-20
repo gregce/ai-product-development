@@ -65,7 +65,7 @@ What is broken today, in concrete terms. Link to real filenames, real tables, re
 
 **When to skip:** pure research docs or vision docs (e.g. `2025-09-17-INTENT-VS-GIT.md`) skip this because they're comparative, not corrective. Everything else includes it.
 
-> Example placeholder: "`stoa log` has no recency filter. Alpine SG customers running against 6-month repos are hitting 2000+ line dumps and bouncing off the CLI. The blocker is that `stoa-cli/pkg/journal/reader.go:114` streams everything and trusts `--limit` as the only bound; there is no short-circuit for time-based cutoffs."
+> Example placeholder: "`stoa log` has no recency filter. Customers running against 6-month repos hit 2000+ line dumps and bounce off the CLI. The blocker is that `stoa-cli/pkg/journal/reader.go:114` streams everything and trusts `--limit` as the only bound; there is no short-circuit for time-based cutoffs."
 
 ### 3. `## Goals` and `## Non-Goals`  *(goals in ~70%; non-goals in ~35%)*
 
@@ -130,129 +130,121 @@ Other docs, issues, external links. Paired with the `references` key in frontmat
 > Example placeholder:
 > - Precedent: `docs/design/2026-03-23-CLI-TOPICS-AND-MEETING-SEARCH.md` (shipped `--since` on `stoa web meetings search`; same grammar).
 > - Parser source: `stoa-cli/pkg/utils/timefmt.go` (existing `ParseSinceSpec`).
-> - Customer ask: internal issue Alpine-SG-2026-04-02.
+> - Customer ask: internal issue TEAM-INVITES-01.
 
 ---
 
 ## C. Worked example
 
-Below is a complete, fully-filled-in PRD using the template. The feature is fictional ("per-team invite-link system" — a generic feature spec, not based on any specific Stoa commit). It is labeled explicitly as an **example**, not production content. Its purpose is to show what the empty template looks like when an author finishes it.
+Below is a filled-in PRD using the template. The feature is fictional — a
+per-team invite-link system — and the example is deliberately short. Its
+purpose is not to demonstrate a production-grade spec; it is to show what
+every section looks like when an author fills it in without cruft.
 
 ```markdown
 ---
-title: Per-team invite-link system for Acme Workspace
-owner: priya@acme.example
+title: Per-team invite links
+owner: priya@example.com
 decided_at: 2026-04-19T10:00:00-04:00
 status: draft
 touches:
-  - acme-web/app/api/v1/invites
-  - acme-web/components/settings/TeamInvites.tsx
-  - acme-web/supabase/migrations
+  - app/api/v1/invites
+  - components/settings/TeamInvites.tsx
+  - supabase/migrations
 intent_lead_time_start: 2026-04-19T10:00:00-04:00
 references:
   - docs/design/2026-03-18-ORG-MEMBERSHIP-REFACTOR.md
-  - docs/implementation/2026-03-02-EMAIL-PIPELINE.md
 ---
 
-# Per-team invite-link system for Acme Workspace
+# Per-team invite links
 
 ## Purpose
 
-Acme Workspace admins need a self-service way to invite teammates without
-cutting a support ticket. Today, invitations flow through a one-off email
-from the admin panel; there is no URL that can be pasted into Slack or
-embedded in onboarding docs. This PRD proposes a per-team invite-link
-primitive: revocable, optionally time-limited, optionally seat-capped.
+Workspace admins need a self-service way to invite teammates. Today, the
+only path is a one-off email from the admin panel — there is no URL an
+admin can paste into Slack or embed in onboarding docs. This PRD proposes
+a per-team invite-link primitive: revocable, optionally time-limited,
+optionally seat-capped.
 
 ## Problem
 
-- The current invite flow (`app/api/v1/invites/email-only/route.ts:34`)
-  requires an exact email. Admins copying a list from HR hit validation
-  errors when a typo sneaks in.
-- There is no shareable URL. Teams default to passing around
-  account-creation instructions in Slack, which gets stale.
-- We have no way to cap seat usage on a link-based invite, so a single
-  leaked URL is unbounded exposure.
+The current invite flow at `app/api/v1/invites/email-only/route.ts:34`
+requires an exact email, so admins pasting lists from HR hit validation
+errors. There is no shareable URL, so teams default to passing around
+stale onboarding instructions in Slack. And there is no cap on link
+usage, so a single leaked URL is unbounded exposure.
 
 ## Goals
 
 1. An admin can generate an invite URL for a specific team in two clicks.
-2. Links can be revoked individually and are revoked automatically on
-   team deletion.
-3. Optional expiry (1d / 7d / 30d / never) and optional max-uses (1 / 5 /
-   25 / unlimited).
+2. Links can be revoked, and are revoked automatically on team deletion.
+3. Optional expiry (1d / 7d / 30d / never) and max-uses (1 / 5 / 25 /
+   unlimited).
 
 ## Non-Goals
 
-- Personalized invite emails. Admins already have the email-only path.
-- Per-role links (admin vs member). Everyone on a link inherits `member`.
+- Personalized invite emails — the email-only path already covers that.
+- Per-role links (admin vs member). One link grants `member`.
 - Cross-team links. One link, one team.
 
 ## Design
 
 ### Data model
 
-Add `team_invite_links` in the `org` schema:
+Add `team_invite_links`:
 
-| column          | type           | notes                             |
-|-----------------|----------------|-----------------------------------|
-| id              | uuid pk        |                                   |
-| team_id         | uuid fk teams  | on delete cascade                 |
-| token           | text unique    | 32-byte base64url                 |
-| expires_at      | timestamptz    | nullable = never expires          |
-| max_uses        | int            | nullable = unlimited              |
-| use_count       | int            | default 0                         |
-| created_by      | uuid fk users  |                                   |
-| revoked_at      | timestamptz    | nullable; set on revoke           |
+| column      | type          | notes                    |
+|-------------|---------------|--------------------------|
+| id          | uuid pk       |                          |
+| team_id     | uuid fk teams | cascades on team delete  |
+| token       | text unique   | opaque, unguessable      |
+| expires_at  | timestamptz   | null = never expires     |
+| max_uses    | int           | null = unlimited         |
+| use_count   | int           | default 0                |
+| revoked_at  | timestamptz   | null until revoked       |
 
 ### API
 
-- `POST /api/v1/teams/:teamId/invite-links` — create link, admin-only.
+- `POST /api/v1/teams/:teamId/invite-links` — create; admin-only.
 - `DELETE /api/v1/invite-links/:id` — revoke; idempotent.
-- `POST /api/v1/invites/accept` — body `{ token }`; joins current user to
-  the team and increments `use_count`. Rejects if expired, revoked, or
-  over `max_uses`.
+- `POST /api/v1/invites/accept` — body `{ token }`; joins the current
+  user to the team. Rejects expired, revoked, or over-cap tokens.
 
 ### UI
 
-One new section in `settings/TeamInvites.tsx`: a list of active links with
-row actions "copy URL", "revoke". A single "Create link" button opens a
-modal with the expiry and seat-cap pickers.
+One new section in `settings/TeamInvites.tsx`: a list of active links
+with per-row "copy URL" and "revoke" actions. A single "Create link"
+button opens a modal with expiry and seat-cap pickers.
 
 ## Acceptance criteria
 
-- `[human]` Copy-URL shows the full `https://acme.example/join/<token>`
-  URL, including host. Host picked up from `NEXT_PUBLIC_APP_URL`.
-- `[agent]` Unit tests cover token generation, acceptance, revocation,
-  expiry enforcement, and use-count enforcement.
-- `[agent]` E2E: create link → accept as a different user → see the user
-  appear in the team membership list.
 - `[human]` Revoked or expired links surface a branded error page, not a
   raw 401.
+- `[human]` "Copy URL" yields a full, absolute URL using the app's
+  canonical host.
+- `[agent]` Unit tests cover token generation, acceptance, revocation,
+  expiry, and use-count enforcement.
+- `[agent]` E2E: create link → accept as a different user → user appears
+  in the team membership list.
 
 ## Phases
 
-- **Phase 1** — Schema + RLS + API routes. Land behind feature flag
-  `team_invite_links`.
-- **Phase 2** — Admin UI; flag stays off for end users.
-- **Phase 3** — Flag on for 10% of orgs; monitor error rate for one week.
-- **Phase 4** — Flag on for all orgs; delete the legacy email-only path
-  when usage drops below 1%.
+1. Schema + API routes. Land behind feature flag `team_invite_links`.
+2. Admin UI; flag stays off.
+3. Flag on for 10% of orgs; monitor error rate for one week.
+4. Flag on for all orgs; retire the legacy email-only path.
 
 ## Open Questions
 
-- `[product]` Should we email the link creator when a link hits 80% of
-  its seat cap? Default: no for v1; revisit after launch.
-- `[agent-discoverable]` Should revoked links 410 Gone or 404? Agent
-  picks; either is acceptable if consistent with existing `/api/v1` error
-  conventions.
+- `[product]` Email the creator when a link hits 80% of its seat cap?
+  Default no for v1; revisit after launch.
+- `[agent-discoverable]` Should revoked links respond 410 or 404? Either
+  is fine if consistent with existing `/api/v1` conventions.
 
 ## References
 
-- `docs/design/2026-03-18-ORG-MEMBERSHIP-REFACTOR.md` — defined the
-  membership primitives this builds on.
-- `docs/implementation/2026-03-02-EMAIL-PIPELINE.md` — email infra for
-  the eventual cap-warning email (out of v1 scope).
+- `docs/design/2026-03-18-ORG-MEMBERSHIP-REFACTOR.md` — the membership
+  primitives this builds on.
 ```
 
 *(end of worked example)*
