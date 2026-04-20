@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>How product development works in an AI world — Greg Ceccarelli · Alpine SG 2026</title>
+<title>How product development works in an AI world · Greg Ceccarelli · Alpine SG 2026</title>
 <meta name="description" content="A talk for Alpine SG product leaders on the shift from code-centric to intent-centric product development, using Stoa's own repo as the case study." />
 <style>
   :root {
@@ -878,7 +878,7 @@
   <!-- ============================================================ -->
   <section class="slide" data-slide="2" id="s2">
     <div class="slide-meta"><span class="bar"></span><span class="num">02</span><span>The question</span></div>
-    <h2 class="h2">You've been asking four things.<br />We're answering one.</h2>
+    <h2 class="h2">You've been asking four things.<br />I'm focusing in on one.</h2>
     <div class="grid2" style="gap: 18px; max-width: 1200px;">
       <div class="card">
         <div class="kicker" style="margin-bottom: 6px;">01</div>
@@ -901,10 +901,10 @@
     <div style="margin-top: 36px; max-width: 900px;">
       <div class="kicker">The sub-questions inside today's theme</div>
       <ul style="list-style: none; padding: 0; margin: 0; font-size: 16px; color: var(--fg-2); line-height: 1.9;">
-        <li>&mdash; Are <span class="hl">PRDs</span> the future?</li>
-        <li>&mdash; What does end-to-end AI product development <span class="hl">actually look like</span>?</li>
-        <li>&mdash; What <span class="hl">bridges</span> product-AI workflows and engineering-AI workflows?</li>
-        <li>&mdash; What happens <span class="hl">after</span> the prototype &mdash; security, handoff, release?</li>
+        <li>Are <span class="hl">PRDs</span> the future?</li>
+        <li>What does end-to-end AI product development <span class="hl">actually look like</span>?</li>
+        <li>What <span class="hl">bridges</span> product-AI workflows and engineering-AI workflows?</li>
+        <li>What happens <span class="hl">after</span> the prototype: security, handoff, release?</li>
       </ul>
     </div>
   </section>
@@ -913,7 +913,7 @@
   <!-- SLIDE 3 — The shift nobody priced in                          -->
   <!-- ============================================================ -->
   <section class="slide" data-slide="3" id="s3">
-    <div class="slide-meta"><span class="bar"></span><span class="num">03</span><span>The shift nobody priced in</span></div>
+    <div class="slide-meta"><span class="bar"></span><span class="num">03</span><span>The bottleneck that didn't collapse</span></div>
     <h2 class="h2">Two collapses happened<br />on very different clocks.</h2>
 
     <div style="max-width: 900px; margin-top: 12px;">
@@ -930,7 +930,7 @@
     </div>
 
     <p class="body" style="margin-top: 28px; max-width: 70ch;">
-      The bottleneck moved. <strong>DORA can't see it by design</strong> &mdash; DORA's clock starts at <code>git commit</code>. The expensive thing now happens <em>before</em> commit. That gap has a name.
+      The bottleneck moved. <strong>DORA can't see it by design.</strong> DORA's clock starts at <code>git commit</code>. The expensive thing now happens <em>before</em> commit. That gap has a name.
     </p>
 
     <div style="margin-top: 12px; max-width: 960px;">
@@ -953,197 +953,11 @@
   </section>
 
   <!-- ============================================================ -->
-  <!-- SLIDE 4 — From code-centric to intent-centric                 -->
+  <!-- ============================================================ -->
+  <!-- SLIDE 4 — A metric you can use on Monday                      -->
   <!-- ============================================================ -->
   <section class="slide" data-slide="4" id="s4">
-    <div class="slide-meta"><span class="bar"></span><span class="num">04</span><span>The stack</span></div>
-    <h2 class="h2" style="white-space: nowrap;">From code-centric to intent-centric.</h2>
-
-    <div class="pull">
-      "Software's bottleneck has moved: it's no longer about how fast we type but <span class="accent">how clearly we think</span>."
-      <cite>— <em>Beyond Code-Centric</em>, SpecStory whitepaper, 2025.</cite>
-    </div>
-
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; margin-top: 32px; max-width: 1100px;">
-      <div>
-        <div class="stack-label">Old stack</div>
-        <div class="stack">
-          <div class="layer">Code <small>imperative, written</small></div>
-          <div class="layer">Tests <small>verified at runtime</small></div>
-        </div>
-        <p class="tiny" style="margin: 20px auto 0; width: 360px; max-width: 100%; line-height: 1.55;">Spec was a PDF nobody re-opened. Implementation was the expensive thing, so implementation became the artifact.</p>
-      </div>
-      <div>
-        <div class="stack-label">New stack <span style="color: var(--accent);">(from the whitepaper)</span></div>
-        <div class="stack">
-          <div class="layer intent">Intent <small>declared, versioned, live</small></div>
-          <div class="layer">Code <small>one valid implementation</small></div>
-          <div class="layer">Tests <small>executable spec of behavior</small></div>
-        </div>
-        <p class="tiny" style="margin: 20px auto 0; width: 360px; max-width: 100%; line-height: 1.55;">Intent is a first-class artifact, versioned in the repo. The spec <em>is</em> the assignment &mdash; picked up directly by humans and agents.</p>
-      </div>
-    </div>
-
-    <p class="body" style="margin-top: 32px; max-width: 80ch;">
-      This kills <span class="hl">"are PRDs the future?"</span> as a question. PRDs aren't going away. The <strong>format</strong> is. Static Gdocs or Notion docs become a living markdown artifact in the same repo as the code, read by humans and agents on the same line.
-    </p>
-  </section>
-
-  <!-- ============================================================ -->
-  <!-- SLIDE 5 — Opinionated cut                                     -->
-  <!-- ============================================================ -->
-  <section class="slide" data-slide="5" id="s5">
-    <div class="slide-meta"><span class="bar"></span><span class="num">05</span><span>The opinionated cut</span></div>
-    <h2 class="h2">Three die. One lives.</h2>
-
-    <div class="grid4" style="margin-top: 24px;">
-      <div class="kill-card">
-        <div class="label">dies ×</div>
-        <div class="what">Tickets</div>
-        <div class="why">as the unit of work. Sequencing latency goes to zero when the picker is an agent.</div>
-      </div>
-      <div class="kill-card">
-        <div class="label">dies ×</div>
-        <div class="what">Long-lived branches</div>
-        <div class="why">as the unit of collaboration. GitFlow assumed slow coders. Agents reconcile nothing.</div>
-      </div>
-      <div class="kill-card">
-        <div class="label">dies ×</div>
-        <div class="what">PRs as review</div>
-        <div class="why">scaffolding from the slow-implementation era. Now drag, not gate.</div>
-      </div>
-      <div class="kill-card live">
-        <div class="label">lives ✓</div>
-        <div class="what">Trunk</div>
-        <div class="why">One source of truth. Specs + code + tests versioned together. Near-instant implementation eliminates the need to defer integration.</div>
-      </div>
-    </div>
-
-    <div class="pull" style="margin-top: 48px; max-width: 64ch;">
-      "In a truly intent-driven workflow, sequencing, pickup, and activation will <span class="accent">collapse to zero</span>."
-      <cite>— Intent Lead Time guide, April 2026</cite>
-    </div>
-
-    <p class="body tiny" style="max-width: 70ch; margin-top: 18px;">
-      Your tickets-per-engineer counts drop while throughput climbs. That's the signal. The scaffolding around code was all sized for the old bottleneck. Remove it.
-    </p>
-  </section>
-
-  <!-- ============================================================ -->
-  <!-- SLIDE 6 — Stoa as receipt                                     -->
-  <!-- ============================================================ -->
-  <section class="slide" data-slide="6" id="s6">
-    <div class="slide-meta"><span class="bar"></span><span class="num">06</span><span>Stoa as receipt</span></div>
-    <h2 class="h2">I don't just pitch this.<br />I live it daily.</h2>
-    <p class="body" style="max-width: 76ch;">Every number on this slide was mined from the <code>specstoryai/stoa</code> monorepo at build time &mdash; real commits, real doc counts, current as of the deck build.</p>
-
-    <div class="grid4" style="margin-top: 18px;">
-      <div class="metric"><div class="value" id="m-design">168</div><div class="label">Design docs · <span id="r-design">Jan 2025 → Apr 2026</span></div></div>
-      <div class="metric"><div class="value" id="m-impl">177</div><div class="label">Implementation docs · <span id="r-impl">Sep 2025 → Apr 2026</span></div></div>
-      <div class="metric"><div class="value" id="m-asbuilt"><span id="v-asbuilt">10,672</span></div><div class="label">Lines of AS-BUILT · across <span id="v-asbuilt-n">5</span> components</div></div>
-      <div class="metric"><div class="value" id="m-intent">7,589</div><div class="label">"Intent" <em style="font-style: normal;">the word itself</em> &middot; occurrences</div></div>
-    </div>
-
-    <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; margin-top: 32px; align-items: start;">
-      <div>
-        <div class="kicker">Themes: design docs vs implementation docs</div>
-        <svg id="theme-chart" viewBox="0 0 640 420" style="width: 100%; height: auto;"></svg>
-        <p class="tiny" style="margin-top: 8px; max-width: 60ch;">
-          Architecture is intentionally <strong>over-specified vs. over-built</strong> (52 design → 28 impl). Billing/auth flips it (3 → 26) &mdash; that's "after the prototype" territory: security, handoff, release. Everyone has it; few document it.
-        </p>
-      </div>
-      <div>
-        <div class="kicker">Docs written per month</div>
-        <svg id="month-chart" viewBox="0 0 520 360" style="width: 100%; height: auto;"></svg>
-        <p class="tiny" style="margin-top: 8px; max-width: 60ch;">
-          <strong>March 2026</strong> &mdash; 38 design docs, 46 implementation docs &mdash; was our push into native Windows, the Intent→Stoa rebrand, and the meeting-document surface. The docs track the surges; they don't lag them.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================ -->
-  <!-- SLIDE 7 — Agentic release                                     -->
-  <!-- ============================================================ -->
-  <section class="slide" data-slide="7" id="s7">
-    <div class="slide-meta"><span class="bar"></span><span class="num">07</span><span>Live demo · the agentic release</span></div>
-    <h2 class="h2">A <em class="accent" style="font-style: normal;">dev → main</em> release PR<br />that writes itself.</h2>
-    <p class="body" style="max-width: 74ch;">
-      Humans don't read release diffs. Our fix: <strong>the PR writes itself</strong>. Four files in <code>.github/workflows/</code>, running on every push to <code>dev</code>. This is the concrete example you can copy tonight. It's in your takeaways.
-    </p>
-
-    <div class="pipeline">
-      <!-- 01 · orchestrator -->
-      <div class="pipeline-node">
-        <div class="badge">01</div>
-        <div class="role">Orchestrator</div>
-        <div class="file">release-pr-sync.yml</div>
-        <div class="desc">On every push to <code>dev</code>, find-or-create the single standing <em>"Release dev to main"</em> PR &mdash; one PR per release cycle, not one per push.</div>
-        <div class="foot">trigger &nbsp;<strong>push → dev</strong></div>
-      </div>
-
-      <!-- arrow -->
-      <div class="pipeline-connector hot">
-        <svg viewBox="0 0 100 18" preserveAspectRatio="none" aria-hidden="true">
-          <line x1="4" y1="9" x2="88" y2="9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" vector-effect="non-scaling-stroke" />
-          <polyline points="80,4 94,9 80,14" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" fill="none" vector-effect="non-scaling-stroke" />
-        </svg>
-      </div>
-
-      <!-- 02 · agent (hero) -->
-      <div class="pipeline-node hero">
-        <div class="badge">02</div>
-        <div class="role">Agent &middot; Claude via gh-aw</div>
-        <div class="file">release-pr-body.md</div>
-        <div class="desc">Reads the full <code>main…dev</code> diff plus every touched <code>docs/design/</code> and <code>docs/implementation/</code> file. Synthesizes a structured release: Highlights, Major Change Areas, Operational Notes, Commits.</div>
-        <div class="foot">bounded tools <strong>repos &middot; pull_requests</strong> · safe output <strong>update-pull-request × 1</strong></div>
-      </div>
-
-      <!-- arrow -->
-      <div class="pipeline-connector hot">
-        <svg viewBox="0 0 100 18" preserveAspectRatio="none" aria-hidden="true">
-          <line x1="4" y1="9" x2="88" y2="9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" vector-effect="non-scaling-stroke" />
-          <polyline points="80,4 94,9 80,14" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" fill="none" vector-effect="non-scaling-stroke" />
-        </svg>
-      </div>
-
-      <!-- 03 · outputs -->
-      <div class="pipeline-node">
-        <div class="badge">03</div>
-        <div class="role">Outputs</div>
-        <div class="file">PR body &nbsp;+&nbsp; <span style="color:var(--mute);">#release-stream</span></div>
-        <div class="desc">The PR body is the canonical release narrative &mdash; same content reshaped to Slack mrkdwn and posted to the release channel. Humans review the summary, click merge.</div>
-        <div class="foot">reviewer &nbsp;<strong>merges in minutes</strong></div>
-      </div>
-    </div>
-
-    <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; margin-top: 36px; align-items: start;">
-      <div>
-        <div class="kicker">Proof it runs</div>
-        <table class="basic">
-          <thead><tr><th>PR</th><th>Title</th><th>State</th><th>Lifespan</th></tr></thead>
-          <tbody id="pr-rows"></tbody>
-        </table>
-        <p class="tiny" style="margin-top: 8px;">Last five "Release dev to main" PRs from <code>specstoryai/stoa</code>. 4 of 5 merged; #16 currently open. Two merged in under 10 minutes &mdash; because the agent had already written the summary humans would have put off.</p>
-      </div>
-      <div>
-        <div class="kicker">Guardrails</div>
-        <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: var(--fg-2); line-height: 1.7;">
-          <li>✓ One standing PR from <code>dev</code> into <code>main</code>. Always fresh.</li>
-          <li>✓ <code>main-from-dev-only.yml</code> rejects any PR into main whose head ≠ <code>dev</code>.</li>
-          <li>✓ Agent has bounded tool access. No shell. One safe output.</li>
-          <li>✓ The <em>prompt</em> is a markdown file humans edit. The YAML is compiled by <code>gh aw compile</code>.</li>
-          <li>✓ Slack gets the same canonical body. No duplicate writing.</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================ -->
-  <!-- SLIDE 8 — A metric you can use on Monday                       -->
-  <!-- ============================================================ -->
-  <section class="slide" data-slide="8" id="s8">
-    <div class="slide-meta"><span class="bar"></span><span class="num">08</span><span>A metric you can use on Monday</span></div>
+    <div class="slide-meta"><span class="bar"></span><span class="num">04</span><span>A metric you can use on Monday</span></div>
     <h2 class="h2">Intent Lead Time.<br />Four sub-metrics.<br />Three go to zero.</h2>
 
     <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; margin-top: 16px; align-items: start;">
@@ -1192,13 +1006,200 @@
   </section>
 
   <!-- ============================================================ -->
+  <!-- SLIDE 5 — From code-centric to intent-centric                 -->
+  <!-- ============================================================ -->
+  <section class="slide" data-slide="5" id="s5">
+    <div class="slide-meta"><span class="bar"></span><span class="num">05</span><span>The stack</span></div>
+    <h2 class="h2" style="white-space: nowrap;">From code-centric to intent-centric.</h2>
+
+    <div class="pull">
+      "Software's bottleneck has moved: it's no longer about how fast we type but <span class="accent">how clearly we think</span>."
+      <cite>— <em>Beyond Code-Centric</em>, SpecStory whitepaper, 2025.</cite>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; margin-top: 32px; max-width: 1100px;">
+      <div>
+        <div class="stack-label">Old stack</div>
+        <div class="stack">
+          <div class="layer">Code <small>imperative, written</small></div>
+          <div class="layer">Tests <small>verified at runtime</small></div>
+        </div>
+        <p class="tiny" style="margin: 20px auto 0; width: 360px; max-width: 100%; line-height: 1.55;">Spec was a PDF nobody re-opened. Implementation was the expensive thing, so implementation became the artifact.</p>
+      </div>
+      <div>
+        <div class="stack-label">New stack <span style="color: var(--accent);">(from the whitepaper)</span></div>
+        <div class="stack">
+          <div class="layer intent">Intent <small>declared, versioned, live</small></div>
+          <div class="layer">Code <small>one valid implementation</small></div>
+          <div class="layer">Tests <small>executable spec of behavior</small></div>
+        </div>
+        <p class="tiny" style="margin: 20px auto 0; width: 360px; max-width: 100%; line-height: 1.55;">Intent is a first-class artifact, versioned in the repo. The spec <em>is</em> the assignment, picked up directly by humans and agents.</p>
+      </div>
+    </div>
+
+    <p class="body" style="margin-top: 32px; max-width: 80ch;">
+      This kills <span class="hl">"are PRDs the future?"</span> as a question. PRDs aren't going away. The <strong>format</strong> is. Static Gdocs or Notion docs become a living markdown artifact in the same repo as the code, read by humans and agents on the same line.
+    </p>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 6 — Opinionated cut                                     -->
+  <!-- ============================================================ -->
+  <section class="slide" data-slide="6" id="s6">
+    <div class="slide-meta"><span class="bar"></span><span class="num">06</span><span>The opinionated cut</span></div>
+    <h2 class="h2">Three die. One lives.</h2>
+
+    <div class="grid4" style="margin-top: 24px;">
+      <div class="kill-card">
+        <div class="label">dies ×</div>
+        <div class="what">Tickets</div>
+        <div class="why">as the unit of work. Sequencing latency goes to zero when the picker is an agent.</div>
+      </div>
+      <div class="kill-card">
+        <div class="label">dies ×</div>
+        <div class="what">Long-lived branches</div>
+        <div class="why">as the unit of collaboration. GitFlow assumed slow coders. Agents reconcile nothing.</div>
+      </div>
+      <div class="kill-card">
+        <div class="label">dies ×</div>
+        <div class="what">PRs as review</div>
+        <div class="why">scaffolding from the slow-implementation era. Now drag, not gate.</div>
+      </div>
+      <div class="kill-card live">
+        <div class="label">lives ✓</div>
+        <div class="what">Trunk</div>
+        <div class="why">One source of truth. Specs + code + tests versioned together. Near-instant implementation eliminates the need to defer integration.</div>
+      </div>
+    </div>
+
+    <div class="pull" style="margin-top: 48px; max-width: 64ch;">
+      "In a truly intent-driven workflow, sequencing, pickup, and activation will <span class="accent">collapse to zero</span>."
+      <cite>— Intent Lead Time guide, April 2026</cite>
+    </div>
+
+    <p class="body tiny" style="max-width: 70ch; margin-top: 18px;">
+      Your tickets-per-engineer counts drop while throughput climbs. That's the signal. The scaffolding around code was all sized for the old bottleneck. Remove it.
+    </p>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 7 — Stoa as receipt                                     -->
+  <!-- ============================================================ -->
+  <section class="slide" data-slide="7" id="s7">
+    <div class="slide-meta"><span class="bar"></span><span class="num">07</span><span>Stoa as receipt</span></div>
+    <h2 class="h2">I don't just pitch this.<br />I live it daily.</h2>
+    <p class="body" style="max-width: 76ch;">Every number on this slide was mined from the <code>specstoryai/stoa</code> monorepo at build time. Real commits, real doc counts, current as of the deck build.</p>
+
+    <div class="grid4" style="margin-top: 18px;">
+      <div class="metric"><div class="value" id="m-design">168</div><div class="label">Design docs · <span id="r-design">Jan 2025 → Apr 2026</span></div></div>
+      <div class="metric"><div class="value" id="m-impl">177</div><div class="label">Implementation docs · <span id="r-impl">Sep 2025 → Apr 2026</span></div></div>
+      <div class="metric"><div class="value" id="m-asbuilt"><span id="v-asbuilt">10,672</span></div><div class="label">Lines of AS-BUILT · across <span id="v-asbuilt-n">5</span> components</div></div>
+      <div class="metric"><div class="value" id="m-intent">7,589</div><div class="label">"Intent" <em style="font-style: normal;">the word itself</em> &middot; occurrences</div></div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; margin-top: 32px; align-items: start;">
+      <div>
+        <div class="kicker">Themes: design docs vs implementation docs</div>
+        <svg id="theme-chart" viewBox="0 0 640 420" style="width: 100%; height: auto;"></svg>
+        <p class="tiny" style="margin-top: 8px; max-width: 60ch;">
+          Architecture is intentionally <strong>over-specified vs. over-built</strong> (52 design → 28 impl). Billing/auth flips it (3 → 26). That's "after the prototype" territory: security, handoff, release. Everyone has it; few document it.
+        </p>
+      </div>
+      <div>
+        <div class="kicker">Docs written per month</div>
+        <svg id="month-chart" viewBox="0 0 520 360" style="width: 100%; height: auto;"></svg>
+        <p class="tiny" style="margin-top: 8px; max-width: 60ch;">
+          <strong>March 2026</strong> (38 design docs, 46 implementation docs) was our push into native Windows, the Intent→Stoa rebrand, and the meeting-document surface. The docs track the surges; they don't lag them.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 8 — Agentic release                                     -->
+  <!-- ============================================================ -->
+  <section class="slide" data-slide="8" id="s8">
+    <div class="slide-meta"><span class="bar"></span><span class="num">08</span><span>Live demo · the agentic release</span></div>
+    <h2 class="h2">A <em class="accent" style="font-style: normal;">dev → main</em> release PR<br />that writes itself.</h2>
+    <p class="body" style="max-width: 74ch;">
+      Humans don't read release diffs. Our fix: <strong>the PR writes itself</strong>. Four files in <code>.github/workflows/</code>, running on every push to <code>dev</code>. This is the concrete example you can copy tonight. It's in your takeaways.
+    </p>
+
+    <div class="pipeline">
+      <!-- 01 · orchestrator -->
+      <div class="pipeline-node">
+        <div class="badge">01</div>
+        <div class="role">Orchestrator</div>
+        <div class="file">release-pr-sync.yml</div>
+        <div class="desc">On every push to <code>dev</code>, find-or-create the single standing <em>"Release dev to main"</em> PR. One PR per release cycle, not one per push.</div>
+        <div class="foot">trigger &nbsp;<strong>push → dev</strong></div>
+      </div>
+
+      <!-- arrow -->
+      <div class="pipeline-connector hot">
+        <svg viewBox="0 0 100 18" preserveAspectRatio="none" aria-hidden="true">
+          <line x1="4" y1="9" x2="88" y2="9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+          <polyline points="80,4 94,9 80,14" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" fill="none" vector-effect="non-scaling-stroke" />
+        </svg>
+      </div>
+
+      <!-- 02 · agent (hero) -->
+      <div class="pipeline-node hero">
+        <div class="badge">02</div>
+        <div class="role">Agent &middot; Claude via gh-aw</div>
+        <div class="file">release-pr-body.md</div>
+        <div class="desc">Reads the full <code>main…dev</code> diff plus every touched <code>docs/design/</code> and <code>docs/implementation/</code> file. Synthesizes a structured release: Highlights, Major Change Areas, Operational Notes, Commits.</div>
+        <div class="foot">bounded tools <strong>repos &middot; pull_requests</strong> · safe output <strong>update-pull-request × 1</strong></div>
+      </div>
+
+      <!-- arrow -->
+      <div class="pipeline-connector hot">
+        <svg viewBox="0 0 100 18" preserveAspectRatio="none" aria-hidden="true">
+          <line x1="4" y1="9" x2="88" y2="9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+          <polyline points="80,4 94,9 80,14" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" fill="none" vector-effect="non-scaling-stroke" />
+        </svg>
+      </div>
+
+      <!-- 03 · outputs -->
+      <div class="pipeline-node">
+        <div class="badge">03</div>
+        <div class="role">Outputs</div>
+        <div class="file">PR body &nbsp;+&nbsp; <span style="color:var(--mute);">#release-stream</span></div>
+        <div class="desc">The PR body is the canonical release narrative. Same content reshaped to Slack mrkdwn and posted to the release channel. Humans review the summary, click merge.</div>
+        <div class="foot">reviewer &nbsp;<strong>merges in minutes</strong></div>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; margin-top: 36px; align-items: start;">
+      <div>
+        <div class="kicker">Proof it runs</div>
+        <table class="basic">
+          <thead><tr><th>PR</th><th>Title</th><th>State</th><th>Lifespan</th></tr></thead>
+          <tbody id="pr-rows"></tbody>
+        </table>
+        <p class="tiny" style="margin-top: 8px;">Last five "Release dev to main" PRs from <code>specstoryai/stoa</code>. 4 of 5 merged; #16 currently open. Two merged in under 10 minutes, because the agent had already written the summary humans would have put off.</p>
+      </div>
+      <div>
+        <div class="kicker">Guardrails</div>
+        <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: var(--fg-2); line-height: 1.7;">
+          <li>✓ One standing PR from <code>dev</code> into <code>main</code>. Always fresh.</li>
+          <li>✓ <code>main-from-dev-only.yml</code> rejects any PR into main whose head ≠ <code>dev</code>.</li>
+          <li>✓ Agent has bounded tool access. No shell. One safe output.</li>
+          <li>✓ The <em>prompt</em> is a markdown file humans edit. The YAML is compiled by <code>gh aw compile</code>.</li>
+          <li>✓ Slack gets the same canonical body. No duplicate writing.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
   <!-- SLIDE 9 — Journey map                                         -->
   <!-- ============================================================ -->
   <section class="slide" data-slide="9" id="s9">
     <div class="slide-meta"><span class="bar"></span><span class="num">09</span><span>Journey map</span></div>
     <h2 class="h2">Where AI fits across the PDLC<br />(and where it doesn't).</h2>
     <p class="body" style="max-width: 76ch;">
-      Humans own the two endpoints. Humans own the <span class="hl">test spec</span>. Agents own the four middles. The SPEC → BUILD handoff is the one to automate first &mdash; that's where your ILT wins live.
+      Humans own the two endpoints. Humans own the <span class="hl">test spec</span>. Agents own the four middles. The SPEC → BUILD handoff is the one to automate first. That's where your ILT wins live.
     </p>
 
     <div class="chevron-row">
@@ -1357,7 +1358,7 @@
           <div class="card">
             <div style="font-size: 10.5px; color: var(--accent); letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; margin-bottom: 6px;">01 &middot; One doc per surface</div>
             <div style="font-size: 16px; color: var(--fg); font-weight: 600; margin-bottom: 6px;">AS-BUILT-ARCHITECTURE.md</div>
-            <p class="tiny" style="margin: 0;">One living doc per product surface &mdash; CLI, web, desktop, backend. Kept current. Agents <code>@</code>-reference it as their first pass. Receipt: Stoa ships 5 of these, <strong>10,672 lines</strong>, all last-updated within <strong>8 days</strong> of each other.</p>
+            <p class="tiny" style="margin: 0;">One living doc per product surface: CLI, web, desktop, backend. Kept current. Agents <code>@</code>-reference it as their first pass. Receipt: Stoa ships 5 of these, <strong>10,672 lines</strong>, all last-updated within <strong>8 days</strong> of each other.</p>
           </div>
           <div class="card">
             <div style="font-size: 10.5px; color: var(--accent); letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; margin-bottom: 6px;">02 &middot; Prose-thick commits</div>
@@ -1405,19 +1406,19 @@
       <div class="card">
         <div style="font-size: 10.5px; color: var(--accent); letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; margin-bottom: 8px;">02 &middot; Plan before you touch</div>
         <div style="font-size: 18px; color: var(--fg); font-weight: 600; margin-bottom: 8px; letter-spacing: -0.005em;">Violent plan mode <span style="color: var(--mute);">+</span> agent teams</div>
-        <p class="tiny" style="margin: 0;">Start with <code>/plan</code>. Let the agent enumerate before it edits. Fan out via agent teams (Claude) or sub-agents (Codex). The coordinator coordinates; it doesn't do the mechanical work. Plans are often the entire value &mdash; edits are mechanical once the plan is right.</p>
+        <p class="tiny" style="margin: 0;">Start with <code>/plan</code>. Let the agent enumerate before it edits. Fan out via agent teams (Claude) or sub-agents (Codex). The coordinator coordinates; it doesn't do the mechanical work. Plans are often the entire value. Edits are mechanical once the plan is right.</p>
       </div>
 
       <div class="card">
         <div style="font-size: 10.5px; color: var(--accent); letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; margin-bottom: 8px;">03 &middot; Context lives in terminals</div>
         <div style="font-size: 18px; color: var(--fg); font-weight: 600; margin-bottom: 8px; letter-spacing: -0.005em;">Many named terminals, in Cursor</div>
-        <p class="tiny" style="margin: 0;">Six to ten terminals open at once, each one named. One per repo, one per long-running agent. Stop holding context in your head &mdash; the names do it. Modern compaction means each session's context is cheap to carry; stop worrying about priming.</p>
+        <p class="tiny" style="margin: 0;">Six to ten terminals open at once, each one named. One per repo, one per long-running agent. Stop holding context in your head. The names do it. Modern compaction means each session's context is cheap to carry; stop worrying about priming.</p>
       </div>
 
       <div class="card">
         <div style="font-size: 10.5px; color: var(--accent); letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; margin-bottom: 8px;">04 &middot; History as context</div>
         <div style="font-size: 18px; color: var(--fg); font-weight: 600; margin-bottom: 8px; letter-spacing: -0.005em;">SpecStory CLI for session memory</div>
-        <p class="tiny" style="margin: 0;">Every session saves to <code>.specstory/history/</code>. When a new session needs context from an old one, pipe the relevant markdown into the prompt. Zero re-priming. This is why I stopped writing dedicated "context docs" for agents &mdash; the history <em>is</em> the context.</p>
+        <p class="tiny" style="margin: 0;">Every session saves to <code>.specstory/history/</code>. When a new session needs context from an old one, pipe the relevant markdown into the prompt. Zero re-priming. This is why I stopped writing dedicated "context docs" for agents. The history <em>is</em> the context.</p>
       </div>
     </div>
 
