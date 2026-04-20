@@ -546,58 +546,37 @@
   /* slide 7 pipeline — three-stage agentic flow */
   .pipeline {
     display: grid;
-    grid-template-columns: 1fr 64px 1.3fr 64px 1fr;
+    grid-template-columns: 1fr 56px 1.15fr 56px 1fr;
     align-items: stretch;
     gap: 0;
-    margin-top: 36px;
-    position: relative;
-  }
-  /* rail behind the cards for visual continuity */
-  .pipeline::before {
-    content: "";
-    position: absolute;
-    left: 8%; right: 8%;
-    top: 50%; height: 1px;
-    background: linear-gradient(90deg,
-      transparent 0%,
-      var(--line-2) 12%,
-      var(--line-2) 88%,
-      transparent 100%);
-    z-index: 0;
+    margin-top: 32px;
   }
   .pipeline-node {
-    position: relative;
-    z-index: 1;
     background: var(--ink-2);
     border: 1px solid var(--line);
     border-radius: 10px;
-    padding: 22px 22px 18px;
+    padding: 20px 20px 16px;
     display: flex; flex-direction: column;
-    min-height: 230px;
+    min-height: 240px;
   }
   .pipeline-node.hero {
     border-color: var(--accent);
-    background:
-      radial-gradient(ellipse at top, rgba(227, 90, 44, 0.14) 0%, transparent 60%),
-      var(--ink-2);
-    transform: translateY(-10px);
-    box-shadow:
-      0 0 0 1px rgba(227, 90, 44, 0.35),
-      0 20px 48px -16px rgba(227, 90, 44, 0.28);
+    background: linear-gradient(180deg, rgba(227, 90, 44, 0.08) 0%, var(--ink-2) 55%);
+    box-shadow: 0 0 0 1px rgba(227, 90, 44, 0.35);
   }
   .pipeline-node .badge {
-    width: 30px; height: 30px;
+    width: 28px; height: 28px;
     border-radius: 50%;
     background: var(--ink-3);
     border: 1.5px solid var(--line-2);
     color: var(--fg-2);
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 12px;
+    font-size: 11.5px;
     font-weight: 700;
-    letter-spacing: 0.02em;
     display: flex; align-items: center; justify-content: center;
-    margin-bottom: 18px;
+    margin-bottom: 14px;
     font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
   }
   .pipeline-node.hero .badge {
     background: var(--accent);
@@ -610,7 +589,7 @@
     text-transform: uppercase;
     color: var(--mute);
     font-weight: 600;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
   .pipeline-node.hero .role { color: var(--accent); }
   .pipeline-node .file {
@@ -619,74 +598,42 @@
     color: var(--fg);
     font-weight: 600;
     letter-spacing: -0.01em;
-    margin-bottom: 10px;
-    word-break: break-word;
-  }
-  .pipeline-node .meta-row {
-    display: flex; flex-wrap: wrap; gap: 4px;
     margin-bottom: 12px;
-  }
-  .pipeline-node .meta-row .mini-tag {
-    display: inline-block;
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 10px;
-    letter-spacing: 0.02em;
-    padding: 2px 7px;
-    border-radius: 3px;
-    background: rgba(227, 90, 44, 0.14);
-    color: var(--accent);
-    border: 1px solid rgba(227, 90, 44, 0.3);
-  }
-  .pipeline-node .meta-row .mini-tag.neutral {
-    background: var(--ink-3);
-    border-color: var(--line-2);
-    color: var(--fg-2);
+    word-break: break-word;
   }
   .pipeline-node .desc {
     font-size: 12.5px;
-    line-height: 1.6;
+    line-height: 1.55;
     color: var(--mute);
     flex: 1;
   }
   .pipeline-node.hero .desc { color: var(--fg-2); }
-  .pipeline-node .out {
+  .pipeline-node .foot {
     margin-top: 14px;
     padding-top: 10px;
     border-top: 1px dashed var(--line-2);
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 11px;
-    color: var(--fg-2);
-    letter-spacing: -0.005em;
+    font-size: 10.5px;
+    line-height: 1.55;
+    color: var(--mute);
+    letter-spacing: 0.02em;
   }
-  .pipeline-node .out .accent { color: var(--accent); font-weight: 600; }
-  /* connector: arrow + above/below captions */
+  .pipeline-node .foot strong {
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+  /* connector: a plain arrow, no captions (they clipped behind cards) */
   .pipeline-connector {
-    position: relative;
-    z-index: 1;
     display: flex;
     align-items: center;
     justify-content: center;
   }
   .pipeline-connector svg {
-    width: 100%; height: 20px;
-    overflow: visible;
+    width: 100%; height: 18px;
     color: var(--line-2);
   }
   .pipeline-connector.hot svg { color: var(--accent); }
-  .pipeline-connector .cap {
-    position: absolute;
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 10px;
-    letter-spacing: 0.06em;
-    text-align: center;
-    white-space: nowrap;
-    color: var(--mute);
-    line-height: 1.35;
-  }
-  .pipeline-connector .cap.top    { bottom: calc(50% + 12px); }
-  .pipeline-connector .cap.bottom { top:    calc(50% + 12px); }
-  .pipeline-connector.hot .cap.top    { color: var(--accent); }
-  .pipeline-connector.hot .cap.bottom { color: var(--accent); }
 
   /* slide 8 bands */
   .bands-row {
@@ -1131,43 +1078,33 @@
         <div class="badge">01</div>
         <div class="role">Orchestrator</div>
         <div class="file">release-pr-sync.yml</div>
-        <div class="meta-row"><span class="mini-tag neutral">GitHub Actions</span></div>
         <div class="desc">On every push to <code>dev</code>, find-or-create the single standing <em>"Release dev to main"</em> PR &mdash; one PR per release cycle, not one per push.</div>
-        <div class="out">trigger &nbsp;<span class="accent">push → dev</span></div>
+        <div class="foot">trigger &nbsp;<strong>push → dev</strong></div>
       </div>
 
-      <!-- connector 1 -->
+      <!-- arrow -->
       <div class="pipeline-connector hot">
-        <span class="cap top">delegates</span>
-        <svg viewBox="0 0 100 20" preserveAspectRatio="none" aria-hidden="true">
-          <line x1="2" y1="10" x2="90" y2="10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" vector-effect="non-scaling-stroke" />
-          <polyline points="82,5 94,10 82,15" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" fill="none" vector-effect="non-scaling-stroke" />
+        <svg viewBox="0 0 100 18" preserveAspectRatio="none" aria-hidden="true">
+          <line x1="4" y1="9" x2="88" y2="9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+          <polyline points="80,4 94,9 80,14" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" fill="none" vector-effect="non-scaling-stroke" />
         </svg>
-        <span class="cap bottom">workflow_call</span>
       </div>
 
       <!-- 02 · agent (hero) -->
       <div class="pipeline-node hero">
         <div class="badge">02</div>
-        <div class="role">Agent &middot; Claude</div>
+        <div class="role">Agent &middot; Claude via gh-aw</div>
         <div class="file">release-pr-body.md</div>
-        <div class="meta-row">
-          <span class="mini-tag">gh-aw</span>
-          <span class="mini-tag neutral">engine: claude</span>
-          <span class="mini-tag neutral">tools: repos &middot; pull_requests</span>
-        </div>
-        <div class="desc">Reads the full <code>main…dev</code> diff plus every touched <code>docs/design/</code> and <code>docs/implementation/</code> file. Synthesizes a structured release narrative: Highlights, Major Change Areas, Operational Notes, Commits.</div>
-        <div class="out">safe output &nbsp;<span class="accent">update-pull-request · 1×</span></div>
+        <div class="desc">Reads the full <code>main…dev</code> diff plus every touched <code>docs/design/</code> and <code>docs/implementation/</code> file. Synthesizes a structured release: Highlights, Major Change Areas, Operational Notes, Commits.</div>
+        <div class="foot">bounded tools <strong>repos &middot; pull_requests</strong> · safe output <strong>update-pull-request × 1</strong></div>
       </div>
 
-      <!-- connector 2 -->
+      <!-- arrow -->
       <div class="pipeline-connector hot">
-        <span class="cap top">writes body</span>
-        <svg viewBox="0 0 100 20" preserveAspectRatio="none" aria-hidden="true">
-          <line x1="2" y1="10" x2="90" y2="10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" vector-effect="non-scaling-stroke" />
-          <polyline points="82,5 94,10 82,15" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" fill="none" vector-effect="non-scaling-stroke" />
+        <svg viewBox="0 0 100 18" preserveAspectRatio="none" aria-hidden="true">
+          <line x1="4" y1="9" x2="88" y2="9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+          <polyline points="80,4 94,9 80,14" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" fill="none" vector-effect="non-scaling-stroke" />
         </svg>
-        <span class="cap bottom">mrkdwn fanout</span>
       </div>
 
       <!-- 03 · outputs -->
@@ -1175,9 +1112,8 @@
         <div class="badge">03</div>
         <div class="role">Outputs</div>
         <div class="file">PR body &nbsp;+&nbsp; <span style="color:var(--mute);">#release-stream</span></div>
-        <div class="meta-row"><span class="mini-tag neutral">human-readable</span><span class="mini-tag neutral">agent-written</span></div>
-        <div class="desc">The PR body is the canonical release narrative &mdash; same content is reshaped to Slack mrkdwn and posted to the release channel. Humans review the summary, click merge.</div>
-        <div class="out">reviewer &nbsp;<span class="accent">merges in minutes</span></div>
+        <div class="desc">The PR body is the canonical release narrative &mdash; same content reshaped to Slack mrkdwn and posted to the release channel. Humans review the summary, click merge.</div>
+        <div class="foot">reviewer &nbsp;<strong>merges in minutes</strong></div>
       </div>
     </div>
 
@@ -1323,7 +1259,7 @@
   <!-- ============================================================ -->
   <section class="slide" data-slide="10" id="s10">
     <div class="slide-meta"><span class="bar"></span><span class="num">10</span><span>Take it home</span></div>
-    <h2 class="h2">Three to steal.<br />Three moves this week.</h2>
+    <h2 class="h2">Three assets to steal.<br />Three moves to make this week.</h2>
 
     <div class="grid3" style="margin-top: 20px;">
       <a href="takeaways/release-pr-automation/" class="take-card" data-num="01">
@@ -1486,8 +1422,8 @@
     </div>
 
     <div class="pull" style="margin-top: 28px; max-width: 58ch;">
-      Context is the new IDE.
-      <span class="accent">Own it.</span>
+      Plan more.
+      <span class="accent">Type less.</span>
     </div>
 
     <div class="end-card" style="margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--line); display: flex; gap: 22px; align-items: baseline; flex-wrap: wrap;">
