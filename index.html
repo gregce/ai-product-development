@@ -713,6 +713,11 @@
     border-color: var(--accent);
     background: linear-gradient(0deg, var(--accent-dim), var(--ink-2));
   }
+  .chev.endpoint {
+    border-color: var(--green);
+    background: linear-gradient(0deg, rgba(126, 231, 135, 0.08), var(--ink-2));
+  }
+  .chev.endpoint .phase { color: var(--green); }
   .chev .bottom-note {
     position: absolute; bottom: 8px; left: 22px; right: 22px;
     font-size: 11px; color: var(--mute);
@@ -1203,7 +1208,7 @@
     </p>
 
     <div class="chevron-row">
-      <div class="chev">
+      <div class="chev endpoint">
         <div class="phase">01 · Ideation</div>
         <h5>Problem sensing</h5>
         <p class="tiny" style="margin: 0;">Customer context, market signal, strategy.</p>
@@ -1233,7 +1238,7 @@
         <p class="tiny" style="margin: 0;">"Never let AI specify your tests." Agents implement; humans declare correct behavior.</p>
         <div class="role"><span class="human">Human spec</span><span class="ai">Agent impl</span></div>
       </div>
-      <div class="chev">
+      <div class="chev endpoint">
         <div class="phase">06 · Release</div>
         <h5>Agentic PR</h5>
         <p class="tiny" style="margin: 0;">Release body is written by the agent from the diff + intent. Human reviews, one click.</p>
