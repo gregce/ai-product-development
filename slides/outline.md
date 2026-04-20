@@ -99,7 +99,7 @@ Visual: four icons with strike-throughs on three; fourth (trunk) in orange and u
 
 ## Slide 6 — Stoa as receipt
 
-We don't pitch this. We live in it. Here's our repo over 7 months, entirely mined by the scripts that produced this talk.
+I don't just pitch this. I live it daily. Here's our repo over 7 months, entirely mined by the scripts that produced this talk.
 
 - **168 design docs** in `docs/design/` · earliest 2025-01-16, latest 2026-04-18.
 - **177 implementation docs** in `docs/implementation/` · earliest 2025-09-15, latest 2026-04-19.
