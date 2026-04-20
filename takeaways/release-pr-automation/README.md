@@ -36,5 +36,4 @@ a formatted preview posts to your channel. Merge the PR and the cycle resets.
 
 ## References
 
-- Live production version: [specstoryai/stoa `.github/workflows/`](https://github.com/specstoryai/stoa/tree/main/.github/workflows)
 - The talk this kit is from: [How product development works in an AI world](../../index.html)
