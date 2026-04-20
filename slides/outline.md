@@ -57,7 +57,7 @@ That gap has a name now: **Intent Lead Time (ILT)**. It's the companion metric t
 
 Visual: timeline bar. "Decision — *ILT* — first commit — *DORA LT* — prod running." Two clocks, one gap.
 
-Source: [Intent Lead Time guide](https://withstoa.com/guides/intent-lead-time), companion to the [Beyond Code-Centric whitepaper (2025)](../docs/beyond-code-centric-whitepaper.txt).
+Source: [Intent Lead Time guide](https://withstoa.com/guides/intent-lead-time), companion to the [Beyond Code-Centric whitepaper (2025)](https://specstory.com/whitepapers/beyond-code-centric-specstory-2025.pdf).
 
 ---
 
@@ -119,7 +119,7 @@ Thematic breakdown (design vs. impl):
 
 Top term across 345 combined docs: **"intent"** (7,589 occurrences). The word itself carries the team.
 
-Visual: two-column bar chart of themes (design vs impl), or a monthly density stacked bar. Data inlined from `data/design_docs_summary.json` and `data/implementation_docs_summary.json`.
+Visual: two-column bar chart of themes (design vs impl), or a monthly density stacked bar. Data is captured at deck-build time from `specstoryai/stoa` and inlined into `index.html`.
 
 ---
 

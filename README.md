@@ -1,9 +1,9 @@
 # How product development works in an AI world
 
 A 10-slide deck, four analysis scripts, and three copy-me takeaway artifacts.
-Built for a live talk to Alpine SG product leaders in April 2026.
+Built for a live talk to Alpine SG portfolio-company product leaders in April 2026.
 
-**Live deck.** [gregce.github.io/ai-product-development](https://gregce.github.io/ai-product-development/) — or open [`index.html`](./index.html) locally. Arrow keys to navigate. Single self-contained file; no build step.
+**Live deck.** Open [`index.html`](./index.html) in any browser — or view it on GitHub Pages once the repo is pushed public. Arrow keys to navigate. Single self-contained file; no build step.
 
 ## The thesis in one paragraph
 
@@ -27,20 +27,9 @@ Slides at a glance:
 9. Journey map — AI across the PDLC
 10. Take it home — three artifacts, three moves
 
-## Data (mined from `specstoryai/stoa`)
+## Data behind the charts
 
-Four Python scripts under [`scripts/`](./scripts/) mine the live Stoa monorepo and emit JSON under [`data/`](./data/). The deck embeds that JSON and draws every chart from it. Regenerate any time:
-
-```zsh
-bash scripts/run_all.sh
-```
-
-Outputs:
-
-- [`data/as_built_summary.json`](./data/as_built_summary.json) — 5 AS-BUILT architecture docs (10,672 lines, 65 ASCII diagrams, 176 code fences)
-- [`data/design_docs_summary.json`](./data/design_docs_summary.json) — 168 design docs by theme and month
-- [`data/implementation_docs_summary.json`](./data/implementation_docs_summary.json) — 177 impl docs by theme and month
-- [`data/release_workflow_summary.json`](./data/release_workflow_summary.json) — the agentic release-PR pipeline plus the last five real release PRs
+Every number on the deck (168 design docs, 177 implementation docs, 10,672 lines of AS-BUILT architecture, 65 ASCII system diagrams, the last five `dev → main` release PRs, theme and monthly breakdowns) was mined from [`specstoryai/stoa`](https://github.com/specstoryai/stoa) at deck-build time and inlined into `index.html`. The deck is a self-contained snapshot.
 
 ## Take-home artifacts
 
@@ -56,24 +45,21 @@ If you're here to skim: read the [slide outline](./slides/outline.md), then open
 
 If you're here to reuse: steal the [release-pr-automation kit](./takeaways/release-pr-automation/) first — it's the biggest single lift per hour of your time.
 
-If you're here to argue with it: go straight to the [Beyond Code-Centric whitepaper](./docs/beyond-code-centric-whitepaper.txt) and the [Intent Lead Time guide](https://withstoa.com/guides/intent-lead-time).
+If you're here to argue with it: go straight to the [Beyond Code-Centric whitepaper](https://specstory.com/whitepapers/beyond-code-centric-specstory-2025.pdf) and the [Intent Lead Time guide](https://withstoa.com/guides/intent-lead-time).
 
 ## Repo layout
 
 ```
 ai-product-development/
-├── index.html                 # the deck
-├── slides/outline.md          # written narrative
-├── scripts/                   # four Python analyzers + run_all.sh
-├── data/                      # JSON emitted by the scripts
-├── takeaways/                 # copy-me artifacts
-├── docs/                      # whitepaper extract, reference material
+├── index.html          # the deck — single self-contained file
+├── slides/outline.md   # written narrative, one section per slide
+├── takeaways/          # copy-me artifacts (workflow kit, PRD template, PDLC map)
 └── README.md
 ```
 
 ## Built with
 
-Stoa (`specstoryai/stoa`), Claude Code (`opus-4-7`), Python stdlib, hand-rolled SVG, and a lot of opinion. No JS framework, no build step, no npm, no tracker.
+Stoa (`specstoryai/stoa`), Claude Code (`opus-4-7`), hand-rolled SVG, and a lot of opinion. No JS framework, no build step, no npm, no tracker.
 
 ## Credits & contact
 

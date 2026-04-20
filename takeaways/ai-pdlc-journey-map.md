@@ -209,8 +209,8 @@ zero in an intent-driven workflow — but only if you measure them.
 For the metric definitions: see slide 8 of the deck and the
 [Intent Lead Time guide](https://withstoa.com/guides/intent-lead-time).
 
-For the whitepaper that defines the Intent + Code + Tests stack: see
-`docs/beyond-code-centric-whitepaper.txt` in this repo.
+For the whitepaper that defines the Intent + Code + Tests stack:
+[Beyond Code-Centric, SpecStory 2025](https://specstory.com/whitepapers/beyond-code-centric-specstory-2025.pdf).
 
 ---
 

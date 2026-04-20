@@ -4,3 +4,10 @@ node_modules/
 __pycache__/
 *.pyc
 .venv/
+
+# Private to this machine — the deck's charts are built from the JSON
+# produced here, then that JSON is inlined into index.html before publish,
+# so these three trees never need to ship.
+docs/
+scripts/
+data/
