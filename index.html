@@ -1344,6 +1344,121 @@
     </div>
   </section>
 
+  <!-- ============================================================ -->
+  <!-- SLIDE 11 — Appendix A: conventions that aren't worth it      -->
+  <!-- ============================================================ -->
+  <section class="slide appendix" data-slide="11" id="s11">
+    <div class="slide-meta">
+      <span class="bar"></span>
+      <span class="num">APPENDIX &middot; A</span>
+      <span>On agents.md, claude.md, and skills</span>
+    </div>
+    <h2 class="h2">A minority report on<br>agent conventions.</h2>
+    <p class="lede" style="max-width: 68ch; margin-bottom: 30px;">
+      Everyone is curating <code>AGENTS.md</code>, <code>CLAUDE.md</code>, and custom skills. I don't think most of it earns its keep. Three things do.
+    </p>
+
+    <div style="display: grid; grid-template-columns: 1fr 1.25fr; gap: 56px; align-items: start;">
+      <div>
+        <div class="kicker" style="color: var(--red);">What I don't buy</div>
+        <ul style="list-style: none; padding: 0; margin: 0;">
+          <li style="padding: 14px 0; border-bottom: 1px solid var(--line);">
+            <div style="font-size: 16px; font-weight: 600; color: var(--fg);">AGENTS.md / CLAUDE.md churn</div>
+            <div class="tiny" style="margin-top: 4px; max-width: 34ch;">Different format per tool, bloats toward a wiki nobody audits. Diminishing return past one paragraph.</div>
+          </li>
+          <li style="padding: 14px 0; border-bottom: 1px solid var(--line);">
+            <div style="font-size: 16px; font-weight: 600; color: var(--fg);">Custom skill gardens</div>
+            <div class="tiny" style="margin-top: 4px; max-width: 34ch;">Too narrow. Age poorly. Maintenance cost exceeds per-use value for all but a handful.</div>
+          </li>
+          <li style="padding: 14px 0;">
+            <div style="font-size: 16px; font-weight: 600; color: var(--fg);">Slash-command metadata</div>
+            <div class="tiny" style="margin-top: 4px; max-width: 34ch;">A tax you pay forever for a speedup you forget about in a week.</div>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="kicker">What actually compounds</div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div class="card">
+            <div style="font-size: 10.5px; color: var(--accent); letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; margin-bottom: 6px;">01 &middot; One doc per surface</div>
+            <div style="font-size: 16px; color: var(--fg); font-weight: 600; margin-bottom: 6px;">AS-BUILT-ARCHITECTURE.md</div>
+            <p class="tiny" style="margin: 0;">One living doc per product surface &mdash; CLI, web, desktop, backend. Kept current. Agents <code>@</code>-reference it as their first pass. Receipt: Stoa ships 5 of these, <strong>10,672 lines</strong>, all last-updated within <strong>8 days</strong> of each other.</p>
+          </div>
+          <div class="card">
+            <div style="font-size: 10.5px; color: var(--accent); letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; margin-bottom: 6px;">02 &middot; Prose-thick commits</div>
+            <div style="font-size: 16px; color: var(--fg); font-weight: 600; margin-bottom: 6px;">Commit messages as memory</div>
+            <p class="tiny" style="margin: 0;">Not <code>fix bug</code>. Paragraphs. The why, the constraint, the follow-up. Co-authored with the agent that did the work. Your <code>git log</code> becomes the search index nobody else's repo has.</p>
+          </div>
+          <div class="card">
+            <div style="font-size: 10.5px; color: var(--accent); letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; margin-bottom: 6px;">03 &middot; Two skills that earn it</div>
+            <div style="font-size: 16px; color: var(--fg); font-weight: 600; margin-bottom: 6px;">impeccable.style &middot; last30days</div>
+            <p class="tiny" style="margin: 0;">
+              <a href="https://impeccable.style/">impeccable.style</a> for design/style review; <a href="https://github.com/mvanhorn/last30days-skill">last30days</a> for real-time research past the training cutoff. Both narrow enough to age well, general enough to use weekly.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pull" style="margin-top: 36px; max-width: 58ch;">
+      A new markdown-file convention is not architecture.
+      <span class="accent">Your AS-BUILT doc is.</span>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 12 — Appendix B: harness & workflow                    -->
+  <!-- ============================================================ -->
+  <section class="slide appendix" data-slide="12" id="s12">
+    <div class="slide-meta">
+      <span class="bar"></span>
+      <span class="num">APPENDIX &middot; B</span>
+      <span>Harness &amp; workflow</span>
+    </div>
+    <h2 class="h2">Two harnesses, many terminals,<br>saved sessions.</h2>
+    <p class="lede" style="max-width: 68ch; margin-bottom: 26px;">
+      How I actually run this day-to-day. Opinionated, not a review. These are the four practices that compound.
+    </p>
+
+    <div class="grid2" style="gap: 16px;">
+      <div class="card">
+        <div style="font-size: 10.5px; color: var(--accent); letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; margin-bottom: 8px;">01 &middot; Tandem harnesses</div>
+        <div style="font-size: 18px; color: var(--fg); font-weight: 600; margin-bottom: 8px; letter-spacing: -0.005em;">Claude Code <span style="color: var(--mute);">+</span> Codex</div>
+        <p class="tiny" style="margin: 0;">Not one or the other. Claude Code for orchestration and parallel agent teams; Codex with <code>gpt-5.4-xhigh</code> for complex implementations and second-opinion audits. Claude drafts &rarr; Codex checks. Or Codex implements the hard part while Claude reviews. The two compound.</p>
+      </div>
+
+      <div class="card">
+        <div style="font-size: 10.5px; color: var(--accent); letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; margin-bottom: 8px;">02 &middot; Plan before you touch</div>
+        <div style="font-size: 18px; color: var(--fg); font-weight: 600; margin-bottom: 8px; letter-spacing: -0.005em;">Violent plan mode <span style="color: var(--mute);">+</span> agent teams</div>
+        <p class="tiny" style="margin: 0;">Start with <code>/plan</code>. Let the agent enumerate before it edits. Fan out via agent teams (Claude) or sub-agents (Codex). The coordinator coordinates; it doesn't do the mechanical work. Plans are often the entire value &mdash; edits are mechanical once the plan is right.</p>
+      </div>
+
+      <div class="card">
+        <div style="font-size: 10.5px; color: var(--accent); letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; margin-bottom: 8px;">03 &middot; Context lives in terminals</div>
+        <div style="font-size: 18px; color: var(--fg); font-weight: 600; margin-bottom: 8px; letter-spacing: -0.005em;">Many named terminals, in Cursor</div>
+        <p class="tiny" style="margin: 0;">Six to ten terminals open at once, each one named. One per repo, one per long-running agent. Stop holding context in your head &mdash; the names do it. Modern compaction means each session's context is cheap to carry; stop worrying about priming.</p>
+      </div>
+
+      <div class="card">
+        <div style="font-size: 10.5px; color: var(--accent); letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; margin-bottom: 8px;">04 &middot; History as context</div>
+        <div style="font-size: 18px; color: var(--fg); font-weight: 600; margin-bottom: 8px; letter-spacing: -0.005em;">SpecStory CLI for session memory</div>
+        <p class="tiny" style="margin: 0;">Every session saves to <code>.specstory/history/</code>. When a new session needs context from an old one, pipe the relevant markdown into the prompt. Zero re-priming. This is why I stopped writing dedicated "context docs" for agents &mdash; the history <em>is</em> the context.</p>
+      </div>
+    </div>
+
+    <div class="pull" style="margin-top: 28px; max-width: 58ch;">
+      Context is the new IDE.
+      <span class="accent">Own it.</span>
+    </div>
+
+    <div class="end-card" style="margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--line); display: flex; gap: 22px; align-items: baseline; flex-wrap: wrap;">
+      <span style="font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute); font-weight: 600;">End of appendix &middot; fin</span>
+      <span style="color: var(--line-2);">&middot;</span>
+      <span><a href="https://gregce.github.io/ai-product-development/">gregce.github.io/ai-product-development</a></span>
+    </div>
+  </section>
+
 </main>
 
 <!-- bottom chrome: dots + counter + hint -->
