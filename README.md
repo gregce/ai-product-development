@@ -1,9 +1,22 @@
+<div align="center">
+
 # How product development works in an AI world
 
-A 10-slide deck, four analysis scripts, and three copy-me takeaway artifacts.
-Built for a live talk to Alpine SG portfolio-company product leaders in April 2026.
+<p>
+  <a href="https://gregce.github.io/ai-product-development/">
+    <img alt="Open the live deck" src="https://img.shields.io/badge/%E2%96%B6%20OPEN%20THE%20DECK-e35a2c?style=for-the-badge&labelColor=0b0f14" />
+  </a>
+</p>
 
-**Live deck.** Open [`index.html`](./index.html) in any browser, or view it on GitHub Pages once the repo is pushed public. Arrow keys to navigate. Single self-contained file; no build step.
+<p><strong><a href="https://gregce.github.io/ai-product-development/">gregce.github.io/ai-product-development</a></strong></p>
+
+<p><em>A talk for Alpine SG portfolio-company product leaders · April 2026</em></p>
+
+</div>
+
+---
+
+A 12-slide deck (10 + 2 appendix), four analysis scripts, and three copy-me takeaway artifacts.
 
 ## The thesis in one paragraph
 
@@ -11,21 +24,23 @@ Coding agents collapsed implementation from days to hours. CI/CD had already col
 
 ## Deck
 
+- [`index.html`](./index.html): the actual slideshow, dark editorial, Stoa orange accent, real data embedded. 12 slides, keyboard navigable.
 - [`slides/outline.md`](./slides/outline.md): the written narrative per slide, with the raw quotes bank at the bottom.
-- [`index.html`](./index.html): the actual slideshow, dark editorial, Stoa orange accent, real data embedded. 10 slides, keyboard navigable.
 
 Slides at a glance:
 
 1. Title
-2. The question: four things leaders ask; we answer one today
-3. The shift nobody priced in: Intent Lead Time
-4. From code-centric to intent-centric (the Intent + Code + Tests stack)
-5. The opinionated cut: three die, one lives
-6. Stoa as receipt: 168 design docs, 177 impl docs, 5 AS-BUILT architectures
-7. Live demo · the agentic release: a `dev → main` PR that writes itself
-8. A metric you can use on Monday: ILT sub-components and bands
+2. The question: four things leaders ask; I'm focusing in on one today
+3. The bottleneck that didn't collapse: Intent Lead Time
+4. A metric you can use on Monday: ILT sub-components and bands
+5. The stack: from code-centric to intent-centric
+6. The opinionated cut: three practices die, one lives
+7. Stoa as receipt: 168 design docs, 177 impl docs, 5 AS-BUILT architectures
+8. Live demo · the agentic release: a `dev → main` PR that writes itself
 9. Journey map: AI across the PDLC
 10. Take it home: three artifacts, three moves
+11. **Appendix A**: a minority report on AGENTS.md, CLAUDE.md, and agent skills
+12. **Appendix B**: harness & workflow (two harnesses, many terminals, saved sessions)
 
 ## Data behind the charts
 
@@ -63,6 +78,6 @@ Stoa (`specstoryai/stoa`), Claude Code (`opus-4-7`), hand-rolled SVG, and a lot 
 
 ## Credits & contact
 
-Greg Ceccarelli, co-founder of [Stoa / SpecStory](https://withstoa.com). [LinkedIn](https://www.linkedin.com/in/gregceccarelli/) · [Beyond Code-Centric whitepaper](https://specstory.com/whitepapers/beyond-code-centric-specstory-2025.pdf) · [Intent Lead Time guide](https://withstoa.com/guides/intent-lead-time).
+Greg Ceccarelli, co-founder & CPO at [Stoa / SpecStory](https://withstoa.com). [LinkedIn](https://www.linkedin.com/in/gregceccarelli/) · [X](https://x.com/gregce10) · [Beyond Code-Centric whitepaper](https://specstory.com/whitepapers/beyond-code-centric-specstory-2025.pdf) · [Intent Lead Time guide](https://withstoa.com/guides/intent-lead-time).
 
 License: talk contents are CC-BY 4.0; the release-pr-automation kit is MIT.
