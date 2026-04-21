@@ -543,6 +543,44 @@
     text-align: center; margin-bottom: 14px;
   }
 
+  /* slide 3 journey-map view toggle */
+  .view-toggle {
+    display: inline-flex;
+    gap: 0;
+    background: var(--ink-3);
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+    padding: 3px;
+    margin: 0 0 22px;
+  }
+  .view-toggle-btn {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    color: var(--mute);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .view-toggle-btn:hover { color: var(--fg-2); }
+  .view-toggle-btn.active {
+    background: var(--accent);
+    color: var(--ink);
+  }
+  .view-toggle-btn.active:hover { color: var(--ink); }
+  .journey-view[hidden] { display: none; }
+  .journey-view { animation: fade-in 0.25s ease; }
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: none; }
+  }
+
   /* slide 7 pipeline — three-stage agentic flow */
   .pipeline {
     display: grid;
@@ -1051,60 +1089,129 @@
   <!-- ============================================================ -->
   <section class="slide" data-slide="3" id="s3">
     <div class="slide-meta"><span class="bar"></span><span class="num">03</span><span>Journey map</span></div>
-    <h2 class="h2">Where AI fits across the PDLC<br />(and where it doesn't).</h2>
-    <p class="body" style="max-width: 76ch;">
-      Humans own the two endpoints. Humans own the <span class="hl">test spec</span>. Agents own the four middles. The SPEC → BUILD handoff is the one to automate first. That's where your ILT wins live.
-    </p>
 
-    <div class="chevron-row">
-      <div class="chev endpoint">
-        <div class="phase">01 · Ideation</div>
-        <h5>Problem sensing</h5>
-        <p class="tiny" style="margin: 0;">Customer context, market signal, strategy.</p>
-        <div class="role"><span class="human">Human</span></div>
+    <div class="view-toggle" role="tablist" aria-label="Journey view">
+      <button class="view-toggle-btn active" data-view="human" role="tab" aria-selected="true">Before agents</button>
+      <button class="view-toggle-btn" data-view="agent" role="tab" aria-selected="false">With agents</button>
+    </div>
+
+    <!-- Default: human-mediated PDLC -->
+    <div class="journey-view" data-view="human">
+      <h2 class="h2">How product used to ship.</h2>
+      <p class="body" style="max-width: 76ch;">
+        Every phase, human-mediated. Every handoff, a translation. Coding was the long pole; everything else was scaffolding around it.
+      </p>
+
+      <div class="chevron-row">
+        <div class="chev">
+          <div class="phase">01 · Ideation</div>
+          <h5>Meetings &amp; gut</h5>
+          <p class="tiny" style="margin: 0;">Customer calls, whiteboards, steering committees, quarterly planning.</p>
+          <div class="role"><span class="human">Human</span></div>
+        </div>
+        <div class="chev">
+          <div class="phase">02 · Requirements</div>
+          <h5>PRD, written after</h5>
+          <p class="tiny" style="margin: 0;">PM drafts the PRD days or weeks after the call. Word, Confluence, Notion. Meeting context already fading.</p>
+          <div class="role"><span class="human">Human</span></div>
+        </div>
+        <div class="chev">
+          <div class="phase">03 · Design</div>
+          <h5>Jira tickets</h5>
+          <p class="tiny" style="margin: 0;">Eng lead breaks the PRD into stories. Another translation, another lossy step.</p>
+          <div class="role"><span class="human">Human</span></div>
+        </div>
+        <div class="chev">
+          <div class="phase">04 · Build</div>
+          <h5>Code by hand</h5>
+          <p class="tiny" style="margin: 0;">Engineer + IDE, Stack Overflow, pair coding. Slow and careful. Days to weeks per ticket.</p>
+          <div class="role"><span class="human">Human</span></div>
+        </div>
+        <div class="chev">
+          <div class="phase">05 · Test</div>
+          <h5>QA, often late</h5>
+          <p class="tiny" style="margin: 0;">Separate team, sometimes offshored. Tests land after the code, sometimes not at all.</p>
+          <div class="role"><span class="human">Human</span></div>
+        </div>
+        <div class="chev">
+          <div class="phase">06 · Release</div>
+          <h5>Release train</h5>
+          <p class="tiny" style="margin: 0;">Weekly or monthly. PM hand-writes release notes from the commit list. Nobody reads them.</p>
+          <div class="role"><span class="human">Human</span></div>
+        </div>
       </div>
-      <div class="chev">
-        <div class="phase">02 · Intent capture</div>
-        <h5>Live meeting</h5>
-        <p class="tiny" style="margin: 0;">Agents attend. Decisions timestamped, owner attributed, source-linked.</p>
-        <div class="role"><span class="human">Human</span><span class="ai">Agent</span></div>
-      </div>
-      <div class="chev">
-        <div class="phase">03 · Spec</div>
-        <h5>Markdown, in repo</h5>
-        <p class="tiny" style="margin: 0;">PRDs + design docs drafted live, versioned with the code.</p>
-        <div class="role"><span class="human">Human</span><span class="ai">Agent</span></div>
-      </div>
-      <div class="chev">
-        <div class="phase">04 · Build</div>
-        <h5>Agent in sandbox</h5>
-        <p class="tiny" style="margin: 0;">Local CLI or cloud. Full session context. Humans intervene when needed.</p>
-        <div class="role"><span class="ai">Agent</span></div>
-      </div>
-      <div class="chev test">
-        <div class="phase">05 · Test</div>
-        <h5>Human-owned spec</h5>
-        <p class="tiny" style="margin: 0;">"Never let AI specify your tests." Agents implement; humans declare correct behavior.</p>
-        <div class="role"><span class="human">Human spec</span><span class="ai">Agent impl</span></div>
-      </div>
-      <div class="chev endpoint">
-        <div class="phase">06 · Release</div>
-        <h5>Agentic PR</h5>
-        <p class="tiny" style="margin: 0;">Release body is written by the agent from the diff + intent. Human reviews, one click.</p>
-        <div class="role"><span class="human">Human</span><span class="ai">Agent</span></div>
+
+      <div style="margin-top: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 1200px;">
+        <div class="card">
+          <div class="kicker">The long pole</div>
+          <div style="font-size: 18px; font-weight: 600; color: var(--fg);">Coding was the bottleneck.</div>
+          <p class="tiny" style="margin-top: 8px;">Everything else was scaffolding around the one thing that took days-to-weeks per feature.</p>
+        </div>
+        <div class="card">
+          <div class="kicker">The leaky funnel</div>
+          <div style="font-size: 18px; font-weight: 600; color: var(--fg);">Every handoff lost intent.</div>
+          <p class="tiny" style="margin-top: 8px;">Meeting → PRD → ticket → branch → PR. The thing shipped was three steps removed from the thing asked for.</p>
+        </div>
       </div>
     </div>
 
-    <div style="margin-top: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 1200px;">
-      <div class="card">
-        <div class="kicker" style="color: var(--green);">Sacred rule</div>
-        <div style="font-size: 18px; font-weight: 600; color: var(--fg);">Never let AI specify your tests.</div>
-        <p class="tiny" style="margin-top: 8px;">Tests encode shared domain judgment about what "correct" means. Ceding that cedes control. Agents implement; humans specify.</p>
+    <!-- Agent-era PDLC (toggle to show) -->
+    <div class="journey-view" data-view="agent" hidden>
+      <h2 class="h2">Where AI fits across the PDLC<br />(and where it doesn't).</h2>
+      <p class="body" style="max-width: 76ch;">
+        Humans own the two endpoints. Humans own the <span class="hl">test spec</span>. Agents own the four middles. The SPEC → BUILD handoff is the one to automate first. That's where your ILT wins live.
+      </p>
+
+      <div class="chevron-row">
+        <div class="chev endpoint">
+          <div class="phase">01 · Ideation</div>
+          <h5>Problem sensing</h5>
+          <p class="tiny" style="margin: 0;">Customer context, market signal, strategy.</p>
+          <div class="role"><span class="human">Human</span></div>
+        </div>
+        <div class="chev">
+          <div class="phase">02 · Intent capture</div>
+          <h5>Live meeting</h5>
+          <p class="tiny" style="margin: 0;">Agents attend. Decisions timestamped, owner attributed, source-linked.</p>
+          <div class="role"><span class="human">Human</span><span class="ai">Agent</span></div>
+        </div>
+        <div class="chev">
+          <div class="phase">03 · Spec</div>
+          <h5>Markdown, in repo</h5>
+          <p class="tiny" style="margin: 0;">PRDs + design docs drafted live, versioned with the code.</p>
+          <div class="role"><span class="human">Human</span><span class="ai">Agent</span></div>
+        </div>
+        <div class="chev">
+          <div class="phase">04 · Build</div>
+          <h5>Agent in sandbox</h5>
+          <p class="tiny" style="margin: 0;">Local CLI or cloud. Full session context. Humans intervene when needed.</p>
+          <div class="role"><span class="ai">Agent</span></div>
+        </div>
+        <div class="chev test">
+          <div class="phase">05 · Test</div>
+          <h5>Human-owned spec</h5>
+          <p class="tiny" style="margin: 0;">"Never let AI specify your tests." Agents implement; humans declare correct behavior.</p>
+          <div class="role"><span class="human">Human spec</span><span class="ai">Agent impl</span></div>
+        </div>
+        <div class="chev endpoint">
+          <div class="phase">06 · Release</div>
+          <h5>Agentic PR</h5>
+          <p class="tiny" style="margin: 0;">Release body is written by the agent from the diff + intent. Human reviews, one click.</p>
+          <div class="role"><span class="human">Human</span><span class="ai">Agent</span></div>
+        </div>
       </div>
-      <div class="card">
-        <div class="kicker">Automate first</div>
-        <div style="font-size: 18px; font-weight: 600; color: var(--fg);">The SPEC → BUILD handoff.</div>
-        <p class="tiny" style="margin-top: 8px;">That's where activation latency lives. If the spec is picked up by the agent without a human re-routing it, most of your ILT disappears.</p>
+
+      <div style="margin-top: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 1200px;">
+        <div class="card">
+          <div class="kicker" style="color: var(--green);">Sacred rule</div>
+          <div style="font-size: 18px; font-weight: 600; color: var(--fg);">Never let AI specify your tests.</div>
+          <p class="tiny" style="margin-top: 8px;">Tests encode shared domain judgment about what "correct" means. Ceding that cedes control. Agents implement; humans specify.</p>
+        </div>
+        <div class="card">
+          <div class="kicker">Automate first</div>
+          <div style="font-size: 18px; font-weight: 600; color: var(--fg);">The SPEC → BUILD handoff.</div>
+          <p class="tiny" style="margin-top: 8px;">That's where activation latency lives. If the spec is picked up by the agent without a human re-routing it, most of your ILT disappears.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -1784,6 +1891,26 @@
 
   // redraw on resize (SVG already scales, but if we added more dynamic things later)
   window.addEventListener("resize", () => { drawThemes(); drawMonths(); });
+
+  // ----- slide 3 journey-map view toggle ----------------------------
+  // Two views live in the slide: "human" (pre-agent PDLC, default) and
+  // "agent". Clicking a toggle button swaps the visible view and the
+  // active-button style. Keyboard-friendly since it's a <button>.
+  document.querySelectorAll(".view-toggle-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const wanted = btn.dataset.view;
+      const slide = btn.closest("section");
+      if (!slide) return;
+      slide.querySelectorAll(".view-toggle-btn").forEach((b) => {
+        const on = b.dataset.view === wanted;
+        b.classList.toggle("active", on);
+        b.setAttribute("aria-selected", on ? "true" : "false");
+      });
+      slide.querySelectorAll(".journey-view").forEach((v) => {
+        v.hidden = v.dataset.view !== wanted;
+      });
+    });
+  });
 })();
 </script>
 
