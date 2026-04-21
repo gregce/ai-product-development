@@ -1520,36 +1520,38 @@
     <div class="slide-meta"><span class="bar"></span><span class="num">04</span><span>The bottleneck that didn't collapse</span></div>
     <h2 class="h2">Two collapses happened<br />on very different clocks.</h2>
 
-    <div style="max-width: 900px; margin-top: 12px;">
-      <table class="basic">
-        <thead>
-          <tr><th>Phase</th><th>2015</th><th>2026</th></tr>
-        </thead>
-        <tbody>
-          <tr class="stuck"><td><strong>Intent capture</strong></td><td class="num">weeks</td><td class="num" style="color: var(--red);">weeks still</td></tr>
-          <tr><td><strong>Implementation</strong></td><td class="num">days to weeks</td><td class="num" style="color: var(--accent);">hours <span style="color:var(--mute);font-size:11px;">(agents)</span></td></tr>
-          <tr><td><strong>Deploy</strong></td><td class="num">hours to days</td><td class="num" style="color: var(--accent);">minutes <span style="color:var(--mute);font-size:11px;">(CI/CD)</span></td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <p class="body" style="margin-top: 28px; max-width: 70ch;">
+    <p class="body" style="margin-top: 20px; max-width: 78ch;">
       The bottleneck moved. <strong>DORA can't see it by design.</strong> DORA's clock starts at <code>git commit</code>. The expensive thing now happens <em>before</em> commit. That gap has a name.
     </p>
 
-    <div class="ilt-panel">
-      <div class="kicker">The new metric</div>
-      <div class="formula">ILT = t(first commit) − t(product decision captured)</div>
+    <div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 32px; align-items: start; margin-top: 26px;">
+      <div>
+        <table class="basic">
+          <thead>
+            <tr><th>Phase</th><th>2015</th><th>2026</th></tr>
+          </thead>
+          <tbody>
+            <tr class="stuck"><td><strong>Intent capture</strong></td><td class="num">weeks</td><td class="num" style="color: var(--red);">weeks still</td></tr>
+            <tr><td><strong>Implementation</strong></td><td class="num">days to weeks</td><td class="num" style="color: var(--accent);">hours <span style="color:var(--mute);font-size:11px;">(agents)</span></td></tr>
+            <tr><td><strong>Deploy</strong></td><td class="num">hours to days</td><td class="num" style="color: var(--accent);">minutes <span style="color:var(--mute);font-size:11px;">(CI/CD)</span></td></tr>
+          </tbody>
+        </table>
+      </div>
 
-      <div class="timeline-wrap">
-        <div class="timeline-bar">
-          <div class="timeline-seg ilt">Intent Lead Time</div>
-          <div class="timeline-seg dora">DORA Lead Time for Changes</div>
-          <div class="timeline-marker ilt-start"><span class="ml">decision captured</span></div>
-          <div class="timeline-marker commit"><span class="ml">first commit</span></div>
-          <div class="timeline-marker prod"><span class="ml">prod</span></div>
+      <div class="ilt-panel" style="margin-top: 0; max-width: none;">
+        <div class="kicker">The new metric</div>
+        <div class="formula">ILT = t(first commit) − t(product decision captured)</div>
+
+        <div class="timeline-wrap">
+          <div class="timeline-bar">
+            <div class="timeline-seg ilt">Intent Lead Time</div>
+            <div class="timeline-seg dora">DORA Lead Time for Changes</div>
+            <div class="timeline-marker ilt-start"><span class="ml">decision captured</span></div>
+            <div class="timeline-marker commit"><span class="ml">first commit</span></div>
+            <div class="timeline-marker prod"><span class="ml">prod</span></div>
+          </div>
+          <div class="tiny" style="margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);">ILT ends exactly where DORA's clock starts. No overlap. No gap. Two metrics, one pipeline, end to end.</div>
         </div>
-        <div class="tiny" style="margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);">ILT ends exactly where DORA's clock starts. No overlap. No gap. Two metrics, one pipeline, end to end.</div>
       </div>
     </div>
   </section>
