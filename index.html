@@ -331,6 +331,101 @@
     border-radius: 2px;
   }
 
+  /* Slide 5 ILT sub-component breakdown: a striped bar in the visual
+     language of slide 4's ILT segment, divided into the four latencies.
+     The load-bearing "Capture" segment fills solid; the three segments
+     that collapse to zero keep the diagonal-stripe pattern to signal
+     "still here, but fading". Event markers above the bar echo slide
+     4's timeline markers so the two slides visually dovetail. */
+  .ilt-breakdown {
+    position: relative;
+    margin: 64px 0 46px;
+    max-width: 960px;
+  }
+  .ilt-breakdown-bar {
+    display: flex;
+    height: 44px;
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .ilt-breakdown-seg {
+    flex: 1;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 8px;
+    border-right: 1px dashed rgba(227, 90, 44, 0.35);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12px;
+    letter-spacing: 0.02em;
+    color: var(--accent);
+    background: repeating-linear-gradient(45deg,
+      var(--accent-dim) 0,
+      var(--accent-dim) 10px,
+      transparent 10px,
+      transparent 20px);
+  }
+  .ilt-breakdown-seg:last-child { border-right: 0; }
+  .ilt-breakdown-seg.live {
+    background: var(--accent-dim);
+    color: var(--fg);
+    font-weight: 600;
+  }
+  .ilt-breakdown-marker {
+    position: absolute;
+    top: -36px;
+    bottom: -20px;
+    width: 1.5px;
+    background: var(--line-2);
+    pointer-events: none;
+  }
+  .ilt-breakdown-marker::before {
+    content: "";
+    position: absolute;
+    top: 0; left: -4px;
+    width: 9px; height: 9px;
+    background: var(--fg);
+    border-radius: 50%;
+  }
+  .ilt-breakdown-marker.first::before { background: var(--accent); }
+  .ilt-breakdown-marker.last::before  { background: var(--blue); }
+  .ilt-breakdown-marker .mk-label {
+    position: absolute;
+    top: -26px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10.5px;
+    line-height: 1.2;
+    color: var(--fg-2);
+    text-align: center;
+    white-space: nowrap;
+  }
+  .ilt-breakdown-marker.first .mk-label { left: 0; transform: none; text-align: left; }
+  .ilt-breakdown-marker.last  .mk-label { left: auto; right: 0; transform: none; text-align: right; }
+  .ilt-breakdown-legend {
+    margin-top: 14px;
+    display: flex;
+    gap: 18px;
+    font-size: 11px;
+    color: var(--mute);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    flex-wrap: wrap;
+  }
+  .ilt-breakdown-legend .swatch {
+    display: inline-block;
+    width: 10px; height: 10px;
+    border: 1px solid var(--accent);
+    margin-right: 6px;
+    vertical-align: -1px;
+  }
+  .ilt-breakdown-legend .swatch.live { background: var(--accent-dim); }
+  .ilt-breakdown-legend .swatch.fade {
+    background: repeating-linear-gradient(45deg,
+      var(--accent-dim) 0,
+      var(--accent-dim) 4px,
+      transparent 4px,
+      transparent 8px);
+  }
+
   /* ILT presentation panel used on slide 4: unifies the "new metric"
      label, the formula, and the dovetail timeline into one framed block
      so they read as a single visual statement instead of three stacked
@@ -1367,7 +1462,29 @@
   <!-- ============================================================ -->
   <section class="slide" data-slide="5" id="s5">
     <div class="slide-meta"><span class="bar"></span><span class="num">05</span><span>A metric you can use on Monday</span></div>
-    <h2 class="h2">Intent Lead Time.<br />Four sub-metrics.<br />Three go to zero.</h2>
+    <h2 class="h2" style="font-size: clamp(26px, 3.1vw, 44px); white-space: nowrap;">Intent Lead Time. Four sub-metrics. Three go to zero.</h2>
+
+    <!-- ILT zoom-in: same striped-orange visual language as slide 4's
+         timeline, now exploded into the four latencies that compose it. -->
+    <div class="ilt-breakdown" aria-label="ILT decomposed into four sub-metrics">
+      <div class="ilt-breakdown-marker first" style="left: 0;"><span class="mk-label">decision<br>made</span></div>
+      <div class="ilt-breakdown-marker" style="left: 25%;"><span class="mk-label">artifact<br>exists</span></div>
+      <div class="ilt-breakdown-marker" style="left: 50%;"><span class="mk-label">ticket<br>created</span></div>
+      <div class="ilt-breakdown-marker" style="left: 75%;"><span class="mk-label">assigned</span></div>
+      <div class="ilt-breakdown-marker last" style="left: 100%;"><span class="mk-label">first<br>commit</span></div>
+
+      <div class="ilt-breakdown-bar">
+        <div class="ilt-breakdown-seg live"><span>Capture</span></div>
+        <div class="ilt-breakdown-seg"><span>Sequencing</span></div>
+        <div class="ilt-breakdown-seg"><span>Pickup</span></div>
+        <div class="ilt-breakdown-seg"><span>Activation</span></div>
+      </div>
+
+      <div class="ilt-breakdown-legend">
+        <span><span class="swatch live"></span>Load-bearing</span>
+        <span><span class="swatch fade"></span>Collapses to zero in an intent-driven workflow</span>
+      </div>
+    </div>
 
     <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; margin-top: 16px; align-items: start;">
       <div>
