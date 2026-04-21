@@ -551,7 +551,11 @@
     border: 1px solid var(--line-2);
     border-radius: 999px;
     padding: 3px;
-    margin: 0 0 22px;
+    margin: 0;
+    position: absolute;
+    top: 72px;
+    right: 96px;
+    z-index: 2;
   }
   .view-toggle-btn {
     appearance: none;
@@ -903,6 +907,14 @@
 
     /* Ledes that were pinned nowrap on slides 11 and 12 are too wide on phones */
     .slide p.lede[style*="nowrap"] { white-space: normal !important; }
+
+    /* Toggle pill returns to inline flow on phones — not enough
+       horizontal room for an absolute-positioned top-right label */
+    .view-toggle {
+      position: static;
+      margin: 0 0 18px;
+    }
+    .view-toggle-btn { padding: 6px 12px; font-size: 11px; }
 
     /* Title slide refinements */
     .title-slide .h1 { font-size: clamp(34px, 9.5vw, 60px); }
