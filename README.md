@@ -31,13 +31,13 @@ Slides at a glance:
 
 1. Title
 2. The question: four things leaders ask; I'm focusing in on one today
-3. The bottleneck that didn't collapse: Intent Lead Time
-4. A metric you can use on Monday: ILT sub-components and bands
-5. The stack: from code-centric to intent-centric
-6. The opinionated cut: three practices die, one lives
-7. Stoa as receipt: 168 design docs, 177 impl docs, 5 AS-BUILT architectures
-8. Live demo · the agentic release: a `dev → main` PR that writes itself
-9. Journey map: AI across the PDLC
+3. Journey map: where AI fits across the PDLC (and where it doesn't)
+4. The bottleneck that didn't collapse: Intent Lead Time
+5. A metric you can use on Monday: ILT sub-components and bands
+6. The stack: from code-centric to intent-centric
+7. The opinionated cut: three practices die, one lives
+8. Stoa as receipt: 168 design docs, 177 impl docs, 5 AS-BUILT architectures
+9. Live demo · the agentic release: a `dev → main` PR that writes itself
 10. Take it home: three artifacts, three moves
 11. **Appendix A**: a minority report on AGENTS.md, CLAUDE.md, and agent skills
 12. **Appendix B**: harness & workflow (two harnesses, many terminals, saved sessions)
@@ -52,7 +52,7 @@ Three things leaders can grab from [`takeaways/`](./takeaways/):
 
 1. [`takeaways/release-pr-automation/`](./takeaways/release-pr-automation/): a drop-in GitHub Actions kit: `release-pr-sync.yml` + gh-aw `release-pr-body.md` + `main-from-dev-only.yml` + README. Your release notes write themselves tonight.
 2. [`takeaways/intent-driven-prd-template.md`](./takeaways/intent-driven-prd-template.md): an opinionated PRD template shaped for agent handoff. Worked example included.
-3. [`takeaways/ai-pdlc-journey-map.md`](./takeaways/ai-pdlc-journey-map.md): poster version of slide 9. Which tool, which phase, who owns what, at each step.
+3. [`takeaways/ai-pdlc-journey-map.md`](./takeaways/ai-pdlc-journey-map.md): poster version of slide 3. Which tool, which phase, who owns what, at each step.
 
 ## Reading order
 

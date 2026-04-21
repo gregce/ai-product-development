@@ -1046,10 +1046,74 @@
   </section>
 
   <!-- ============================================================ -->
-  <!-- SLIDE 3 — The shift nobody priced in                          -->
+  <!-- ============================================================ -->
+  <!-- SLIDE 3 — Journey map                                         -->
   <!-- ============================================================ -->
   <section class="slide" data-slide="3" id="s3">
-    <div class="slide-meta"><span class="bar"></span><span class="num">03</span><span>The bottleneck that didn't collapse</span></div>
+    <div class="slide-meta"><span class="bar"></span><span class="num">03</span><span>Journey map</span></div>
+    <h2 class="h2">Where AI fits across the PDLC<br />(and where it doesn't).</h2>
+    <p class="body" style="max-width: 76ch;">
+      Humans own the two endpoints. Humans own the <span class="hl">test spec</span>. Agents own the four middles. The SPEC → BUILD handoff is the one to automate first. That's where your ILT wins live.
+    </p>
+
+    <div class="chevron-row">
+      <div class="chev endpoint">
+        <div class="phase">01 · Ideation</div>
+        <h5>Problem sensing</h5>
+        <p class="tiny" style="margin: 0;">Customer context, market signal, strategy.</p>
+        <div class="role"><span class="human">Human</span></div>
+      </div>
+      <div class="chev">
+        <div class="phase">02 · Intent capture</div>
+        <h5>Live meeting</h5>
+        <p class="tiny" style="margin: 0;">Agents attend. Decisions timestamped, owner attributed, source-linked.</p>
+        <div class="role"><span class="human">Human</span><span class="ai">Agent</span></div>
+      </div>
+      <div class="chev">
+        <div class="phase">03 · Spec</div>
+        <h5>Markdown, in repo</h5>
+        <p class="tiny" style="margin: 0;">PRDs + design docs drafted live, versioned with the code.</p>
+        <div class="role"><span class="human">Human</span><span class="ai">Agent</span></div>
+      </div>
+      <div class="chev">
+        <div class="phase">04 · Build</div>
+        <h5>Agent in sandbox</h5>
+        <p class="tiny" style="margin: 0;">Local CLI or cloud. Full session context. Humans intervene when needed.</p>
+        <div class="role"><span class="ai">Agent</span></div>
+      </div>
+      <div class="chev test">
+        <div class="phase">05 · Test</div>
+        <h5>Human-owned spec</h5>
+        <p class="tiny" style="margin: 0;">"Never let AI specify your tests." Agents implement; humans declare correct behavior.</p>
+        <div class="role"><span class="human">Human spec</span><span class="ai">Agent impl</span></div>
+      </div>
+      <div class="chev endpoint">
+        <div class="phase">06 · Release</div>
+        <h5>Agentic PR</h5>
+        <p class="tiny" style="margin: 0;">Release body is written by the agent from the diff + intent. Human reviews, one click.</p>
+        <div class="role"><span class="human">Human</span><span class="ai">Agent</span></div>
+      </div>
+    </div>
+
+    <div style="margin-top: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 1200px;">
+      <div class="card">
+        <div class="kicker" style="color: var(--green);">Sacred rule</div>
+        <div style="font-size: 18px; font-weight: 600; color: var(--fg);">Never let AI specify your tests.</div>
+        <p class="tiny" style="margin-top: 8px;">Tests encode shared domain judgment about what "correct" means. Ceding that cedes control. Agents implement; humans specify.</p>
+      </div>
+      <div class="card">
+        <div class="kicker">Automate first</div>
+        <div style="font-size: 18px; font-weight: 600; color: var(--fg);">The SPEC → BUILD handoff.</div>
+        <p class="tiny" style="margin-top: 8px;">That's where activation latency lives. If the spec is picked up by the agent without a human re-routing it, most of your ILT disappears.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 4 — The shift nobody priced in                          -->
+  <!-- ============================================================ -->
+  <section class="slide" data-slide="4" id="s4">
+    <div class="slide-meta"><span class="bar"></span><span class="num">04</span><span>The bottleneck that didn't collapse</span></div>
     <h2 class="h2">Two collapses happened<br />on very different clocks.</h2>
 
     <div style="max-width: 900px; margin-top: 12px;">
@@ -1090,10 +1154,10 @@
 
   <!-- ============================================================ -->
   <!-- ============================================================ -->
-  <!-- SLIDE 4 — A metric you can use on Monday                      -->
+  <!-- SLIDE 5 — A metric you can use on Monday                      -->
   <!-- ============================================================ -->
-  <section class="slide" data-slide="4" id="s4">
-    <div class="slide-meta"><span class="bar"></span><span class="num">04</span><span>A metric you can use on Monday</span></div>
+  <section class="slide" data-slide="5" id="s5">
+    <div class="slide-meta"><span class="bar"></span><span class="num">05</span><span>A metric you can use on Monday</span></div>
     <h2 class="h2">Intent Lead Time.<br />Four sub-metrics.<br />Three go to zero.</h2>
 
     <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; margin-top: 16px; align-items: start;">
@@ -1142,10 +1206,10 @@
   </section>
 
   <!-- ============================================================ -->
-  <!-- SLIDE 5 — From code-centric to intent-centric                 -->
+  <!-- SLIDE 6 — From code-centric to intent-centric                 -->
   <!-- ============================================================ -->
-  <section class="slide" data-slide="5" id="s5">
-    <div class="slide-meta"><span class="bar"></span><span class="num">05</span><span>The stack</span></div>
+  <section class="slide" data-slide="6" id="s6">
+    <div class="slide-meta"><span class="bar"></span><span class="num">06</span><span>The stack</span></div>
     <h2 class="h2" style="white-space: nowrap;">From code-centric to intent-centric.</h2>
 
     <div class="pull">
@@ -1179,10 +1243,10 @@
   </section>
 
   <!-- ============================================================ -->
-  <!-- SLIDE 6 — Opinionated cut                                     -->
+  <!-- SLIDE 7 — Opinionated cut                                     -->
   <!-- ============================================================ -->
-  <section class="slide" data-slide="6" id="s6">
-    <div class="slide-meta"><span class="bar"></span><span class="num">06</span><span>The opinionated cut</span></div>
+  <section class="slide" data-slide="7" id="s7">
+    <div class="slide-meta"><span class="bar"></span><span class="num">07</span><span>The opinionated cut</span></div>
     <h2 class="h2">Three practices die. One lives.</h2>
 
     <div class="grid4" style="margin-top: 24px;">
@@ -1219,10 +1283,10 @@
   </section>
 
   <!-- ============================================================ -->
-  <!-- SLIDE 7 — Stoa as receipt                                     -->
+  <!-- SLIDE 8 — Stoa as receipt                                     -->
   <!-- ============================================================ -->
-  <section class="slide" data-slide="7" id="s7">
-    <div class="slide-meta"><span class="bar"></span><span class="num">07</span><span>Stoa as receipt</span></div>
+  <section class="slide" data-slide="8" id="s8">
+    <div class="slide-meta"><span class="bar"></span><span class="num">08</span><span>Stoa as receipt</span></div>
     <h2 class="h2">I don't just pitch this.<br />I live it daily.</h2>
     <p class="body" style="max-width: 76ch;">Every number on this slide was mined from the <code>specstoryai/stoa</code> monorepo at build time. Real commits, real doc counts, current as of the deck build.</p>
 
@@ -1252,10 +1316,10 @@
   </section>
 
   <!-- ============================================================ -->
-  <!-- SLIDE 8 — Agentic release                                     -->
+  <!-- SLIDE 9 — Agentic release                                     -->
   <!-- ============================================================ -->
-  <section class="slide" data-slide="8" id="s8">
-    <div class="slide-meta"><span class="bar"></span><span class="num">08</span><span>Live demo · the agentic release</span></div>
+  <section class="slide" data-slide="9" id="s9">
+    <div class="slide-meta"><span class="bar"></span><span class="num">09</span><span>Live demo · the agentic release</span></div>
     <h2 class="h2">A <em class="accent" style="font-style: normal;">dev → main</em> release PR<br />that writes itself.</h2>
     <p class="body" style="max-width: 74ch;">
       Humans don't read release diffs. Our fix: <strong>the PR writes itself</strong>. Four files in <code>.github/workflows/</code>, running on every push to <code>dev</code>. This is the concrete example you can copy tonight. It's in your takeaways.
@@ -1324,69 +1388,6 @@
           <li>✓ The <em>prompt</em> is a markdown file humans edit. The YAML is compiled by <code>gh aw compile</code>.</li>
           <li>✓ Slack gets the same canonical body. No duplicate writing.</li>
         </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================ -->
-  <!-- SLIDE 9 — Journey map                                         -->
-  <!-- ============================================================ -->
-  <section class="slide" data-slide="9" id="s9">
-    <div class="slide-meta"><span class="bar"></span><span class="num">09</span><span>Journey map</span></div>
-    <h2 class="h2">Where AI fits across the PDLC<br />(and where it doesn't).</h2>
-    <p class="body" style="max-width: 76ch;">
-      Humans own the two endpoints. Humans own the <span class="hl">test spec</span>. Agents own the four middles. The SPEC → BUILD handoff is the one to automate first. That's where your ILT wins live.
-    </p>
-
-    <div class="chevron-row">
-      <div class="chev endpoint">
-        <div class="phase">01 · Ideation</div>
-        <h5>Problem sensing</h5>
-        <p class="tiny" style="margin: 0;">Customer context, market signal, strategy.</p>
-        <div class="role"><span class="human">Human</span></div>
-      </div>
-      <div class="chev">
-        <div class="phase">02 · Intent capture</div>
-        <h5>Live meeting</h5>
-        <p class="tiny" style="margin: 0;">Agents attend. Decisions timestamped, owner attributed, source-linked.</p>
-        <div class="role"><span class="human">Human</span><span class="ai">Agent</span></div>
-      </div>
-      <div class="chev">
-        <div class="phase">03 · Spec</div>
-        <h5>Markdown, in repo</h5>
-        <p class="tiny" style="margin: 0;">PRDs + design docs drafted live, versioned with the code.</p>
-        <div class="role"><span class="human">Human</span><span class="ai">Agent</span></div>
-      </div>
-      <div class="chev">
-        <div class="phase">04 · Build</div>
-        <h5>Agent in sandbox</h5>
-        <p class="tiny" style="margin: 0;">Local CLI or cloud. Full session context. Humans intervene when needed.</p>
-        <div class="role"><span class="ai">Agent</span></div>
-      </div>
-      <div class="chev test">
-        <div class="phase">05 · Test</div>
-        <h5>Human-owned spec</h5>
-        <p class="tiny" style="margin: 0;">"Never let AI specify your tests." Agents implement; humans declare correct behavior.</p>
-        <div class="role"><span class="human">Human spec</span><span class="ai">Agent impl</span></div>
-      </div>
-      <div class="chev endpoint">
-        <div class="phase">06 · Release</div>
-        <h5>Agentic PR</h5>
-        <p class="tiny" style="margin: 0;">Release body is written by the agent from the diff + intent. Human reviews, one click.</p>
-        <div class="role"><span class="human">Human</span><span class="ai">Agent</span></div>
-      </div>
-    </div>
-
-    <div style="margin-top: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 1200px;">
-      <div class="card">
-        <div class="kicker" style="color: var(--green);">Sacred rule</div>
-        <div style="font-size: 18px; font-weight: 600; color: var(--fg);">Never let AI specify your tests.</div>
-        <p class="tiny" style="margin-top: 8px;">Tests encode shared domain judgment about what "correct" means. Ceding that cedes control. Agents implement; humans specify.</p>
-      </div>
-      <div class="card">
-        <div class="kicker">Automate first</div>
-        <div style="font-size: 18px; font-weight: 600; color: var(--fg);">The SPEC → BUILD handoff.</div>
-        <p class="tiny" style="margin-top: 8px;">That's where activation latency lives. If the spec is picked up by the agent without a human re-routing it, most of your ILT disappears.</p>
       </div>
     </div>
   </section>
