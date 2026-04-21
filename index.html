@@ -542,17 +542,33 @@
     border-radius: 50%;
   }
   .timeline-marker .ml {
-    position: absolute; top: -22px; left: 14px;
+    position: absolute;
+    top: -22px;
+    left: 50%;
+    transform: translateX(-50%);
     font-size: 11px;
     color: var(--fg-2);
     white-space: nowrap;
   }
   .timeline-marker.ilt-start { left: 0; }
   .timeline-marker.ilt-start::before { background: var(--accent); }
+  /* First marker sits at x=0 of the panel; align its label flush-left
+     so it doesn't overflow the left edge. */
+  .timeline-marker.ilt-start .ml {
+    left: 0;
+    transform: none;
+  }
   .timeline-marker.commit { left: 66.66%; }
   .timeline-marker.commit::before { background: var(--blue); }
   .timeline-marker.prod { left: 100%; }
   .timeline-marker.prod::before { background: var(--green); }
+  /* Last marker sits at x=100% (right edge); align its label flush-right
+     so the text stays inside the panel box. */
+  .timeline-marker.prod .ml {
+    left: auto;
+    right: 0;
+    transform: none;
+  }
 
   /* slide 4 stacks */
   .stack {
@@ -1338,7 +1354,7 @@
           <div class="timeline-seg dora">DORA Lead Time for Changes</div>
           <div class="timeline-marker ilt-start"><span class="ml">decision captured</span></div>
           <div class="timeline-marker commit"><span class="ml">first commit</span></div>
-          <div class="timeline-marker prod"><span class="ml">prod running</span></div>
+          <div class="timeline-marker prod"><span class="ml">prod</span></div>
         </div>
         <div class="tiny" style="margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);">ILT ends exactly where DORA's clock starts. No overlap. No gap. Two metrics, one pipeline, end to end.</div>
       </div>
