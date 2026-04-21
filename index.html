@@ -371,81 +371,49 @@
     font-size: 11px;
     letter-spacing: 0.02em;
   }
-  .doc-toc .toc-row {
+  /* Markdown outline preview: renders the file as a code-editor view
+     with a line-number gutter, syntax-tinted # marks, and real line
+     numbers. Content is the actual outline pulled from
+     stoa-cli/AS-BUILT-ARCHITECTURE.md. */
+  .md-preview {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12.5px;
+    line-height: 1.75;
+    background: var(--ink-2);
+    max-height: 64vh;
+    overflow-y: auto;
+  }
+  .md-row {
     display: grid;
-    grid-template-columns: 36px 1fr 160px 90px;
-    align-items: center;
-    gap: 14px;
-    padding: 11px 18px;
-    border-top: 1px dashed var(--line);
-    transition: background 0.15s ease;
+    grid-template-columns: 64px 1fr;
+    border-top: 1px solid rgba(255, 255, 255, 0.015);
   }
-  .doc-toc .toc-row:first-child { border-top: 0; }
-  .doc-toc .toc-row:hover { background: rgba(227, 90, 44, 0.03); }
-  .doc-toc .toc-num {
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  .md-row:first-child { border-top: 0; }
+  .md-row .ln {
+    text-align: right;
     color: var(--mute-2);
-    font-size: 13px;
-  }
-  .doc-toc .toc-body .toc-h {
-    font-size: 14.5px;
-    font-weight: 600;
-    color: var(--fg);
-    letter-spacing: -0.005em;
-  }
-  .doc-toc .toc-body .toc-sub {
-    font-size: 12px;
-    color: var(--mute);
-    line-height: 1.5;
-    margin-top: 2px;
-  }
-  .doc-toc .toc-weight {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 11px;
-    color: var(--fg-2);
-    font-variant-numeric: tabular-nums;
-  }
-  .doc-toc .toc-weight .bar {
-    height: 6px;
-    background: var(--accent);
-    border-radius: 2px;
-    opacity: 0.75;
-  }
-  .doc-toc .toc-kind {
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 10.5px;
-    padding: 3px 8px;
-    border-radius: 3px;
+    padding: 3px 12px 3px 0;
+    border-right: 1px solid var(--line);
     background: var(--ink-3);
+    user-select: none;
+    font-variant-numeric: tabular-nums;
+    font-size: 11px;
+  }
+  .md-row .ct {
+    padding: 3px 20px;
     color: var(--fg-2);
-    border: 1px solid var(--line-2);
-    white-space: nowrap;
-    text-align: center;
-    letter-spacing: 0.02em;
+    white-space: pre;
+    overflow-x: auto;
   }
-  .doc-toc .toc-kind.diagram {
-    background: rgba(88, 166, 255, 0.12);
-    color: var(--blue);
-    border-color: rgba(88, 166, 255, 0.3);
-  }
-  .doc-toc .toc-kind.deep-dive {
-    background: rgba(227, 90, 44, 0.12);
-    color: var(--accent);
-    border-color: rgba(227, 90, 44, 0.35);
-  }
-  .doc-toc .toc-kind.schema {
-    background: rgba(126, 231, 135, 0.12);
-    color: var(--green);
-    border-color: rgba(126, 231, 135, 0.3);
-  }
-  .doc-toc .toc-kind.table {
-    background: rgba(255, 216, 102, 0.10);
-    color: var(--yellow);
-    border-color: rgba(255, 216, 102, 0.3);
-  }
+  .md-row .hash  { color: var(--mute-2); }
+  .md-row .h1    { color: var(--accent); font-weight: 700; }
+  .md-row .h2    { color: var(--accent); font-weight: 600; }
+  .md-row .h3    { color: var(--blue);   font-weight: 500; }
+  .md-row .meta  { color: var(--mute);   font-style: italic; }
+  .md-row .hr    { color: var(--line-2); }
+  .md-row .more  { color: var(--mute);   font-style: italic; }
+  /* subtle background tint for section breaks (## lines) */
+  .md-row.sec    { background: rgba(227, 90, 44, 0.025); }
 
   /* Slide 5 ILT sub-component breakdown: a striped bar in the visual
      language of slide 4's ILT segment, divided into the four latencies.
@@ -1973,116 +1941,46 @@
         <span class="file-meta">3,250 lines &middot; 48 code fences &middot; 21 ASCII diagrams &middot; updated 2026-04-13</span>
       </div>
 
-      <div class="doc-toc">
-        <div class="toc-row">
-          <div class="toc-num">##</div>
-          <div class="toc-body">
-            <div class="toc-h">Overview</div>
-            <div class="toc-sub">What the thing is, design philosophy, components at a glance. Above the fold.</div>
-          </div>
-          <div class="toc-weight"><span class="bar" style="width: 6px;"></span><span>36</span></div>
-          <div class="toc-kind">prose</div>
-        </div>
-
-        <div class="toc-row">
-          <div class="toc-num">##</div>
-          <div class="toc-body">
-            <div class="toc-h">System Architecture</div>
-            <div class="toc-sub">High-level ASCII box diagrams: UI &rarr; RPC &rarr; daemon &rarr; storage.</div>
-          </div>
-          <div class="toc-weight"><span class="bar" style="width: 14px;"></span><span>90</span></div>
-          <div class="toc-kind diagram">diagram</div>
-        </div>
-
-        <div class="toc-row">
-          <div class="toc-num">##</div>
-          <div class="toc-body">
-            <div class="toc-h">Package Structure</div>
-            <div class="toc-sub">Tree of every Go package with a one-line purpose. Where an agent starts reading.</div>
-          </div>
-          <div class="toc-weight"><span class="bar" style="width: 15px;"></span><span>95</span></div>
-          <div class="toc-kind diagram">diagram</div>
-        </div>
-
-        <div class="toc-row">
-          <div class="toc-num">##</div>
-          <div class="toc-body">
-            <div class="toc-h">Data Flow Diagrams</div>
-            <div class="toc-sub">Event bus, transactional outbox, CRDT sync, file watcher, correlation engine. 15+ flows.</div>
-          </div>
-          <div class="toc-weight"><span class="bar" style="width: 115px;"></span><span>867</span></div>
-          <div class="toc-kind diagram">diagram</div>
-        </div>
-
-        <div class="toc-row">
-          <div class="toc-num">##</div>
-          <div class="toc-body">
-            <div class="toc-h">Core Components</div>
-            <div class="toc-sub">Per-component deep dives: journal, watcher, correlation, network, TUI, CLI. The bulk.</div>
-          </div>
-          <div class="toc-weight"><span class="bar" style="width: 192px;"></span><span>1,450</span></div>
-          <div class="toc-kind deep-dive">deep dive</div>
-        </div>
-
-        <div class="toc-row">
-          <div class="toc-num">##</div>
-          <div class="toc-body">
-            <div class="toc-h">Storage Architecture</div>
-            <div class="toc-sub">SQLite schemas, journal tables, CRDT doc handles, blob store.</div>
-          </div>
-          <div class="toc-weight"><span class="bar" style="width: 22px;"></span><span>166</span></div>
-          <div class="toc-kind schema">schema</div>
-        </div>
-
-        <div class="toc-row">
-          <div class="toc-num">##</div>
-          <div class="toc-body">
-            <div class="toc-h">Network &amp; Collaboration</div>
-            <div class="toc-sub">P2P protocol, relay handshake, WebSocket sync, Slack / Supabase bridges.</div>
-          </div>
-          <div class="toc-weight"><span class="bar" style="width: 43px;"></span><span>322</span></div>
-          <div class="toc-kind diagram">diagram</div>
-        </div>
-
-        <div class="toc-row">
-          <div class="toc-num">##</div>
-          <div class="toc-body">
-            <div class="toc-h">Technology Stack</div>
-            <div class="toc-sub">Versioned dependency list; runtime, libs, build tools.</div>
-          </div>
-          <div class="toc-weight"><span class="bar" style="width: 11px;"></span><span>69</span></div>
-          <div class="toc-kind table">table</div>
-        </div>
-
-        <div class="toc-row">
-          <div class="toc-num">##</div>
-          <div class="toc-body">
-            <div class="toc-h">Performance &amp; Scale</div>
-            <div class="toc-sub">Observed limits, per-event throughput, known hot paths.</div>
-          </div>
-          <div class="toc-weight"><span class="bar" style="width: 9px;"></span><span>57</span></div>
-          <div class="toc-kind table">table</div>
-        </div>
-
-        <div class="toc-row">
-          <div class="toc-num">##</div>
-          <div class="toc-body">
-            <div class="toc-h">Security &amp; Privacy</div>
-            <div class="toc-sub">Boundary model, credential scope, data that never leaves the machine.</div>
-          </div>
-          <div class="toc-weight"><span class="bar" style="width: 7px;"></span><span>42</span></div>
-          <div class="toc-kind">prose</div>
-        </div>
-
-        <div class="toc-row">
-          <div class="toc-num">##</div>
-          <div class="toc-body">
-            <div class="toc-h">Future Architecture</div>
-            <div class="toc-sub">Areas for improvement. An honest tech-debt register, not a wish list.</div>
-          </div>
-          <div class="toc-weight"><span class="bar" style="width: 6px;"></span><span>37</span></div>
-          <div class="toc-kind">prose</div>
-        </div>
+      <div class="md-preview">
+        <div class="md-row"><div class="ln">1</div><div class="ct"><span class="hash"># </span><span class="h1">Stoa: As-Built Architecture</span></div></div>
+        <div class="md-row"><div class="ln">3</div><div class="ct"><span class="meta">*Last Updated: 2026-04-13*</span></div></div>
+        <div class="md-row sec"><div class="ln">5</div><div class="ct"><span class="hash">## </span><span class="h2">Table of Contents</span></div></div>
+        <div class="md-row sec"><div class="ln">19</div><div class="ct"><span class="hash">## </span><span class="h2">Overview</span></div></div>
+        <div class="md-row"><div class="ln">43</div><div class="ct">  <span class="hash">### </span><span class="h3">Design Philosophy</span></div></div>
+        <div class="md-row sec"><div class="ln">55</div><div class="ct"><span class="hash">## </span><span class="h2">System Architecture</span></div></div>
+        <div class="md-row"><div class="ln">57</div><div class="ct">  <span class="hash">### </span><span class="h3">High-Level Architecture</span></div></div>
+        <div class="md-row"><div class="ln">102</div><div class="ct">  <span class="hash">### </span><span class="h3">Component Interaction Map</span></div></div>
+        <div class="md-row sec"><div class="ln">145</div><div class="ct"><span class="hash">## </span><span class="h2">Package Structure</span></div></div>
+        <div class="md-row"><div class="ln">197</div><div class="ct">  <span class="hash">### </span><span class="h3">Package Responsibilities</span></div></div>
+        <div class="md-row sec"><div class="ln">240</div><div class="ct"><span class="hash">## </span><span class="h2">Data Flow Diagrams</span></div></div>
+        <div class="md-row"><div class="ln">242</div><div class="ct">  <span class="hash">### </span><span class="h3">1. Real-Time Change Flow (Event Bus + Outbox)</span></div></div>
+        <div class="md-row"><div class="ln">720</div><div class="ct">  <span class="hash">### </span><span class="h3">2. Offline Sync Flow (Catchup)</span></div></div>
+        <div class="md-row"><div class="ln">791</div><div class="ct">  <span class="hash">### </span><span class="h3">3. Episode Switching Flow</span></div></div>
+        <div class="md-row"><div class="ln">864</div><div class="ct">  <span class="hash">### </span><span class="h3">4. Episode Integration Flow (LLM-Powered Merge)</span></div></div>
+        <div class="md-row"><div class="ln">998</div><div class="ct">  <span class="hash">### </span><span class="h3">5. Remote Sync Flow</span></div></div>
+        <div class="md-row sec"><div class="ln">1107</div><div class="ct"><span class="hash">## </span><span class="h2">Core Components</span></div></div>
+        <div class="md-row"><div class="ln">1109</div><div class="ct">  <span class="hash">### </span><span class="h3">1. Service Manager (<span class="meta">pkg/service/manager.go</span>)</span></div></div>
+        <div class="md-row"><div class="ln">1164</div><div class="ct">  <span class="hash">### </span><span class="h3">2. File Watcher (<span class="meta">pkg/service/watcher.go</span>)</span></div></div>
+        <div class="md-row"><div class="ln">1239</div><div class="ct">  <span class="hash">### </span><span class="h3">3. Correlation Engine (<span class="meta">pkg/correlation/engine.go</span>)</span></div></div>
+        <div class="md-row"><div class="ln">1293</div><div class="ct">  <span class="hash">### </span><span class="h3">4. CRDT Manager + Automerge Engine</span></div></div>
+        <div class="md-row"><div class="ln">1505</div><div class="ct">  <span class="hash">### </span><span class="h3">6. Journal (<span class="meta">pkg/journal/sqlite.go</span>)</span></div></div>
+        <div class="md-row"><div class="ln">1689</div><div class="ct">  <span class="hash">### </span><span class="h3">9. Interactive Shell (<span class="meta">pkg/shell/</span>)</span></div></div>
+        <div class="md-row"><div class="ln">1759</div><div class="ct">  <span class="hash">### </span><span class="h3">10. Git Integration (<span class="meta">pkg/git/</span>)</span></div></div>
+        <div class="md-row"><div class="ln">1846</div><div class="ct">  <span class="hash">### </span><span class="h3">11. Episode Manager (<span class="meta">pkg/episode/</span>)</span></div></div>
+        <div class="md-row"><div class="ln">2045</div><div class="ct">  <span class="hash">### </span><span class="h3">12. Explorer TUI (<span class="meta">pkg/explorer/</span>)</span></div></div>
+        <div class="md-row"><div class="ln"></div><div class="ct">  <span class="more">### …plus 13 more components: snapshot, digest, agent-observer, remote sync, provenance marks, space-daemon, actor-identity, exchange-watcher, git-watcher, path-utils, timeline, ask-service, TUI</span></div></div>
+        <div class="md-row sec"><div class="ln">2557</div><div class="ct"><span class="hash">## </span><span class="h2">Storage Architecture</span></div></div>
+        <div class="md-row"><div class="ln">2559</div><div class="ct">  <span class="hash">### </span><span class="h3">File System Layout</span></div></div>
+        <div class="md-row"><div class="ln">2694</div><div class="ct">  <span class="hash">### </span><span class="h3">Data Persistence Strategy</span></div></div>
+        <div class="md-row sec"><div class="ln">2723</div><div class="ct"><span class="hash">## </span><span class="h2">Network &amp; Collaboration</span></div></div>
+        <div class="md-row"><div class="ln">2725</div><div class="ct">  <span class="hash">### </span><span class="h3">Remote Sync Architecture</span></div></div>
+        <div class="md-row"><div class="ln">2806</div><div class="ct">  <span class="hash">### </span><span class="h3">Cloud Integration Architecture</span></div></div>
+        <div class="md-row sec"><div class="ln">3045</div><div class="ct"><span class="hash">## </span><span class="h2">Technology Stack</span></div></div>
+        <div class="md-row"><div class="ln">3071</div><div class="ct">  <span class="hash">### </span><span class="h3">Go Dependencies</span></div></div>
+        <div class="md-row"><div class="ln">3093</div><div class="ct">  <span class="hash">### </span><span class="h3">Rust FFI Crate (<span class="meta">automerge-ffi/</span>)</span></div></div>
+        <div class="md-row sec"><div class="ln">3114</div><div class="ct"><span class="hash">## </span><span class="h2">Performance &amp; Scale</span></div></div>
+        <div class="md-row sec"><div class="ln">3171</div><div class="ct"><span class="hash">## </span><span class="h2">Security &amp; Privacy</span></div></div>
+        <div class="md-row sec"><div class="ln">3213</div><div class="ct"><span class="hash">## </span><span class="h2">Future Architecture</span></div></div>
       </div>
     </div>
 
