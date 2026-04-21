@@ -16,7 +16,7 @@
 
 ---
 
-A 12-slide deck (10 + 2 appendix), four analysis scripts, and three copy-me takeaway artifacts.
+A 13-slide deck (10 + 3 appendix), four analysis scripts, and three copy-me takeaway artifacts.
 
 ## The thesis in one paragraph
 
@@ -24,7 +24,7 @@ Coding agents collapsed implementation from days to hours. CI/CD had already col
 
 ## Deck
 
-- [`index.html`](./index.html): the actual slideshow, dark editorial, Stoa orange accent, real data embedded. 12 slides, keyboard navigable.
+- [`index.html`](./index.html): the actual slideshow, dark editorial, Stoa orange accent, real data embedded. 13 slides, keyboard navigable.
 - [`slides/outline.md`](./slides/outline.md): the written narrative per slide, with the raw quotes bank at the bottom.
 
 Slides at a glance:
@@ -40,7 +40,8 @@ Slides at a glance:
 9. Live demo · the agentic release: a `dev → main` PR that writes itself
 10. Take it home: three artifacts, three moves
 11. **Appendix A**: a minority report on AGENTS.md, CLAUDE.md, and agent skills
-12. **Appendix B**: harness & workflow (two harnesses, many terminals, saved sessions)
+12. **Appendix B**: what an AS-BUILT-ARCHITECTURE.md looks like (structural exemplar from `stoa-cli`)
+13. **Appendix C**: harness & workflow (two harnesses, many terminals, saved sessions)
 
 ## Data behind the charts
 

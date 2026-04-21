@@ -331,6 +331,122 @@
     border-radius: 2px;
   }
 
+  /* Appendix B: AS-BUILT-ARCHITECTURE.md mockup — a "document browser"
+     frame showing the real section outline from stoa-cli's AS-BUILT doc,
+     with per-section line counts as proportional bars. */
+  .doc-mockup {
+    margin-top: 24px;
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    max-width: 1100px;
+  }
+  .doc-chrome {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 11px 16px;
+    background: var(--ink-3);
+    border-bottom: 1px solid var(--line);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12px;
+  }
+  .doc-chrome .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .doc-chrome .dot.r { background: #ff5f56; }
+  .doc-chrome .dot.y { background: #ffbd2e; }
+  .doc-chrome .dot.g { background: #27c93f; }
+  .doc-chrome .filename {
+    margin-left: 10px;
+    color: var(--fg);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .doc-chrome .file-meta {
+    margin-left: auto;
+    color: var(--mute);
+    font-size: 11px;
+    letter-spacing: 0.02em;
+  }
+  .doc-toc .toc-row {
+    display: grid;
+    grid-template-columns: 36px 1fr 160px 90px;
+    align-items: center;
+    gap: 14px;
+    padding: 11px 18px;
+    border-top: 1px dashed var(--line);
+    transition: background 0.15s ease;
+  }
+  .doc-toc .toc-row:first-child { border-top: 0; }
+  .doc-toc .toc-row:hover { background: rgba(227, 90, 44, 0.03); }
+  .doc-toc .toc-num {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    color: var(--mute-2);
+    font-size: 13px;
+  }
+  .doc-toc .toc-body .toc-h {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--fg);
+    letter-spacing: -0.005em;
+  }
+  .doc-toc .toc-body .toc-sub {
+    font-size: 12px;
+    color: var(--mute);
+    line-height: 1.5;
+    margin-top: 2px;
+  }
+  .doc-toc .toc-weight {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11px;
+    color: var(--fg-2);
+    font-variant-numeric: tabular-nums;
+  }
+  .doc-toc .toc-weight .bar {
+    height: 6px;
+    background: var(--accent);
+    border-radius: 2px;
+    opacity: 0.75;
+  }
+  .doc-toc .toc-kind {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10.5px;
+    padding: 3px 8px;
+    border-radius: 3px;
+    background: var(--ink-3);
+    color: var(--fg-2);
+    border: 1px solid var(--line-2);
+    white-space: nowrap;
+    text-align: center;
+    letter-spacing: 0.02em;
+  }
+  .doc-toc .toc-kind.diagram {
+    background: rgba(88, 166, 255, 0.12);
+    color: var(--blue);
+    border-color: rgba(88, 166, 255, 0.3);
+  }
+  .doc-toc .toc-kind.deep-dive {
+    background: rgba(227, 90, 44, 0.12);
+    color: var(--accent);
+    border-color: rgba(227, 90, 44, 0.35);
+  }
+  .doc-toc .toc-kind.schema {
+    background: rgba(126, 231, 135, 0.12);
+    color: var(--green);
+    border-color: rgba(126, 231, 135, 0.3);
+  }
+  .doc-toc .toc-kind.table {
+    background: rgba(255, 216, 102, 0.10);
+    color: var(--yellow);
+    border-color: rgba(255, 216, 102, 0.3);
+  }
+
   /* Slide 5 ILT sub-component breakdown: a striped bar in the visual
      language of slide 4's ILT segment, divided into the four latencies.
      The load-bearing "Capture" segment fills solid; the three segments
@@ -1835,12 +1951,154 @@
   </section>
 
   <!-- ============================================================ -->
-  <!-- SLIDE 12 — Appendix B: harness & workflow                    -->
+  <!-- SLIDE 12 — Appendix B: AS-BUILT-ARCHITECTURE.md exemplar     -->
   <!-- ============================================================ -->
   <section class="slide appendix" data-slide="12" id="s12">
     <div class="slide-meta">
       <span class="bar"></span>
       <span class="num">APPENDIX &middot; B</span>
+      <span>What an AS-BUILT.md looks like</span>
+    </div>
+    <h2 class="h2">The one doc worth keeping current.</h2>
+    <p class="lede" style="max-width: 78ch; margin-bottom: 12px;">
+      The structure Stoa's five AS-BUILT-ARCHITECTURE.md files converge on &mdash; this one's from <code>stoa-cli/</code>. A living map agents <code>@</code>-reference as their first pass.
+    </p>
+
+    <div class="doc-mockup">
+      <div class="doc-chrome">
+        <span class="dot r"></span>
+        <span class="dot y"></span>
+        <span class="dot g"></span>
+        <span class="filename">stoa-cli / AS-BUILT-ARCHITECTURE.md</span>
+        <span class="file-meta">3,250 lines &middot; 48 code fences &middot; 21 ASCII diagrams &middot; updated 2026-04-13</span>
+      </div>
+
+      <div class="doc-toc">
+        <div class="toc-row">
+          <div class="toc-num">##</div>
+          <div class="toc-body">
+            <div class="toc-h">Overview</div>
+            <div class="toc-sub">What the thing is, design philosophy, components at a glance. Above the fold.</div>
+          </div>
+          <div class="toc-weight"><span class="bar" style="width: 6px;"></span><span>36</span></div>
+          <div class="toc-kind">prose</div>
+        </div>
+
+        <div class="toc-row">
+          <div class="toc-num">##</div>
+          <div class="toc-body">
+            <div class="toc-h">System Architecture</div>
+            <div class="toc-sub">High-level ASCII box diagrams: UI &rarr; RPC &rarr; daemon &rarr; storage.</div>
+          </div>
+          <div class="toc-weight"><span class="bar" style="width: 14px;"></span><span>90</span></div>
+          <div class="toc-kind diagram">diagram</div>
+        </div>
+
+        <div class="toc-row">
+          <div class="toc-num">##</div>
+          <div class="toc-body">
+            <div class="toc-h">Package Structure</div>
+            <div class="toc-sub">Tree of every Go package with a one-line purpose. Where an agent starts reading.</div>
+          </div>
+          <div class="toc-weight"><span class="bar" style="width: 15px;"></span><span>95</span></div>
+          <div class="toc-kind diagram">diagram</div>
+        </div>
+
+        <div class="toc-row">
+          <div class="toc-num">##</div>
+          <div class="toc-body">
+            <div class="toc-h">Data Flow Diagrams</div>
+            <div class="toc-sub">Event bus, transactional outbox, CRDT sync, file watcher, correlation engine. 15+ flows.</div>
+          </div>
+          <div class="toc-weight"><span class="bar" style="width: 115px;"></span><span>867</span></div>
+          <div class="toc-kind diagram">diagram</div>
+        </div>
+
+        <div class="toc-row">
+          <div class="toc-num">##</div>
+          <div class="toc-body">
+            <div class="toc-h">Core Components</div>
+            <div class="toc-sub">Per-component deep dives: journal, watcher, correlation, network, TUI, CLI. The bulk.</div>
+          </div>
+          <div class="toc-weight"><span class="bar" style="width: 192px;"></span><span>1,450</span></div>
+          <div class="toc-kind deep-dive">deep dive</div>
+        </div>
+
+        <div class="toc-row">
+          <div class="toc-num">##</div>
+          <div class="toc-body">
+            <div class="toc-h">Storage Architecture</div>
+            <div class="toc-sub">SQLite schemas, journal tables, CRDT doc handles, blob store.</div>
+          </div>
+          <div class="toc-weight"><span class="bar" style="width: 22px;"></span><span>166</span></div>
+          <div class="toc-kind schema">schema</div>
+        </div>
+
+        <div class="toc-row">
+          <div class="toc-num">##</div>
+          <div class="toc-body">
+            <div class="toc-h">Network &amp; Collaboration</div>
+            <div class="toc-sub">P2P protocol, relay handshake, WebSocket sync, Slack / Supabase bridges.</div>
+          </div>
+          <div class="toc-weight"><span class="bar" style="width: 43px;"></span><span>322</span></div>
+          <div class="toc-kind diagram">diagram</div>
+        </div>
+
+        <div class="toc-row">
+          <div class="toc-num">##</div>
+          <div class="toc-body">
+            <div class="toc-h">Technology Stack</div>
+            <div class="toc-sub">Versioned dependency list; runtime, libs, build tools.</div>
+          </div>
+          <div class="toc-weight"><span class="bar" style="width: 11px;"></span><span>69</span></div>
+          <div class="toc-kind table">table</div>
+        </div>
+
+        <div class="toc-row">
+          <div class="toc-num">##</div>
+          <div class="toc-body">
+            <div class="toc-h">Performance &amp; Scale</div>
+            <div class="toc-sub">Observed limits, per-event throughput, known hot paths.</div>
+          </div>
+          <div class="toc-weight"><span class="bar" style="width: 9px;"></span><span>57</span></div>
+          <div class="toc-kind table">table</div>
+        </div>
+
+        <div class="toc-row">
+          <div class="toc-num">##</div>
+          <div class="toc-body">
+            <div class="toc-h">Security &amp; Privacy</div>
+            <div class="toc-sub">Boundary model, credential scope, data that never leaves the machine.</div>
+          </div>
+          <div class="toc-weight"><span class="bar" style="width: 7px;"></span><span>42</span></div>
+          <div class="toc-kind">prose</div>
+        </div>
+
+        <div class="toc-row">
+          <div class="toc-num">##</div>
+          <div class="toc-body">
+            <div class="toc-h">Future Architecture</div>
+            <div class="toc-sub">Areas for improvement. An honest tech-debt register, not a wish list.</div>
+          </div>
+          <div class="toc-weight"><span class="bar" style="width: 6px;"></span><span>37</span></div>
+          <div class="toc-kind">prose</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pull" style="margin-top: 32px; max-width: 64ch;">
+      Half the file is <em>how data moves</em> and <em>what each component does</em>.
+      <span class="accent">That's where an agent gets oriented in one pass.</span>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 13 — Appendix C: harness & workflow                    -->
+  <!-- ============================================================ -->
+  <section class="slide appendix" data-slide="13" id="s13">
+    <div class="slide-meta">
+      <span class="bar"></span>
+      <span class="num">APPENDIX &middot; C</span>
       <span>Harness &amp; workflow</span>
     </div>
     <h2 class="h2">Two harnesses, many terminals,<br>saved sessions.</h2>
