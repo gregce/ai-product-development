@@ -313,6 +313,58 @@
   }
   table.basic tr:last-child td { border-bottom: 0; }
   table.basic td strong { color: var(--fg); font-weight: 600; }
+  /* Call out a row that's structurally "stuck" — visible red left bar
+     and a subtle bg tint, without adding any new content. */
+  table.basic tr.stuck td {
+    background: linear-gradient(90deg, rgba(255, 123, 114, 0.08), transparent 70%);
+  }
+  table.basic tr.stuck td:first-child {
+    position: relative;
+    padding-left: 18px;
+  }
+  table.basic tr.stuck td:first-child::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 8px; bottom: 8px;
+    width: 3px;
+    background: var(--red);
+    border-radius: 2px;
+  }
+
+  /* ILT presentation panel used on slide 4: unifies the "new metric"
+     label, the formula, and the dovetail timeline into one framed block
+     so they read as a single visual statement instead of three stacked
+     elements. */
+  .ilt-panel {
+    margin-top: 32px;
+    padding: 22px 26px 26px;
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    background:
+      radial-gradient(ellipse at top left, rgba(227, 90, 44, 0.10) 0%, transparent 55%),
+      var(--ink-2);
+    max-width: 960px;
+    position: relative;
+  }
+  .ilt-panel .kicker {
+    margin-bottom: 10px;
+  }
+  .ilt-panel .formula {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: clamp(17px, 1.55vw, 23px);
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    padding: 6px 0 18px;
+    border-bottom: 1px dashed rgba(227, 90, 44, 0.35);
+  }
+  .ilt-panel .timeline-wrap {
+    margin-top: 0;
+    padding: 36px 0 0;
+  }
+  .ilt-panel .timeline-bar {
+    margin-top: 46px;
+  }
 
   /* strike-through card for slide 5 */
   .kill-card {
@@ -1265,7 +1317,7 @@
           <tr><th>Phase</th><th>2015</th><th>2026</th></tr>
         </thead>
         <tbody>
-          <tr><td><strong>Intent capture</strong></td><td class="num">weeks</td><td class="num" style="color: var(--red);">weeks still</td></tr>
+          <tr class="stuck"><td><strong>Intent capture</strong></td><td class="num">weeks</td><td class="num" style="color: var(--red);">weeks still</td></tr>
           <tr><td><strong>Implementation</strong></td><td class="num">days to weeks</td><td class="num" style="color: var(--accent);">hours <span style="color:var(--mute);font-size:11px;">(agents)</span></td></tr>
           <tr><td><strong>Deploy</strong></td><td class="num">hours to days</td><td class="num" style="color: var(--accent);">minutes <span style="color:var(--mute);font-size:11px;">(CI/CD)</span></td></tr>
         </tbody>
@@ -1276,22 +1328,20 @@
       The bottleneck moved. <strong>DORA can't see it by design.</strong> DORA's clock starts at <code>git commit</code>. The expensive thing now happens <em>before</em> commit. That gap has a name.
     </p>
 
-    <div style="margin-top: 12px; max-width: 960px;">
+    <div class="ilt-panel">
       <div class="kicker">The new metric</div>
-      <div style="font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: clamp(18px, 1.5vw, 22px); color: var(--accent); padding: 14px 18px; border: 1px solid var(--accent); border-radius: 6px; background: var(--accent-dim); display: inline-block;">
-        ILT = t(first commit) − t(product decision captured)
-      </div>
-    </div>
+      <div class="formula">ILT = t(first commit) − t(product decision captured)</div>
 
-    <div class="timeline-wrap" style="max-width: 960px;">
-      <div class="timeline-bar">
-        <div class="timeline-seg ilt">Intent Lead Time</div>
-        <div class="timeline-seg dora">DORA Lead Time for Changes</div>
-        <div class="timeline-marker ilt-start"><span class="ml">decision captured</span></div>
-        <div class="timeline-marker commit"><span class="ml">first commit</span></div>
-        <div class="timeline-marker prod"><span class="ml">prod running</span></div>
+      <div class="timeline-wrap">
+        <div class="timeline-bar">
+          <div class="timeline-seg ilt">Intent Lead Time</div>
+          <div class="timeline-seg dora">DORA Lead Time for Changes</div>
+          <div class="timeline-marker ilt-start"><span class="ml">decision captured</span></div>
+          <div class="timeline-marker commit"><span class="ml">first commit</span></div>
+          <div class="timeline-marker prod"><span class="ml">prod running</span></div>
+        </div>
+        <div class="tiny" style="margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);">ILT ends exactly where DORA's clock starts. No overlap. No gap. Two metrics, one pipeline, end to end.</div>
       </div>
-      <div class="tiny" style="margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);">ILT ends exactly where DORA's clock starts. No overlap. No gap. Two metrics, one pipeline, end to end.</div>
     </div>
   </section>
 
