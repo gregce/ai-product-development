@@ -353,10 +353,28 @@
   table.basic tr.stuck td:first-child::before {
     content: "";
     position: absolute;
-    left: 0; top: 8px; bottom: 8px;
+    left: 0; top: 0; bottom: 0;
     width: 3px;
     background: var(--red);
     border-radius: 2px;
+  }
+
+  /* Neutral evidence-panel wrapper — used for the two-clocks table
+     on slide 4 so it reads with the same visual weight as the
+     accent-bordered ILT panel beside it. */
+  .phase-panel {
+    padding: 18px 22px 14px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--ink-2);
+  }
+  .phase-panel .phase-kicker {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mute);
+    font-weight: 600;
+    margin-bottom: 10px;
   }
 
   /* Appendix B: real markdown outline pulled from stoa-cli's AS-BUILT
@@ -544,12 +562,14 @@
   }
   .ilt-panel .formula {
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: clamp(17px, 1.55vw, 23px);
+    font-size: clamp(13px, 1.1vw, 18px);
     color: var(--accent);
     font-weight: 600;
     letter-spacing: -0.005em;
     padding: 6px 0 18px;
     border-bottom: 1px dashed rgba(227, 90, 44, 0.35);
+    white-space: nowrap;
+    overflow-x: auto;
   }
   .ilt-panel .timeline-wrap {
     margin-top: 0;
@@ -1524,8 +1544,9 @@
       The bottleneck moved. <strong>DORA can't see it by design.</strong> DORA's clock starts at <code>git commit</code>. The expensive thing now happens <em>before</em> commit. That gap has a name.
     </p>
 
-    <div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 32px; align-items: start; margin-top: 26px;">
-      <div>
+    <div style="display: grid; grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.4fr); gap: 28px; align-items: start; margin-top: 26px;">
+      <div class="phase-panel">
+        <div class="phase-kicker">Two clocks, one gap</div>
         <table class="basic">
           <thead>
             <tr><th>Phase</th><th>2015</th><th>2026</th></tr>
