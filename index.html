@@ -276,6 +276,34 @@
     font-variant-numeric: tabular-nums;
     line-height: 1;
   }
+  /* Compact pill-style stat row (slide 8 receipts). */
+  .stat-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .stat-pill {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 6px 14px;
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: 12.5px;
+  }
+  .stat-pill .stat-value {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    color: var(--accent);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+  .stat-pill .stat-label {
+    color: var(--mute);
+    letter-spacing: 0.01em;
+  }
+
   .metric .label {
     font-size: 11px;
     color: var(--mute);
@@ -1675,11 +1703,10 @@
     <h2 class="h2" style="white-space: nowrap;">I don't just pitch this. I live it daily.</h2>
     <p class="body" style="max-width: 76ch;">Every number on this slide was mined from the <code>specstoryai/stoa</code> monorepo at build time. Real commits, real doc counts, current as of the deck build.</p>
 
-    <div class="grid4" style="margin-top: 18px;">
-      <div class="metric"><div class="value" id="m-design">168</div><div class="label">Design docs · <span id="r-design">Sep 2025 → Apr 2026</span></div></div>
-      <div class="metric"><div class="value" id="m-impl">177</div><div class="label">Impl docs · <span id="r-impl">Sep 2025 → Apr 2026</span></div></div>
-      <div class="metric"><div class="value" id="m-asbuilt"><span id="v-asbuilt">10,672</span></div><div class="label">Lines of AS-BUILT · across <span id="v-asbuilt-n">5</span> components</div></div>
-      <div class="metric"><div class="value" id="m-intent">7,589</div><div class="label">"Intent" <em style="font-style: normal;">the word itself</em> &middot; occurrences</div></div>
+    <div class="stat-pills" style="margin-top: 18px;">
+      <div class="stat-pill"><span class="stat-value" id="m-design">168</span><span class="stat-label">Design docs &middot; <span id="r-design">Sep 2025 → Apr 2026</span></span></div>
+      <div class="stat-pill"><span class="stat-value" id="m-impl">177</span><span class="stat-label">Impl docs &middot; <span id="r-impl">Sep 2025 → Apr 2026</span></span></div>
+      <div class="stat-pill"><span class="stat-value" id="m-asbuilt"><span id="v-asbuilt">10,672</span></span><span class="stat-label">Lines of AS-BUILT &middot; across <span id="v-asbuilt-n">5</span> components</span></div>
     </div>
 
     <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; margin-top: 32px; align-items: start;">
@@ -1850,7 +1877,7 @@
       <span class="num">APPENDIX &middot; A</span>
       <span>On agents.md, claude.md, and skills</span>
     </div>
-    <h2 class="h2">A minority report on<br>agent conventions.</h2>
+    <h2 class="h2" style="white-space: nowrap;">A minority report on agent conventions.</h2>
     <p class="lede" style="margin-bottom: 30px; white-space: nowrap;">
       Everyone is curating <code>AGENTS.md</code>, <code>CLAUDE.md</code>, and custom skills. I don't think most of it earns its keep. Three things do.
     </p>
