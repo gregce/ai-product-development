@@ -331,70 +331,57 @@
     border-radius: 2px;
   }
 
-  /* Appendix B: AS-BUILT-ARCHITECTURE.md mockup — a "document browser"
-     frame showing the real section outline from stoa-cli's AS-BUILT doc,
-     with per-section line counts as proportional bars. */
+  /* Appendix B: real markdown outline pulled from stoa-cli's AS-BUILT
+     doc, rendered as a line-numbered text view (no macOS chrome). The
+     intent is "you could open this file right now" — so it looks like
+     the file itself. */
   .doc-mockup {
-    margin-top: 24px;
-    background: var(--ink-2);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    overflow: hidden;
-    max-width: 1100px;
+    margin-top: 10px;
+    max-width: 1280px;
   }
-  .doc-chrome {
+  .doc-filebar {
     display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 11px 16px;
-    background: var(--ink-3);
-    border-bottom: 1px solid var(--line);
+    align-items: baseline;
+    gap: 16px;
+    padding: 0 4px 12px;
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
     font-size: 12px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 0;
   }
-  .doc-chrome .dot {
-    width: 10px; height: 10px; border-radius: 50%;
-    flex-shrink: 0;
-  }
-  .doc-chrome .dot.r { background: #ff5f56; }
-  .doc-chrome .dot.y { background: #ffbd2e; }
-  .doc-chrome .dot.g { background: #27c93f; }
-  .doc-chrome .filename {
-    margin-left: 10px;
+  .doc-filebar .filename {
     color: var(--fg);
     font-weight: 600;
     letter-spacing: -0.01em;
+    font-size: 13px;
   }
-  .doc-chrome .file-meta {
+  .doc-filebar .file-meta {
     margin-left: auto;
     color: var(--mute);
     font-size: 11px;
     letter-spacing: 0.02em;
   }
-  /* Markdown outline preview: renders the file as a code-editor view
-     with a line-number gutter, syntax-tinted # marks, and real line
-     numbers. Content is the actual outline pulled from
-     stoa-cli/AS-BUILT-ARCHITECTURE.md. */
+  /* Markdown outline preview: line-number gutter + syntax-tinted # marks
+     + real line numbers from the source file. */
   .md-preview {
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 12.5px;
+    font-size: 13px;
     line-height: 1.75;
-    background: var(--ink-2);
-    max-height: 64vh;
+    background: transparent;
+    max-height: calc(100vh - 260px);
     overflow-y: auto;
   }
   .md-row {
     display: grid;
     grid-template-columns: 64px 1fr;
-    border-top: 1px solid rgba(255, 255, 255, 0.015);
+    border-top: 1px solid rgba(255, 255, 255, 0.02);
   }
   .md-row:first-child { border-top: 0; }
   .md-row .ln {
     text-align: right;
     color: var(--mute-2);
-    padding: 3px 12px 3px 0;
+    padding: 3px 14px 3px 0;
     border-right: 1px solid var(--line);
-    background: var(--ink-3);
     user-select: none;
     font-variant-numeric: tabular-nums;
     font-size: 11px;
@@ -405,15 +392,14 @@
     white-space: pre;
     overflow-x: auto;
   }
-  .md-row .hash  { color: var(--mute-2); }
-  .md-row .h1    { color: var(--accent); font-weight: 700; }
-  .md-row .h2    { color: var(--accent); font-weight: 600; }
-  .md-row .h3    { color: var(--blue);   font-weight: 500; }
-  .md-row .meta  { color: var(--mute);   font-style: italic; }
-  .md-row .hr    { color: var(--line-2); }
-  .md-row .more  { color: var(--mute);   font-style: italic; }
-  /* subtle background tint for section breaks (## lines) */
-  .md-row.sec    { background: rgba(227, 90, 44, 0.025); }
+  .md-row .hash   { color: var(--mute-2); }
+  .md-row .md-h1  { color: var(--accent); font-weight: 700; font-size: 1.05em; }
+  .md-row .md-h2  { color: var(--accent); font-weight: 600; }
+  .md-row .md-h3  { color: var(--blue);   font-weight: 500; }
+  .md-row .meta   { color: var(--mute);   font-style: italic; }
+  .md-row .more   { color: var(--mute);   font-style: italic; }
+  /* subtle background tint on section-break rows so `##` lines pop */
+  .md-row.sec     { background: rgba(227, 90, 44, 0.03); }
 
   /* Slide 5 ILT sub-component breakdown: a striped bar in the visual
      language of slide 4's ILT segment, divided into the four latencies.
@@ -1927,66 +1913,76 @@
       <span class="num">APPENDIX &middot; B</span>
       <span>What an AS-BUILT.md looks like</span>
     </div>
-    <h2 class="h2">The one doc worth keeping current.</h2>
-    <p class="lede" style="max-width: 78ch; margin-bottom: 12px;">
-      The structure Stoa's five AS-BUILT-ARCHITECTURE.md files converge on &mdash; this one's from <code>stoa-cli/</code>. A living map agents <code>@</code>-reference as their first pass.
-    </p>
-
     <div class="doc-mockup">
-      <div class="doc-chrome">
-        <span class="dot r"></span>
-        <span class="dot y"></span>
-        <span class="dot g"></span>
+      <div class="doc-filebar">
         <span class="filename">stoa-cli / AS-BUILT-ARCHITECTURE.md</span>
         <span class="file-meta">3,250 lines &middot; 48 code fences &middot; 21 ASCII diagrams &middot; updated 2026-04-13</span>
       </div>
 
       <div class="md-preview">
-        <div class="md-row"><div class="ln">1</div><div class="ct"><span class="hash"># </span><span class="h1">Stoa: As-Built Architecture</span></div></div>
+        <div class="md-row"><div class="ln">1</div><div class="ct"><span class="hash"># </span><span class="md-h1">Stoa: As-Built Architecture</span></div></div>
         <div class="md-row"><div class="ln">3</div><div class="ct"><span class="meta">*Last Updated: 2026-04-13*</span></div></div>
-        <div class="md-row sec"><div class="ln">5</div><div class="ct"><span class="hash">## </span><span class="h2">Table of Contents</span></div></div>
-        <div class="md-row sec"><div class="ln">19</div><div class="ct"><span class="hash">## </span><span class="h2">Overview</span></div></div>
-        <div class="md-row"><div class="ln">43</div><div class="ct">  <span class="hash">### </span><span class="h3">Design Philosophy</span></div></div>
-        <div class="md-row sec"><div class="ln">55</div><div class="ct"><span class="hash">## </span><span class="h2">System Architecture</span></div></div>
-        <div class="md-row"><div class="ln">57</div><div class="ct">  <span class="hash">### </span><span class="h3">High-Level Architecture</span></div></div>
-        <div class="md-row"><div class="ln">102</div><div class="ct">  <span class="hash">### </span><span class="h3">Component Interaction Map</span></div></div>
-        <div class="md-row sec"><div class="ln">145</div><div class="ct"><span class="hash">## </span><span class="h2">Package Structure</span></div></div>
-        <div class="md-row"><div class="ln">197</div><div class="ct">  <span class="hash">### </span><span class="h3">Package Responsibilities</span></div></div>
-        <div class="md-row sec"><div class="ln">240</div><div class="ct"><span class="hash">## </span><span class="h2">Data Flow Diagrams</span></div></div>
-        <div class="md-row"><div class="ln">242</div><div class="ct">  <span class="hash">### </span><span class="h3">1. Real-Time Change Flow (Event Bus + Outbox)</span></div></div>
-        <div class="md-row"><div class="ln">720</div><div class="ct">  <span class="hash">### </span><span class="h3">2. Offline Sync Flow (Catchup)</span></div></div>
-        <div class="md-row"><div class="ln">791</div><div class="ct">  <span class="hash">### </span><span class="h3">3. Episode Switching Flow</span></div></div>
-        <div class="md-row"><div class="ln">864</div><div class="ct">  <span class="hash">### </span><span class="h3">4. Episode Integration Flow (LLM-Powered Merge)</span></div></div>
-        <div class="md-row"><div class="ln">998</div><div class="ct">  <span class="hash">### </span><span class="h3">5. Remote Sync Flow</span></div></div>
-        <div class="md-row sec"><div class="ln">1107</div><div class="ct"><span class="hash">## </span><span class="h2">Core Components</span></div></div>
-        <div class="md-row"><div class="ln">1109</div><div class="ct">  <span class="hash">### </span><span class="h3">1. Service Manager (<span class="meta">pkg/service/manager.go</span>)</span></div></div>
-        <div class="md-row"><div class="ln">1164</div><div class="ct">  <span class="hash">### </span><span class="h3">2. File Watcher (<span class="meta">pkg/service/watcher.go</span>)</span></div></div>
-        <div class="md-row"><div class="ln">1239</div><div class="ct">  <span class="hash">### </span><span class="h3">3. Correlation Engine (<span class="meta">pkg/correlation/engine.go</span>)</span></div></div>
-        <div class="md-row"><div class="ln">1293</div><div class="ct">  <span class="hash">### </span><span class="h3">4. CRDT Manager + Automerge Engine</span></div></div>
-        <div class="md-row"><div class="ln">1505</div><div class="ct">  <span class="hash">### </span><span class="h3">6. Journal (<span class="meta">pkg/journal/sqlite.go</span>)</span></div></div>
-        <div class="md-row"><div class="ln">1689</div><div class="ct">  <span class="hash">### </span><span class="h3">9. Interactive Shell (<span class="meta">pkg/shell/</span>)</span></div></div>
-        <div class="md-row"><div class="ln">1759</div><div class="ct">  <span class="hash">### </span><span class="h3">10. Git Integration (<span class="meta">pkg/git/</span>)</span></div></div>
-        <div class="md-row"><div class="ln">1846</div><div class="ct">  <span class="hash">### </span><span class="h3">11. Episode Manager (<span class="meta">pkg/episode/</span>)</span></div></div>
-        <div class="md-row"><div class="ln">2045</div><div class="ct">  <span class="hash">### </span><span class="h3">12. Explorer TUI (<span class="meta">pkg/explorer/</span>)</span></div></div>
-        <div class="md-row"><div class="ln"></div><div class="ct">  <span class="more">### …plus 13 more components: snapshot, digest, agent-observer, remote sync, provenance marks, space-daemon, actor-identity, exchange-watcher, git-watcher, path-utils, timeline, ask-service, TUI</span></div></div>
-        <div class="md-row sec"><div class="ln">2557</div><div class="ct"><span class="hash">## </span><span class="h2">Storage Architecture</span></div></div>
-        <div class="md-row"><div class="ln">2559</div><div class="ct">  <span class="hash">### </span><span class="h3">File System Layout</span></div></div>
-        <div class="md-row"><div class="ln">2694</div><div class="ct">  <span class="hash">### </span><span class="h3">Data Persistence Strategy</span></div></div>
-        <div class="md-row sec"><div class="ln">2723</div><div class="ct"><span class="hash">## </span><span class="h2">Network &amp; Collaboration</span></div></div>
-        <div class="md-row"><div class="ln">2725</div><div class="ct">  <span class="hash">### </span><span class="h3">Remote Sync Architecture</span></div></div>
-        <div class="md-row"><div class="ln">2806</div><div class="ct">  <span class="hash">### </span><span class="h3">Cloud Integration Architecture</span></div></div>
-        <div class="md-row sec"><div class="ln">3045</div><div class="ct"><span class="hash">## </span><span class="h2">Technology Stack</span></div></div>
-        <div class="md-row"><div class="ln">3071</div><div class="ct">  <span class="hash">### </span><span class="h3">Go Dependencies</span></div></div>
-        <div class="md-row"><div class="ln">3093</div><div class="ct">  <span class="hash">### </span><span class="h3">Rust FFI Crate (<span class="meta">automerge-ffi/</span>)</span></div></div>
-        <div class="md-row sec"><div class="ln">3114</div><div class="ct"><span class="hash">## </span><span class="h2">Performance &amp; Scale</span></div></div>
-        <div class="md-row sec"><div class="ln">3171</div><div class="ct"><span class="hash">## </span><span class="h2">Security &amp; Privacy</span></div></div>
-        <div class="md-row sec"><div class="ln">3213</div><div class="ct"><span class="hash">## </span><span class="h2">Future Architecture</span></div></div>
+        <div class="md-row sec"><div class="ln">5</div><div class="ct"><span class="hash">## </span><span class="md-h2">Table of Contents</span></div></div>
+        <div class="md-row sec"><div class="ln">19</div><div class="ct"><span class="hash">## </span><span class="md-h2">Overview</span></div></div>
+        <div class="md-row"><div class="ln">43</div><div class="ct">  <span class="hash">### </span><span class="md-h3">Design Philosophy</span></div></div>
+        <div class="md-row sec"><div class="ln">55</div><div class="ct"><span class="hash">## </span><span class="md-h2">System Architecture</span></div></div>
+        <div class="md-row"><div class="ln">57</div><div class="ct">  <span class="hash">### </span><span class="md-h3">High-Level Architecture</span></div></div>
+        <div class="md-row"><div class="ln">102</div><div class="ct">  <span class="hash">### </span><span class="md-h3">Component Interaction Map</span></div></div>
+        <div class="md-row sec"><div class="ln">145</div><div class="ct"><span class="hash">## </span><span class="md-h2">Package Structure</span></div></div>
+        <div class="md-row"><div class="ln">197</div><div class="ct">  <span class="hash">### </span><span class="md-h3">Package Responsibilities</span></div></div>
+        <div class="md-row sec"><div class="ln">240</div><div class="ct"><span class="hash">## </span><span class="md-h2">Data Flow Diagrams</span></div></div>
+        <div class="md-row"><div class="ln">242</div><div class="ct">  <span class="hash">### </span><span class="md-h3">1. Real-Time Change Flow (Event Bus + Outbox)</span></div></div>
+        <div class="md-row"><div class="ln">720</div><div class="ct">  <span class="hash">### </span><span class="md-h3">2. Offline Sync Flow (Catchup)</span></div></div>
+        <div class="md-row"><div class="ln">791</div><div class="ct">  <span class="hash">### </span><span class="md-h3">3. Episode Switching Flow</span></div></div>
+        <div class="md-row"><div class="ln">864</div><div class="ct">  <span class="hash">### </span><span class="md-h3">4. Episode Integration Flow (LLM-Powered Merge)</span></div></div>
+        <div class="md-row"><div class="ln">998</div><div class="ct">  <span class="hash">### </span><span class="md-h3">5. Remote Sync Flow</span></div></div>
+        <div class="md-row sec"><div class="ln">1107</div><div class="ct"><span class="hash">## </span><span class="md-h2">Core Components</span></div></div>
+        <div class="md-row"><div class="ln">1109</div><div class="ct">  <span class="hash">### </span><span class="md-h3">1. Service Manager (<span class="meta">pkg/service/manager.go</span>)</span></div></div>
+        <div class="md-row"><div class="ln">1164</div><div class="ct">  <span class="hash">### </span><span class="md-h3">2. File Watcher (<span class="meta">pkg/service/watcher.go</span>)</span></div></div>
+        <div class="md-row"><div class="ln">1239</div><div class="ct">  <span class="hash">### </span><span class="md-h3">3. Correlation Engine (<span class="meta">pkg/correlation/engine.go</span>)</span></div></div>
+        <div class="md-row"><div class="ln">1293</div><div class="ct">  <span class="hash">### </span><span class="md-h3">4. CRDT Manager + Automerge Engine</span></div></div>
+        <div class="md-row"><div class="ln">1368</div><div class="ct">  <span class="hash">### </span><span class="md-h3">5. Outbox Store (<span class="meta">pkg/outbox/store.go</span>)</span></div></div>
+        <div class="md-row"><div class="ln">1505</div><div class="ct">  <span class="hash">### </span><span class="md-h3">6. Journal (<span class="meta">pkg/journal/sqlite.go</span>)</span></div></div>
+        <div class="md-row"><div class="ln">1592</div><div class="ct">  <span class="hash">### </span><span class="md-h3">7. Timeline Service</span></div></div>
+        <div class="md-row"><div class="ln">1635</div><div class="ct">  <span class="hash">### </span><span class="md-h3">8. Ask Service (<span class="meta">pkg/service/ask_service.go</span>)</span></div></div>
+        <div class="md-row"><div class="ln">1689</div><div class="ct">  <span class="hash">### </span><span class="md-h3">9. Interactive Shell (<span class="meta">pkg/shell/</span>)</span></div></div>
+        <div class="md-row"><div class="ln">1759</div><div class="ct">  <span class="hash">### </span><span class="md-h3">10. Git Integration (<span class="meta">pkg/git/</span>)</span></div></div>
+        <div class="md-row"><div class="ln">1846</div><div class="ct">  <span class="hash">### </span><span class="md-h3">11. Episode Manager (<span class="meta">pkg/episode/</span>)</span></div></div>
+        <div class="md-row"><div class="ln">2045</div><div class="ct">  <span class="hash">### </span><span class="md-h3">12. Explorer TUI (<span class="meta">pkg/explorer/</span>)</span></div></div>
+        <div class="md-row"><div class="ln">2091</div><div class="ct">  <span class="hash">### </span><span class="md-h3">13. Snapshot Service</span></div></div>
+        <div class="md-row"><div class="ln">2127</div><div class="ct">  <span class="hash">### </span><span class="md-h3">14. Digest Service</span></div></div>
+        <div class="md-row"><div class="ln">2165</div><div class="ct">  <span class="hash">### </span><span class="md-h3">15. Exchange Watcher</span></div></div>
+        <div class="md-row"><div class="ln">2182</div><div class="ct">  <span class="hash">### </span><span class="md-h3">15b. Git Watcher</span></div></div>
+        <div class="md-row"><div class="ln">2197</div><div class="ct">  <span class="hash">### </span><span class="md-h3">16. Git-Mode Provenance (blame, trace, intentdb)</span></div></div>
+        <div class="md-row"><div class="ln">2233</div><div class="ct">  <span class="hash">### </span><span class="md-h3">17. Git Status Filter</span></div></div>
+        <div class="md-row"><div class="ln">2248</div><div class="ct">  <span class="hash">### </span><span class="md-h3">18. Agent Observer (<span class="meta">pkg/agentobserver/</span>)</span></div></div>
+        <div class="md-row"><div class="ln">2264</div><div class="ct">  <span class="hash">### </span><span class="md-h3">19. Path Utilities</span></div></div>
+        <div class="md-row"><div class="ln">2277</div><div class="ct">  <span class="hash">### </span><span class="md-h3">20. Actor Identity</span></div></div>
+        <div class="md-row"><div class="ln">2290</div><div class="ct">  <span class="hash">### </span><span class="md-h3">20a. Space Daemon Coordination</span></div></div>
+        <div class="md-row"><div class="ln">2305</div><div class="ct">  <span class="hash">### </span><span class="md-h3">21. Provenance Marks in Automerge</span></div></div>
+        <div class="md-row"><div class="ln">2341</div><div class="ct">  <span class="hash">### </span><span class="md-h3">22. TUI (<span class="meta">pkg/tui/app.go</span>)</span></div></div>
+        <div class="md-row"><div class="ln">2411</div><div class="ct">  <span class="hash">### </span><span class="md-h3">23. Remote Sync (<span class="meta">pkg/remote/</span>)</span></div></div>
+        <div class="md-row sec"><div class="ln">2557</div><div class="ct"><span class="hash">## </span><span class="md-h2">Storage Architecture</span></div></div>
+        <div class="md-row"><div class="ln">2559</div><div class="ct">  <span class="hash">### </span><span class="md-h3">File System Layout</span></div></div>
+        <div class="md-row"><div class="ln">2683</div><div class="ct">  <span class="hash">### </span><span class="md-h3">Global Configuration</span></div></div>
+        <div class="md-row"><div class="ln">2694</div><div class="ct">  <span class="hash">### </span><span class="md-h3">Data Persistence Strategy</span></div></div>
+        <div class="md-row sec"><div class="ln">2723</div><div class="ct"><span class="hash">## </span><span class="md-h2">Network &amp; Collaboration</span></div></div>
+        <div class="md-row"><div class="ln">2725</div><div class="ct">  <span class="hash">### </span><span class="md-h3">Remote Sync Architecture</span></div></div>
+        <div class="md-row"><div class="ln">2781</div><div class="ct">  <span class="hash">### </span><span class="md-h3">Skip List (Circular Detection Prevention)</span></div></div>
+        <div class="md-row"><div class="ln">2806</div><div class="ct">  <span class="hash">### </span><span class="md-h3">Cloud Integration Architecture</span></div></div>
+        <div class="md-row sec"><div class="ln">3045</div><div class="ct"><span class="hash">## </span><span class="md-h2">Technology Stack</span></div></div>
+        <div class="md-row"><div class="ln">3047</div><div class="ct">  <span class="hash">### </span><span class="md-h3">Core Technologies</span></div></div>
+        <div class="md-row"><div class="ln">3071</div><div class="ct">  <span class="hash">### </span><span class="md-h3">Go Dependencies</span></div></div>
+        <div class="md-row"><div class="ln">3093</div><div class="ct">  <span class="hash">### </span><span class="md-h3">Rust FFI Crate (<span class="meta">automerge-ffi/</span>)</span></div></div>
+        <div class="md-row sec"><div class="ln">3114</div><div class="ct"><span class="hash">## </span><span class="md-h2">Performance &amp; Scale</span></div></div>
+        <div class="md-row"><div class="ln">3116</div><div class="ct">  <span class="hash">### </span><span class="md-h3">Performance Characteristics</span></div></div>
+        <div class="md-row"><div class="ln">3145</div><div class="ct">  <span class="hash">### </span><span class="md-h3">Scalability</span></div></div>
+        <div class="md-row"><div class="ln">3160</div><div class="ct">  <span class="hash">### </span><span class="md-h3">Optimization Techniques</span></div></div>
+        <div class="md-row sec"><div class="ln">3171</div><div class="ct"><span class="hash">## </span><span class="md-h2">Security &amp; Privacy</span></div></div>
+        <div class="md-row"><div class="ln">3173</div><div class="ct">  <span class="hash">### </span><span class="md-h3">Security Model</span></div></div>
+        <div class="md-row"><div class="ln">3191</div><div class="ct">  <span class="hash">### </span><span class="md-h3">Privacy Considerations</span></div></div>
+        <div class="md-row sec"><div class="ln">3213</div><div class="ct"><span class="hash">## </span><span class="md-h2">Future Architecture</span></div></div>
       </div>
-    </div>
-
-    <div class="pull" style="margin-top: 32px; max-width: 64ch;">
-      Half the file is <em>how data moves</em> and <em>what each component does</em>.
-      <span class="accent">That's where an agent gets oriented in one pass.</span>
     </div>
   </section>
 
