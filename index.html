@@ -824,48 +824,6 @@
     text-align: center; margin-bottom: 14px;
   }
 
-  /* slide 3 journey-map view toggle */
-  .view-toggle {
-    display: inline-flex;
-    gap: 0;
-    background: var(--ink-3);
-    border: 1px solid var(--line-2);
-    border-radius: 999px;
-    padding: 3px;
-    margin: 0;
-    position: absolute;
-    top: 72px;
-    right: 96px;
-    z-index: 2;
-  }
-  .view-toggle-btn {
-    appearance: none;
-    background: transparent;
-    border: 0;
-    color: var(--mute);
-    font-family: inherit;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 8px 16px;
-    border-radius: 999px;
-    cursor: pointer;
-    transition: background 0.2s ease, color 0.2s ease;
-  }
-  .view-toggle-btn:hover { color: var(--fg-2); }
-  .view-toggle-btn.active {
-    background: var(--accent);
-    color: var(--ink);
-  }
-  .view-toggle-btn.active:hover { color: var(--ink); }
-  .journey-view[hidden] { display: none; }
-  .journey-view { animation: fade-in 0.25s ease; }
-  @keyframes fade-in {
-    from { opacity: 0; transform: translateY(4px); }
-    to   { opacity: 1; transform: none; }
-  }
-
   /* slide 7 pipeline — three-stage agentic flow */
   .pipeline {
     display: grid;
@@ -1189,14 +1147,6 @@
     /* Ledes that were pinned nowrap on slides 11 and 12 are too wide on phones */
     .slide p.lede[style*="nowrap"] { white-space: normal !important; }
 
-    /* Toggle pill returns to inline flow on phones — not enough
-       horizontal room for an absolute-positioned top-right label */
-    .view-toggle {
-      position: static;
-      margin: 0 0 18px;
-    }
-    .view-toggle-btn { padding: 6px 12px; font-size: 11px; }
-
     /* Title slide refinements */
     .title-slide .h1 { font-size: clamp(34px, 9.5vw, 60px); }
     .title-slide .byline,
@@ -1377,167 +1327,162 @@
   </section>
 
   <!-- ============================================================ -->
-  <!-- ============================================================ -->
-  <!-- SLIDE 3 — Journey map                                         -->
+  <!-- SLIDE 3 — Journey map: before agents                          -->
   <!-- ============================================================ -->
   <section class="slide" data-slide="3" id="s3">
-    <div class="slide-meta"><span class="bar"></span><span class="num">03</span><span>Journey map</span></div>
+    <div class="slide-meta"><span class="bar"></span><span class="num">03</span><span>Journey map · before agents</span></div>
 
-    <div class="view-toggle" role="tablist" aria-label="Journey view">
-      <button class="view-toggle-btn active" data-view="human" role="tab" aria-selected="true">Before agents</button>
-      <button class="view-toggle-btn" data-view="agent" role="tab" aria-selected="false">With agents</button>
-    </div>
+    <h2 class="h2">How product shipped, before agents.</h2>
+    <p class="body" style="max-width: 78ch;">
+      A specialist at every step. The craft lived in each person's expertise and in the handoffs between them. Coding was the anchor because coding was the skill.
+    </p>
 
-    <!-- Default: human-mediated PDLC -->
-    <div class="journey-view" data-view="human">
-      <h2 class="h2">How product shipped, before agents.</h2>
-      <p class="body" style="max-width: 78ch;">
-        A specialist at every step. The craft lived in each person's expertise and in the handoffs between them. Coding was the anchor because coding was the skill.
-      </p>
-
-      <div class="chevron-row">
-        <div class="chev">
-          <div class="phase">01 · Discover</div>
-          <h5>Customer research</h5>
-          <p class="tiny" style="margin: 0;">Interviews, surveys, market reads. Researchers, PMs, and founders in the field.</p>
-          <div class="role"><span class="human">Human</span></div>
-        </div>
-        <div class="chev">
-          <div class="phase">02 · Ideation</div>
-          <h5>Strategy meetings</h5>
-          <p class="tiny" style="margin: 0;">Vision, OKRs, roadmap bets. Steering committees and quarterly planning.</p>
-          <div class="role"><span class="human">Human</span></div>
-        </div>
-        <div class="chev">
-          <div class="phase">03 · Reqs</div>
-          <h5>PRD in Notion</h5>
-          <p class="tiny" style="margin: 0;">PM drafts the spec after the meeting. Reviewed with stakeholders, revised, approved.</p>
-          <div class="role"><span class="human">Human</span></div>
-        </div>
-        <div class="chev">
-          <div class="phase">04 · Design</div>
-          <h5>Figma &amp; Jira</h5>
-          <p class="tiny" style="margin: 0;">UX mockups, prototypes. Eng lead breaks the PRD into tickets.</p>
-          <div class="role"><span class="human">Human</span></div>
-        </div>
-        <div class="chev">
-          <div class="phase">05 · Build</div>
-          <h5>Code by hand</h5>
-          <p class="tiny" style="margin: 0;">Engineer + IDE, pair coding, careful reviews. Days to weeks per ticket.</p>
-          <div class="role"><span class="human">Human</span></div>
-        </div>
-        <div class="chev">
-          <div class="phase">06 · Test</div>
-          <h5>QA validation</h5>
-          <p class="tiny" style="margin: 0;">QA runs manual and automated tests against acceptance criteria.</p>
-          <div class="role"><span class="human">Human</span></div>
-        </div>
-        <div class="chev">
-          <div class="phase">07 · Release</div>
-          <h5>Release train</h5>
-          <p class="tiny" style="margin: 0;">Weekly or monthly ship. PM writes release notes, comms sends the email.</p>
-          <div class="role"><span class="human">Human</span></div>
-        </div>
-        <div class="chev">
-          <div class="phase">08 · Measure</div>
-          <h5>Dashboards &amp; retros</h5>
-          <p class="tiny" style="margin: 0;">Analytics reviewed weeks later. Retros surface what to do differently next cycle.</p>
-          <div class="role"><span class="human">Human</span></div>
-        </div>
+    <div class="chevron-row">
+      <div class="chev">
+        <div class="phase">01 · Discover</div>
+        <h5>Customer research</h5>
+        <p class="tiny" style="margin: 0;">Interviews, surveys, market reads. Researchers, PMs, and founders in the field.</p>
+        <div class="role"><span class="human">Human</span></div>
       </div>
-
-      <div style="margin-top: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 1200px;">
-        <div class="card">
-          <div class="kicker">Specialists at every step</div>
-          <div style="font-size: 18px; font-weight: 600; color: var(--fg);">Researcher, PM, designer, engineer, QA, ops.</div>
-          <p class="tiny" style="margin-top: 8px;">Each phase was its own craft. Coordinating across them was the job PMs and eng leads were hired for.</p>
-        </div>
-        <div class="card">
-          <div class="kicker">Coding was the anchor</div>
-          <div style="font-size: 18px; font-weight: 600; color: var(--fg);">Implementation took the most time.</div>
-          <p class="tiny" style="margin-top: 8px;">Weeks per feature was expected, because careful human coding was the expertise the whole team queued behind.</p>
-        </div>
+      <div class="chev">
+        <div class="phase">02 · Ideation</div>
+        <h5>Strategy meetings</h5>
+        <p class="tiny" style="margin: 0;">Vision, OKRs, roadmap bets. Steering committees and quarterly planning.</p>
+        <div class="role"><span class="human">Human</span></div>
+      </div>
+      <div class="chev">
+        <div class="phase">03 · Reqs</div>
+        <h5>PRD in Notion</h5>
+        <p class="tiny" style="margin: 0;">PM drafts the spec after the meeting. Reviewed with stakeholders, revised, approved.</p>
+        <div class="role"><span class="human">Human</span></div>
+      </div>
+      <div class="chev">
+        <div class="phase">04 · Design</div>
+        <h5>Figma &amp; Jira</h5>
+        <p class="tiny" style="margin: 0;">UX mockups, prototypes. Eng lead breaks the PRD into tickets.</p>
+        <div class="role"><span class="human">Human</span></div>
+      </div>
+      <div class="chev">
+        <div class="phase">05 · Build</div>
+        <h5>Code by hand</h5>
+        <p class="tiny" style="margin: 0;">Engineer + IDE, pair coding, careful reviews. Days to weeks per ticket.</p>
+        <div class="role"><span class="human">Human</span></div>
+      </div>
+      <div class="chev">
+        <div class="phase">06 · Test</div>
+        <h5>QA validation</h5>
+        <p class="tiny" style="margin: 0;">QA runs manual and automated tests against acceptance criteria.</p>
+        <div class="role"><span class="human">Human</span></div>
+      </div>
+      <div class="chev">
+        <div class="phase">07 · Release</div>
+        <h5>Release train</h5>
+        <p class="tiny" style="margin: 0;">Weekly or monthly ship. PM writes release notes, comms sends the email.</p>
+        <div class="role"><span class="human">Human</span></div>
+      </div>
+      <div class="chev">
+        <div class="phase">08 · Measure</div>
+        <h5>Dashboards &amp; retros</h5>
+        <p class="tiny" style="margin: 0;">Analytics reviewed weeks later. Retros surface what to do differently next cycle.</p>
+        <div class="role"><span class="human">Human</span></div>
       </div>
     </div>
 
-    <!-- Agent-era PDLC (toggle to show) -->
-    <div class="journey-view" data-view="agent" hidden>
-      <h2 class="h2" style="white-space: nowrap;">Where AI fits. Where it doesn't.</h2>
-      <p class="body" style="max-width: 78ch;">
-        Humans anchor the two endpoints. Tests stay <span class="hl">human-owned</span>, always. Agents drive the middles. Automate the <strong>DESIGN → BUILD</strong> handoff first; that's where Intent Lead Time compresses.
-      </p>
-
-      <div class="chevron-row">
-        <div class="chev endpoint">
-          <div class="phase">01 · Discover</div>
-          <h5>Research with AI</h5>
-          <p class="tiny" style="margin: 0;">Transcripts auto-summarized. Signals surfaced. Humans still frame the question.</p>
-          <div class="role"><span class="human">Human</span><span class="ai">Agent</span></div>
-        </div>
-        <div class="chev">
-          <div class="phase">02 · Ideation</div>
-          <h5>Problem sensing</h5>
-          <p class="tiny" style="margin: 0;">Vision and bets stay human. AI synthesizes inputs; people make the calls.</p>
-          <div class="role"><span class="human">Human</span></div>
-        </div>
-        <div class="chev">
-          <div class="phase">03 · Reqs</div>
-          <h5>Live intent capture</h5>
-          <p class="tiny" style="margin: 0;">Agents attend. Decisions timestamped, owner attributed, source-linked.</p>
-          <div class="role"><span class="human">Human</span><span class="ai">Agent</span></div>
-        </div>
-        <div class="chev">
-          <div class="phase">04 · Design</div>
-          <h5>Markdown, in repo</h5>
-          <p class="tiny" style="margin: 0;">PRDs + design docs drafted live, versioned with the code.</p>
-          <div class="role"><span class="human">Human</span><span class="ai">Agent</span></div>
-        </div>
-        <div class="chev">
-          <div class="phase">05 · Build</div>
-          <h5>Agent in sandbox</h5>
-          <p class="tiny" style="margin: 0;">Local CLI or cloud. Full session context. Humans intervene when needed.</p>
-          <div class="role"><span class="ai">Agent</span></div>
-        </div>
-        <div class="chev test">
-          <div class="phase">06 · Test</div>
-          <h5>Human-owned spec</h5>
-          <p class="tiny" style="margin: 0;">"Never let AI specify your tests." Agents implement; humans declare correct behavior.</p>
-          <div class="role"><span class="human">Human spec</span><span class="ai">Agent impl</span></div>
-        </div>
-        <div class="chev endpoint">
-          <div class="phase">07 · Release</div>
-          <h5>Agentic PR</h5>
-          <p class="tiny" style="margin: 0;">Release body written by the agent from the diff + intent. Human reviews, one click.</p>
-          <div class="role"><span class="human">Human</span><span class="ai">Agent</span></div>
-        </div>
-        <div class="chev">
-          <div class="phase">08 · Measure</div>
-          <h5>Agentic observability</h5>
-          <p class="tiny" style="margin: 0;">Dashboards auto-summarize. Agents surface anomalies. Humans decide what to do next.</p>
-          <div class="role"><span class="human">Human</span><span class="ai">Agent</span></div>
-        </div>
+    <div style="margin-top: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 1200px;">
+      <div class="card">
+        <div class="kicker">Specialists at every step</div>
+        <div style="font-size: 18px; font-weight: 600; color: var(--fg);">Researcher, PM, designer, engineer, QA, ops.</div>
+        <p class="tiny" style="margin-top: 8px;">Each phase was its own craft. Coordinating across them was the job PMs and eng leads were hired for.</p>
       </div>
-
-      <div style="margin-top: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 1200px;">
-        <div class="card">
-          <div class="kicker" style="color: var(--green);">Sacred rule</div>
-          <div style="font-size: 18px; font-weight: 600; color: var(--fg);">Never let AI specify your tests.</div>
-          <p class="tiny" style="margin-top: 8px;">Tests encode shared domain judgment about what "correct" means. Ceding that cedes control. Agents implement; humans specify.</p>
-        </div>
-        <div class="card">
-          <div class="kicker">Automate first</div>
-          <div style="font-size: 18px; font-weight: 600; color: var(--fg);">The SPEC → BUILD handoff.</div>
-          <p class="tiny" style="margin-top: 8px;">That's where activation latency lives. If the spec is picked up by the agent without a human re-routing it, most of your ILT disappears.</p>
-        </div>
+      <div class="card">
+        <div class="kicker">Coding was the anchor</div>
+        <div style="font-size: 18px; font-weight: 600; color: var(--fg);">Implementation took the most time.</div>
+        <p class="tiny" style="margin-top: 8px;">Weeks per feature was expected, because careful human coding was the expertise the whole team queued behind.</p>
       </div>
     </div>
   </section>
 
   <!-- ============================================================ -->
-  <!-- SLIDE 4 — The shift nobody priced in                          -->
+  <!-- SLIDE 4 — Journey map: with agents                            -->
   <!-- ============================================================ -->
   <section class="slide" data-slide="4" id="s4">
-    <div class="slide-meta"><span class="bar"></span><span class="num">04</span><span>The bottleneck that didn't collapse</span></div>
+    <div class="slide-meta"><span class="bar"></span><span class="num">04</span><span>Journey map · with agents</span></div>
+
+    <h2 class="h2" style="white-space: nowrap;">Where AI fits. Where it doesn't.</h2>
+    <p class="body" style="max-width: 78ch;">
+      Humans anchor the two endpoints. Tests stay <span class="hl">human-owned</span>, always. Agents drive the middles. Automate the <strong>DESIGN → BUILD</strong> handoff first; that's where Intent Lead Time compresses.
+    </p>
+
+    <div class="chevron-row">
+      <div class="chev endpoint">
+        <div class="phase">01 · Discover</div>
+        <h5>Research with AI</h5>
+        <p class="tiny" style="margin: 0;">Transcripts auto-summarized. Signals surfaced. Humans still frame the question.</p>
+        <div class="role"><span class="human">Human</span><span class="ai">Agent</span></div>
+      </div>
+      <div class="chev">
+        <div class="phase">02 · Ideation</div>
+        <h5>Problem sensing</h5>
+        <p class="tiny" style="margin: 0;">Vision and bets stay human. AI synthesizes inputs; people make the calls.</p>
+        <div class="role"><span class="human">Human</span></div>
+      </div>
+      <div class="chev">
+        <div class="phase">03 · Reqs</div>
+        <h5>Live intent capture</h5>
+        <p class="tiny" style="margin: 0;">Agents attend. Decisions timestamped, owner attributed, source-linked.</p>
+        <div class="role"><span class="human">Human</span><span class="ai">Agent</span></div>
+      </div>
+      <div class="chev">
+        <div class="phase">04 · Design</div>
+        <h5>Markdown, in repo</h5>
+        <p class="tiny" style="margin: 0;">PRDs + design docs drafted live, versioned with the code.</p>
+        <div class="role"><span class="human">Human</span><span class="ai">Agent</span></div>
+      </div>
+      <div class="chev">
+        <div class="phase">05 · Build</div>
+        <h5>Agent in sandbox</h5>
+        <p class="tiny" style="margin: 0;">Local CLI or cloud. Full session context. Humans intervene when needed.</p>
+        <div class="role"><span class="ai">Agent</span></div>
+      </div>
+      <div class="chev test">
+        <div class="phase">06 · Test</div>
+        <h5>Human-owned spec</h5>
+        <p class="tiny" style="margin: 0;">"Never let AI specify your tests." Agents implement; humans declare correct behavior.</p>
+        <div class="role"><span class="human">Human spec</span><span class="ai">Agent impl</span></div>
+      </div>
+      <div class="chev endpoint">
+        <div class="phase">07 · Release</div>
+        <h5>Agentic PR</h5>
+        <p class="tiny" style="margin: 0;">Release body written by the agent from the diff + intent. Human reviews, one click.</p>
+        <div class="role"><span class="human">Human</span><span class="ai">Agent</span></div>
+      </div>
+      <div class="chev">
+        <div class="phase">08 · Measure</div>
+        <h5>Agentic observability</h5>
+        <p class="tiny" style="margin: 0;">Dashboards auto-summarize. Agents surface anomalies. Humans decide what to do next.</p>
+        <div class="role"><span class="human">Human</span><span class="ai">Agent</span></div>
+      </div>
+    </div>
+
+    <div style="margin-top: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 1200px;">
+      <div class="card">
+        <div class="kicker" style="color: var(--green);">Sacred rule</div>
+        <div style="font-size: 18px; font-weight: 600; color: var(--fg);">Never let AI specify your tests.</div>
+        <p class="tiny" style="margin-top: 8px;">Tests encode shared domain judgment about what "correct" means. Ceding that cedes control. Agents implement; humans specify.</p>
+      </div>
+      <div class="card">
+        <div class="kicker">Automate first</div>
+        <div style="font-size: 18px; font-weight: 600; color: var(--fg);">The SPEC → BUILD handoff.</div>
+        <p class="tiny" style="margin-top: 8px;">That's where activation latency lives. If the spec is picked up by the agent without a human re-routing it, most of your ILT disappears.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 5 — The shift nobody priced in                          -->
+  <!-- ============================================================ -->
+  <section class="slide" data-slide="5" id="s5">
+    <div class="slide-meta"><span class="bar"></span><span class="num">05</span><span>The bottleneck that didn't collapse</span></div>
     <h2 class="h2">Two collapses happened<br />on very different clocks.</h2>
 
     <p class="body" style="margin-top: 20px; max-width: none; white-space: nowrap; font-size: clamp(12px, 0.95vw, 16px);">
@@ -1579,10 +1524,10 @@
 
   <!-- ============================================================ -->
   <!-- ============================================================ -->
-  <!-- SLIDE 5 — A metric you can use on Monday                      -->
+  <!-- SLIDE 6 — A metric you can use on Monday                      -->
   <!-- ============================================================ -->
-  <section class="slide" data-slide="5" id="s5">
-    <div class="slide-meta"><span class="bar"></span><span class="num">05</span><span>Inside the gap</span></div>
+  <section class="slide" data-slide="6" id="s6">
+    <div class="slide-meta"><span class="bar"></span><span class="num">06</span><span>Inside the gap</span></div>
     <h2 class="h2" style="font-size: clamp(26px, 3.1vw, 44px); white-space: nowrap;">Intent Lead Time. Four sub-metrics. Three go to zero.</h2>
 
     <!-- ILT zoom-in: same striped-orange visual language as slide 4's
@@ -1646,10 +1591,10 @@
   </section>
 
   <!-- ============================================================ -->
-  <!-- SLIDE 6 — From code-centric to intent-centric                 -->
+  <!-- SLIDE 7 — From code-centric to intent-centric                 -->
   <!-- ============================================================ -->
-  <section class="slide" data-slide="6" id="s6">
-    <div class="slide-meta"><span class="bar"></span><span class="num">06</span><span>The stack</span></div>
+  <section class="slide" data-slide="7" id="s7">
+    <div class="slide-meta"><span class="bar"></span><span class="num">07</span><span>The stack</span></div>
     <h2 class="h2" style="white-space: nowrap;">PRDs aren't going away. The <em class="accent" style="font-style: normal;">format</em> is.</h2>
 
     <p class="lede" style="max-width: 80ch; margin-top: 18px;">
@@ -1679,10 +1624,10 @@
   </section>
 
   <!-- ============================================================ -->
-  <!-- SLIDE 7 — Opinionated cut                                     -->
+  <!-- SLIDE 8 — Opinionated cut                                     -->
   <!-- ============================================================ -->
-  <section class="slide" data-slide="7" id="s7">
-    <div class="slide-meta"><span class="bar"></span><span class="num">07</span><span>The opinionated cut</span></div>
+  <section class="slide" data-slide="8" id="s8">
+    <div class="slide-meta"><span class="bar"></span><span class="num">08</span><span>The opinionated cut</span></div>
     <h2 class="h2">Three practices die. One lives.</h2>
 
     <div class="grid4" style="margin-top: 24px;">
@@ -1719,10 +1664,10 @@
   </section>
 
   <!-- ============================================================ -->
-  <!-- SLIDE 8 — Stoa as receipt                                     -->
+  <!-- SLIDE 9 — Stoa as receipt                                     -->
   <!-- ============================================================ -->
-  <section class="slide" data-slide="8" id="s8">
-    <div class="slide-meta"><span class="bar"></span><span class="num">08</span><span>Stoa as receipt</span></div>
+  <section class="slide" data-slide="9" id="s9">
+    <div class="slide-meta"><span class="bar"></span><span class="num">09</span><span>Stoa as receipt</span></div>
     <h2 class="h2" style="white-space: nowrap;">I don't just pitch this. I live it daily.</h2>
     <p class="body" style="max-width: 76ch;">Every number on this slide was mined from the <code>specstoryai/stoa</code> monorepo at build time. Real commits, real doc counts, current as of the deck build.</p>
 
@@ -1751,10 +1696,10 @@
   </section>
 
   <!-- ============================================================ -->
-  <!-- SLIDE 9 — Agentic release                                     -->
+  <!-- SLIDE 10 — Agentic release                                    -->
   <!-- ============================================================ -->
-  <section class="slide" data-slide="9" id="s9">
-    <div class="slide-meta"><span class="bar"></span><span class="num">09</span><span>Live demo · the agentic release</span></div>
+  <section class="slide" data-slide="10" id="s10">
+    <div class="slide-meta"><span class="bar"></span><span class="num">10</span><span>Live demo · the agentic release</span></div>
     <h2 class="h2" style="white-space: nowrap;">A <em class="accent" style="font-style: normal;">dev → main</em> release PR that writes itself.</h2>
     <p class="body" style="max-width: none;">
       Humans don't read release diffs. Our fix: <strong>the PR writes itself</strong>. Four files in <code>.github/workflows/</code>, running on every push to <code>dev</code>.<br />
@@ -1829,10 +1774,10 @@
   </section>
 
   <!-- ============================================================ -->
-  <!-- SLIDE 10 — Takeaways                                           -->
+  <!-- SLIDE 11 — Takeaways                                           -->
   <!-- ============================================================ -->
-  <section class="slide" data-slide="10" id="s10">
-    <div class="slide-meta"><span class="bar"></span><span class="num">10</span><span>Take it home</span></div>
+  <section class="slide" data-slide="11" id="s11">
+    <div class="slide-meta"><span class="bar"></span><span class="num">11</span><span>Take it home</span></div>
     <h2 class="h2">Three assets to steal.<br />Three moves to make this week.</h2>
 
     <div class="grid3" style="margin-top: 20px;">
@@ -1848,7 +1793,7 @@
       </a>
       <a href="takeaways/ai-pdlc-journey-map.md" class="take-card" data-num="03">
         <h4>AI-PDLC journey map</h4>
-        <p>Poster version of slide 9. Which tool, which phase, who owns what, every step.</p>
+        <p>Poster version of slide 4. Which tool, which phase, who owns what, every step.</p>
         <div class="path">takeaways/ai-pdlc-journey-map.md</div>
       </a>
     </div>
@@ -1896,9 +1841,9 @@
   </section>
 
   <!-- ============================================================ -->
-  <!-- SLIDE 11 — Appendix A: conventions that aren't worth it      -->
+  <!-- SLIDE 12 — Appendix A: conventions that aren't worth it      -->
   <!-- ============================================================ -->
-  <section class="slide appendix" data-slide="11" id="s11">
+  <section class="slide appendix" data-slide="12" id="s12">
     <div class="slide-meta">
       <span class="bar"></span>
       <span class="num">APPENDIX &middot; A</span>
@@ -1959,9 +1904,9 @@
   </section>
 
   <!-- ============================================================ -->
-  <!-- SLIDE 12 — Appendix B: AS-BUILT-ARCHITECTURE.md exemplar     -->
+  <!-- SLIDE 13 — Appendix B: AS-BUILT-ARCHITECTURE.md exemplar     -->
   <!-- ============================================================ -->
-  <section class="slide appendix" data-slide="12" id="s12">
+  <section class="slide appendix" data-slide="13" id="s13">
     <div class="slide-meta">
       <span class="bar"></span>
       <span class="num">APPENDIX &middot; B</span>
@@ -2041,9 +1986,9 @@
   </section>
 
   <!-- ============================================================ -->
-  <!-- SLIDE 13 — Appendix C: harness & workflow                    -->
+  <!-- SLIDE 14 — Appendix C: harness & workflow                    -->
   <!-- ============================================================ -->
-  <section class="slide appendix" data-slide="13" id="s13">
+  <section class="slide appendix" data-slide="14" id="s14">
     <div class="slide-meta">
       <span class="bar"></span>
       <span class="num">APPENDIX &middot; C</span>
@@ -2306,25 +2251,6 @@
   // redraw on resize (SVG already scales, but if we added more dynamic things later)
   window.addEventListener("resize", () => { drawThemes(); drawMonths(); });
 
-  // ----- slide 3 journey-map view toggle ----------------------------
-  // Two views live in the slide: "human" (pre-agent PDLC, default) and
-  // "agent". Clicking a toggle button swaps the visible view and the
-  // active-button style. Keyboard-friendly since it's a <button>.
-  document.querySelectorAll(".view-toggle-btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const wanted = btn.dataset.view;
-      const slide = btn.closest("section");
-      if (!slide) return;
-      slide.querySelectorAll(".view-toggle-btn").forEach((b) => {
-        const on = b.dataset.view === wanted;
-        b.classList.toggle("active", on);
-        b.setAttribute("aria-selected", on ? "true" : "false");
-      });
-      slide.querySelectorAll(".journey-view").forEach((v) => {
-        v.hidden = v.dataset.view !== wanted;
-      });
-    });
-  });
 })();
 </script>
 
