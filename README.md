@@ -4,13 +4,21 @@
 
 <p>
   <a href="https://gregce.github.io/ai-product-development/">
-    <img alt="Open the live deck" src="https://img.shields.io/badge/%E2%96%B6%20OPEN%20THE%20DECK-e35a2c?style=for-the-badge&labelColor=0b0f14" />
+    <img alt="Open the Alpine SG deck" src="https://img.shields.io/badge/%E2%96%B6%20ALPINE%20SG%20DECK-e35a2c?style=for-the-badge&labelColor=0b0f14" />
+  </a>
+  &nbsp;
+  <a href="https://gregce.github.io/ai-product-development/blackbaud.html">
+    <img alt="Open the Blackbaud variant" src="https://img.shields.io/badge/%E2%96%B6%20BLACKBAUD%20VARIANT-58a6ff?style=for-the-badge&labelColor=0b0f14" />
   </a>
 </p>
 
-<p><strong><a href="https://gregce.github.io/ai-product-development/">gregce.github.io/ai-product-development</a></strong></p>
+<p>
+  <strong><a href="https://gregce.github.io/ai-product-development/">gregce.github.io/ai-product-development</a></strong>
+  &middot;
+  <strong><a href="https://gregce.github.io/ai-product-development/blackbaud.html">/blackbaud.html</a></strong>
+</p>
 
-<p><em>A talk for Alpine SG portfolio-company product leaders · April 2026</em></p>
+<p><em>Two decks, one repo &middot; Alpine SG portfolio leaders &middot; Blackbaud Q&amp;A &middot; April 2026</em></p>
 
 </div>
 
@@ -18,16 +26,18 @@
 
 A 14-slide deck (11 + 3 appendix), four analysis scripts, and three copy-me takeaway artifacts.
 
-> **On branch `blackbaud-qa`:** a parallel 12-slide variant — [`blackbaud.html`](./blackbaud.html) + [`slides/blackbaud-outline.md`](./slides/blackbaud-outline.md) — re-cut as nine substantive answers to the questions Blackbaud is asking about scaling AI agents in software development. Same visual system, different through-line. The Alpine SG deck below is unchanged.
+> **Also in this repo — *Agentic Transformation*:** a parallel 12-slide variant ([`blackbaud.html`](./blackbaud.html) · [live](https://gregce.github.io/ai-product-development/blackbaud.html) · [outline](./slides/blackbaud-outline.md)) re-cut as nine substantive answers to the questions Blackbaud asked about scaling AI agents in software development. Same visual system, light-blue accent, different through-line. The Alpine SG deck below is unchanged.
 
 ## The thesis in one paragraph
 
 Coding agents collapsed implementation from days to hours. CI/CD had already collapsed deploys to minutes. The *intent-capture* phase (meetings, decisions, PRDs, tickets) didn't collapse at all. DORA can't see it: DORA's clock starts at `git commit`. That gap has a name now: **Intent Lead Time**. This repo is the argument, with receipts from one repo we shipped over the last 7 months.
 
-## Deck
+## Decks
 
-- [`index.html`](./index.html): the actual slideshow, dark editorial, Stoa orange accent, real data embedded. 14 slides, keyboard navigable.
+- [`index.html`](./index.html) &middot; [live](https://gregce.github.io/ai-product-development/): *How product development works in an AI world.* The Alpine SG deck, dark editorial, Stoa orange accent, real data embedded. 14 slides, keyboard navigable.
 - [`slides/outline.md`](./slides/outline.md): the written narrative per slide, with the raw quotes bank at the bottom.
+- [`blackbaud.html`](./blackbaud.html) &middot; [live](https://gregce.github.io/ai-product-development/blackbaud.html): *Agentic Transformation.* The Blackbaud Q&A variant, same chrome, light-blue accent. 12 slides, one per question. Built from a prep-call VTT.
+- [`slides/blackbaud-outline.md`](./slides/blackbaud-outline.md): per-slide narrative + verbatim pull-quotes (with timestamps) for the Blackbaud variant.
 
 Slides at a glance:
 
@@ -70,9 +80,12 @@ If you're here to argue with it: go straight to the [Beyond Code-Centric whitepa
 
 ```
 ai-product-development/
-├── index.html          # the deck, single self-contained file
-├── slides/outline.md   # written narrative, one section per slide
-├── takeaways/          # copy-me artifacts (workflow kit, PRD template, PDLC map)
+├── index.html                      # Alpine SG deck (Stoa orange)
+├── blackbaud.html                  # Blackbaud Q&A variant (light blue)
+├── slides/
+│   ├── outline.md                  # narrative for the Alpine deck
+│   └── blackbaud-outline.md        # narrative for the Blackbaud variant
+├── takeaways/                      # copy-me artifacts (workflow kit, PRD template, PDLC map)
 └── README.md
 ```
 
