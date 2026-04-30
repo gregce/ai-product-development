@@ -1,15 +1,15 @@
-# Slide outline: Scaling AI agents in software development — Blackbaud Q&A
+# Slide outline: Agentic Transformation — Blackbaud Q&A
 
 **Audience.** Blackbaud product / engineering leadership.
 **Length.** 12 slides, ~25 min + Q&A.
-**Tone.** Field notes voice. Receipts and named anecdotes, no slogans. Drawn from conversations with Abacus, Instacart, Cargurus, Fidelity, Docker, DigitalOcean, GitHub, Archimedes, Veritta, Domino, Assignar — plus 7 months running Stoa fully agentic.
+**Tone.** Field notes voice. Receipts and named anecdotes, no slogans. Drawn from conversations with Abacus, Instacart, Cargurus, Fidelity, Docker, DigitalOcean, GitHub, Archimedes, Variata, Domino, Assignar — plus 7 months running Stoa fully agentic.
 **Thread.** Nine questions, nine substantive answers. The story underneath them: tools roll out wide; *the workflow* rolls out narrow. Intent is the new gate. Tests, supply chain, and integration stay human. ILT is the metric nobody is yet tracking.
 
 ---
 
 ## Slide 1: Title
 
-> **Scaling AI agents in software development.**
+> **Agentic Transformation.**
 > What we're seeing across the portfolio, what we're learning in our own repo.
 > Greg Ceccarelli · Stoa / SpecStory · prepared for Blackbaud · April 2026.
 

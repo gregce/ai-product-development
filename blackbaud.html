@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Scaling AI agents in software development · Q&amp;A for Blackbaud · Greg Ceccarelli</title>
+<title>Agentic Transformation · Q&amp;A for Blackbaud · Greg Ceccarelli</title>
 <meta name="description" content="Field notes from across the portfolio plus 7 months running Stoa fully agentic, organized as nine substantive answers to the questions Blackbaud is asking about AI in the SDLC." />
 <style>
   :root {
@@ -16,9 +16,9 @@
     --fg-2:       #c9d1d9;
     --mute:       #7d8590;
     --mute-2:     #545d68;
-    --accent:     #e35a2c;   /* Stoa orange */
-    --accent-2:   #ff7e55;
-    --accent-dim: rgba(227, 90, 44, 0.12);
+    --accent:     #58a6ff;   /* light blue */
+    --accent-2:   #79b8ff;
+    --accent-dim: rgba(88, 166, 255, 0.12);
     --blue:       #58a6ff;
     --green:      #7ee787;
     --yellow:     #ffd866;
@@ -239,6 +239,21 @@
     border-color: var(--accent);
     background: var(--accent-dim);
   }
+  /* Bulleted lists used inside cards on slides 2 & 3.
+     Accent-colored markers, tight rhythm, neutral copy. */
+  ul.card-bullets {
+    list-style: disc;
+    padding: 0 0 0 20px;
+    margin: 0;
+    font-size: 14px;
+    color: var(--fg-2);
+    line-height: 1.6;
+  }
+  ul.card-bullets li { margin: 0 0 6px; padding-left: 4px; }
+  ul.card-bullets li:last-child { margin-bottom: 0; }
+  ul.card-bullets li::marker { color: var(--accent); }
+  ul.card-bullets.lg { font-size: 14.5px; line-height: 1.65; }
+  ul.card-bullets.lg li { margin-bottom: 8px; }
   .grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
   .grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
   .grid4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
@@ -445,7 +460,7 @@
   .md-row .meta   { color: var(--mute);   font-style: italic; }
   .md-row .more   { color: var(--mute);   font-style: italic; }
   /* subtle background tint on section-break rows so `##` lines pop */
-  .md-row.sec     { background: rgba(227, 90, 44, 0.03); }
+  .md-row.sec     { background: rgba(88, 166, 255, 0.03); }
 
   /* Slide 5 ILT sub-component breakdown: a striped bar in the visual
      language of slide 4's ILT segment, divided into the four latencies.
@@ -469,7 +484,7 @@
     flex: 1;
     display: flex; align-items: center; justify-content: center;
     padding: 0 8px;
-    border-right: 1px dashed rgba(227, 90, 44, 0.35);
+    border-right: 1px dashed rgba(88, 166, 255, 0.35);
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
     font-size: 12px;
     letter-spacing: 0.02em;
@@ -552,7 +567,7 @@
     border: 1px solid var(--accent);
     border-radius: 10px;
     background:
-      radial-gradient(ellipse at top left, rgba(227, 90, 44, 0.10) 0%, transparent 55%),
+      radial-gradient(ellipse at top left, rgba(88, 166, 255, 0.10) 0%, transparent 55%),
       var(--ink-2);
     max-width: 960px;
     position: relative;
@@ -567,7 +582,7 @@
     font-weight: 600;
     letter-spacing: -0.005em;
     padding: 6px 0 18px;
-    border-bottom: 1px dashed rgba(227, 90, 44, 0.35);
+    border-bottom: 1px dashed rgba(88, 166, 255, 0.35);
     white-space: nowrap;
     overflow-x: auto;
   }
@@ -842,8 +857,8 @@
   }
   .pipeline-node.hero {
     border-color: var(--accent);
-    background: linear-gradient(180deg, rgba(227, 90, 44, 0.08) 0%, var(--ink-2) 55%);
-    box-shadow: 0 0 0 1px rgba(227, 90, 44, 0.35);
+    background: linear-gradient(180deg, rgba(88, 166, 255, 0.08) 0%, var(--ink-2) 55%);
+    box-shadow: 0 0 0 1px rgba(88, 166, 255, 0.35);
   }
   .pipeline-node .badge {
     width: 28px; height: 28px;
@@ -1260,7 +1275,7 @@
 <div class="chrome-top">
   <div class="brand">
     <span class="dot"></span>
-    <span><strong>Scaling AI agents in software development</strong> · Q&amp;A for Blackbaud · 2026</span>
+    <span><strong>Agentic Transformation</strong> · Q&amp;A for Blackbaud · 2026</span>
   </div>
   <div class="progress-track"><div class="progress-fill" id="progress"></div></div>
 </div>
@@ -1273,10 +1288,10 @@
   <!-- ============================================================ -->
   <section class="slide title-slide active" data-slide="1" id="s1">
     <div class="overline">A Q&amp;A briefing for Blackbaud product &amp; engineering leadership</div>
-    <h1 class="h1">Scaling AI agents<br />in <em>software&nbsp;development</em>.</h1>
+    <h1 class="h1"><em>Agentic</em><br />Transformation.</h1>
     <p class="lede">Nine questions. Nine field-tested answers.</p>
     <div class="receipt">
-      Synthesized from conversations with ~12 named teams (Abacus, Instacart, Cargurus, Fidelity, Docker, DigitalOcean, GitHub, Archimedes, Veritta, Domino, Assignar) — plus 7 months of Stoa shipped fully agentic.
+      Synthesized from conversations with ~12 named teams (Abacus, Instacart, Cargurus, Fidelity, Docker, DigitalOcean, GitHub, Archimedes, Variata, Domino, Assignar) — plus 7 months of Stoa shipped fully agentic.
     </div>
     <div class="byline">
       <strong><a class="author-name" href="https://gregceccarelli.com">Greg Ceccarelli</a></strong>
@@ -1303,24 +1318,35 @@
     <div class="grid3" style="margin-top: 24px; max-width: 1280px;">
       <div class="card">
         <div class="kicker">01 · Org shape</div>
-        <div style="font-size: 17px; font-weight: 600; color: var(--fg); margin-bottom: 8px;">Agile + SAFe at the top, monolith startups at the bottom.</div>
-        <p class="tiny" style="line-height: 1.55;">Larger orgs: scaled-Agile / microservices, autonomous-ish teams that "end up struggling with a roadmap planning cadence that tries to cut across all of them." Startups: monolith, "everybody's building everything," workflow not as tight or rigorous.</p>
+        <div style="font-size: 17px; font-weight: 600; color: var(--fg); margin-bottom: 10px;">Agile + SAFe at the top, monolith startups at the bottom.</div>
+        <ul class="card-bullets">
+          <li>Larger orgs: scaled-Agile / microservices, autonomous-ish teams.</li>
+          <li>Roadmap-planning cadences "try to cut across all of them" — and struggle.</li>
+          <li>Startups: monolith. <em>"Everybody's building everything."</em> Workflow not as tight or rigorous.</li>
+        </ul>
       </div>
       <div class="card">
         <div class="kicker">02 · Git posture</div>
-        <div style="font-size: 17px; font-weight: 600; color: var(--fg); margin-bottom: 8px;">Feature branches, foregone conclusion.</div>
-        <p class="tiny" style="line-height: 1.55;">Larger orgs: long-lived branches (days to weeks). Smaller, more agile shops: held open for "only a few days." Manual CI/CD, mostly. Releases tied to those branches, not to push-to-dev.</p>
+        <div style="font-size: 17px; font-weight: 600; color: var(--fg); margin-bottom: 10px;">Feature branches, foregone conclusion.</div>
+        <ul class="card-bullets">
+          <li>Larger orgs: long-lived branches — <strong>days to weeks.</strong></li>
+          <li>Smaller, more agile shops: held open <strong>"only a few days."</strong></li>
+          <li>Manual CI/CD, mostly. Releases tied to branches, not push-to-dev.</li>
+        </ul>
       </div>
       <div class="card accent">
         <div class="kicker">03 · Trigger to transform</div>
-        <div style="font-size: 17px; font-weight: 700; color: var(--fg); margin-bottom: 8px;">CEO-led, top-down, was the fastest pattern.</div>
-        <p class="tiny" style="line-height: 1.55; color: var(--fg-2);">Instacart: CEO-championed across ~1,000 engineers. Implementation: a dedicated AI-tooling subset of platform engineering owning purchasing, training, <em>and</em> adoption measurement.</p>
+        <div style="font-size: 17px; font-weight: 700; color: var(--fg); margin-bottom: 10px;">CEO-led, top-down, was the fastest pattern.</div>
+        <ul class="card-bullets">
+          <li><strong>Instacart:</strong> CEO-championed across ~1,000 engineers.</li>
+          <li>Implementation: a dedicated AI-tooling subset of platform engineering.</li>
+          <li>Owns purchasing, training, <em>and</em> adoption measurement.</li>
+        </ul>
       </div>
     </div>
 
     <div class="pull" style="margin-top: 36px; max-width: 78ch;">
       "In the cases where it happened the fastest, the trigger decision came from <span class="accent">top down</span>. And in a lot of cases from the CEO directly."
-      <cite>— Greg, on the trigger pattern across portfolio conversations</cite>
     </div>
   </section>
 
@@ -1334,11 +1360,11 @@
     <div class="grid2" style="gap: 28px; margin-top: 22px; max-width: 1280px;">
       <div class="card">
         <div class="kicker">Case A · the 5-person greenfield</div>
-        <div style="font-size: 19px; font-weight: 700; color: var(--fg); margin-bottom: 10px;">Assignar &middot; new construction-finance product</div>
-        <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: var(--fg-2); line-height: 1.65;">
+        <div style="font-size: 19px; font-weight: 700; color: var(--fg); margin-bottom: 12px;">Assignar &middot; new construction-finance product</div>
+        <ul class="card-bullets lg">
           <li>20–30 eng org, 5-person team carved off · 1 PM, 4 engineers, CTO active <em>on</em> the team.</li>
           <li>Stuck with familiar GitHub flow. Injected agents <strong>as the assignee on tickets</strong> — Copilot picks up the ticket, makes the feature branch, opens the PR.</li>
-          <li><strong>Most of their time writing tickets and reviewing agent output</strong> — very little time on the code itself. Code review became <em>structural</em>; security scans run by a second agent.</li>
+          <li><strong>Most of their time writing tickets and reviewing agent output</strong> — very little time on the code. Code review became <em>structural</em>; security scans run by a second agent.</li>
           <li>Engineers pushed <em>into</em> product/requirements. PM pushed <em>into</em> technical/architectural specs. Everybody stretched.</li>
           <li>Hierarchy collapsed flat. CTO's role: <strong>"acting as traffic cop"</strong> — sequencing async agent merges to minimize conflicts.</li>
           <li>Mood: excited, "maybe a little trepidatious." Greenfield + new team made it possible.</li>
@@ -1347,12 +1373,12 @@
 
       <div class="card">
         <div class="kicker">Case B · the 1,000-engineer org</div>
-        <div style="font-size: 19px; font-weight: 700; color: var(--fg); margin-bottom: 10px;">Instacart &middot; top-down expectation, no kickoff</div>
-        <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: var(--fg-2); line-height: 1.65;">
+        <div style="font-size: 19px; font-weight: 700; color: var(--fg); margin-bottom: 12px;">Instacart &middot; top-down expectation, no kickoff</div>
+        <ul class="card-bullets lg">
           <li>Existing teams, existing process — AI enablement layered tooling, training, Slack channels, in-person sessions <em>on top</em>.</li>
           <li>Distribution of reactions: early adopters who loved it, real resistance from others, a long tail "not actively against, but really dragging their feet."</li>
           <li>"A whole mix" across a thousand-engineer org — and that's the point: scale guarantees a distribution.</li>
-          <li>Enablement team's own framing: <strong>"doing everything they could to drag people along."</strong> They literally flew to offices to sit with engineers in person.</li>
+          <li>Enablement team's framing: <strong>"doing everything they could to drag people along."</strong> Literally flew to offices to sit with engineers in person.</li>
           <li>No project, no kickoff, no cutover point. The expectation was clear; the mechanism for arrival was diffuse.</li>
         </ul>
       </div>
@@ -1417,8 +1443,8 @@
     <div class="slide-meta"><span class="bar"></span><span class="num">05</span><span>Q4 · Decision gates — what stays human</span></div>
     <h2 class="h2">Code review broke.<br />Two new gates moved in.</h2>
 
-    <p class="body" style="max-width: 84ch;">
-      <strong>You can no longer review code line by line</strong> the way you would when humans wrote it. Two reasons: <em>quantity</em>, and a mismatch around <em>intention vs. expectation</em>. Larger orgs still try; faster-moving teams (Stoa, Assignar) let it go and replaced it.
+    <p class="lede" style="max-width: 78ch;">
+      <strong>You can no longer review code line by line.</strong> Volume + intent-vs-output mismatch. Faster teams (Stoa, Assignar) replaced it.
     </p>
 
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 26px; max-width: 1280px; align-items: stretch;">
@@ -1479,12 +1505,24 @@
     <div style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 36px; margin-top: 30px; max-width: 1280px; align-items: start;">
       <div>
         <div class="kicker">Why aggregate gains look fuzzy</div>
-        <p class="body" style="margin-top: 8px; max-width: none;">
-          <strong>Multiple bottlenecks.</strong> If you only watch lead time — change-to-prod — yes, it improved. But the bottlenecks <em>move around.</em> Code-gen collapsed; <strong>code review</strong> became the new pinch (sheer volume to review). Teams are still figuring out where else to put gates.
-        </p>
-        <p class="body" style="max-width: none; margin-top: 14px;">
-          The honest answer to <em>"what % improvement?"</em> is: meaningful for shipping speed, invisible to most macro dashboards, and still being re-baselined as the bottleneck shifts.
-        </p>
+
+        <div class="card" style="margin-top: 10px;">
+          <div style="font-size: 16px; font-weight: 700; color: var(--fg); margin-bottom: 6px;">Multiple bottlenecks. They move around.</div>
+          <ul class="card-bullets">
+            <li>Watch lead time only? <strong>Yes — it improved.</strong></li>
+            <li>Code-gen collapsed → <strong>code review</strong> is the new pinch (sheer volume).</li>
+            <li>Teams still figuring out where else to put gates.</li>
+          </ul>
+        </div>
+
+        <div class="card" style="margin-top: 14px;">
+          <div style="font-size: 16px; font-weight: 700; color: var(--fg); margin-bottom: 6px;">"What % improvement?" — the honest answer</div>
+          <ul class="card-bullets">
+            <li><strong>Meaningful</strong> for shipping speed.</li>
+            <li><strong>Invisible</strong> to most macro dashboards.</li>
+            <li><strong>Still being re-baselined</strong> as the bottleneck shifts.</li>
+          </ul>
+        </div>
       </div>
 
       <div class="ilt-panel" style="margin-top: 0;">
@@ -1512,13 +1550,12 @@
     <div style="display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 36px; margin-top: 28px; max-width: 1280px; align-items: start;">
       <div class="card">
         <div class="kicker">Mostly solved</div>
-        <div style="font-size: 17px; font-weight: 700; color: var(--fg); margin-bottom: 8px;">Cloud AI data risk.</div>
-        <p class="tiny" style="line-height: 1.65;">
-          Early posture at advanced orgs (e.g. <strong>DigitalOcean</strong>): blanket policy <em>blocking cloud AI models entirely</em> — confusion about training data and exfiltration risk.
-        </p>
-        <p class="tiny" style="line-height: 1.65; margin-top: 10px;">
-          Resolved by cloud-provider partnerships, Bedrock availability, and contractual data terms. <strong>"A well-established sense of trusted computing for AI usage."</strong> Security teams got comfortable.
-        </p>
+        <div style="font-size: 18px; font-weight: 700; color: var(--fg); margin-bottom: 10px;">Cloud AI data risk.</div>
+        <ul class="card-bullets">
+          <li><strong>DigitalOcean</strong> once blocked cloud AI models entirely.</li>
+          <li>Resolved by cloud-provider partnerships + Bedrock + data terms.</li>
+          <li>"Trusted computing for AI" — security teams got comfortable.</li>
+        </ul>
       </div>
 
       <div>
@@ -1530,15 +1567,15 @@
           </div>
           <div class="card" style="border-color: var(--red);">
             <div style="font-size: 16px; font-weight: 700; color: var(--fg); margin-bottom: 6px;">02 · Supply chain hygiene degrading</div>
-            <p class="tiny" style="line-height: 1.6;">NPM &amp; OSS packages compromised; agents incorporate them; <em>human review on those things has been dropping down.</em> Outdated versions slip through.</p>
+            <p class="tiny" style="line-height: 1.6;">Compromised packages slip in. Human review on third-party deps is dropping.</p>
           </div>
         </div>
 
         <div class="kicker" style="margin-top: 22px;">Guardrails to put in place</div>
-        <ul style="list-style: none; padding: 0; margin: 6px 0 0; font-size: 14px; color: var(--fg-2); line-height: 1.75;">
-          <li>✓ A real <strong>decision gate around third-party package inclusion</strong> — currently left to individual devs, "doesn't happen as often as it should."</li>
-          <li>✓ <strong>Continuous review</strong> with software-supply-chain security scanners — "absolutely critical, if not more so than in the past."</li>
-          <li>✓ Treat <strong>secrets-scanning</strong> as a first-class CI step, not an afterthought.</li>
+        <ul class="card-bullets" style="margin-top: 8px; font-size: 14.5px;">
+          <li>Hard <strong>decision gate</strong> on third-party package inclusion.</li>
+          <li><strong>Continuous</strong> supply-chain scanning on every push.</li>
+          <li>Treat <strong>secrets-scanning</strong> as a first-class CI step.</li>
         </ul>
       </div>
     </div>
@@ -1630,7 +1667,7 @@
     </div>
 
     <div class="pull" style="margin-top: 28px; max-width: 86ch;">
-      "Force AI adoption top-down across your entire engineering org seems like it was <span class="accent">more effort and missteps</span> than starting with one team in ideal circumstances."
+      Forcing AI adoption top-down across the whole engineering org cost <span class="accent">more effort and more missteps</span> than starting with one well-set-up team and letting them shape the workflow first.
     </div>
   </section>
 
@@ -1909,7 +1946,7 @@
       svgHtml += `<text x="${m.left - 10}" y="${y}" class="bar-label" text-anchor="end" dominant-baseline="middle">${themeLabel[t.theme] || t.theme}</text>`;
       svgHtml += `<rect x="${m.left}" y="${y - barH - 1}" width="${wDesign}" height="${barH}" class="theme-design"/>`;
       svgHtml += `<rect x="${m.left}" y="${y + 1}" width="${wImpl}" height="${barH}" class="theme-impl"/>`;
-      svgHtml += `<text x="${m.left + wDesign + 6}" y="${y - 3}" class="bar-val" dominant-baseline="middle" fill="#e35a2c">${t.design}</text>`;
+      svgHtml += `<text x="${m.left + wDesign + 6}" y="${y - 3}" class="bar-val" dominant-baseline="middle" fill="#58a6ff">${t.design}</text>`;
       svgHtml += `<text x="${m.left + wImpl   + 6}" y="${y + barH + 3}" class="bar-val" dominant-baseline="middle" fill="#58a6ff">${t.impl}</text>`;
     });
 
