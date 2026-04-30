@@ -1,0 +1,2007 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Scaling AI agents in software development · Q&amp;A for Blackbaud · Greg Ceccarelli</title>
+<meta name="description" content="Field notes from across the portfolio plus 7 months running Stoa fully agentic, organized as nine substantive answers to the questions Blackbaud is asking about AI in the SDLC." />
+<style>
+  :root {
+    --ink:        #0b0f14;
+    --ink-2:      #0e141b;
+    --ink-3:      #161b22;
+    --line:       #1f2630;
+    --line-2:     #30363d;
+    --fg:         #e6edf3;
+    --fg-2:       #c9d1d9;
+    --mute:       #7d8590;
+    --mute-2:     #545d68;
+    --accent:     #e35a2c;   /* Stoa orange */
+    --accent-2:   #ff7e55;
+    --accent-dim: rgba(227, 90, 44, 0.12);
+    --blue:       #58a6ff;
+    --green:      #7ee787;
+    --yellow:     #ffd866;
+    --purple:     #d2a8ff;
+    --red:        #ff7b72;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; }
+  html { scroll-behavior: auto; }
+  body {
+    background: var(--ink);
+    color: var(--fg);
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-feature-settings: "ss01", "cv01", "cv11";
+    line-height: 1.5;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  code, .mono {
+    font-family: ui-monospace, "SF Mono", Menlo, "JetBrains Mono", monospace;
+    font-feature-settings: "zero", "ss01";
+  }
+
+  /* ---------- layout chrome -------------------------------------------- */
+
+  .chrome-top {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 40;
+    display: flex; align-items: center; gap: 16px;
+    padding: 14px 28px;
+    background: linear-gradient(180deg, rgba(11,15,20,0.9) 0%, rgba(11,15,20,0.0) 100%);
+    pointer-events: none;
+  }
+  .brand {
+    display: flex; align-items: baseline; gap: 10px;
+    font-size: 12px; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--mute);
+    pointer-events: auto;
+  }
+  .brand .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent); display: inline-block;
+    transform: translateY(1px);
+    box-shadow: 0 0 12px var(--accent);
+  }
+  .brand strong { color: var(--fg); font-weight: 600; }
+  .progress-track {
+    flex: 1; height: 1.5px; background: var(--line);
+    margin: 0 0 0 12px;
+    overflow: hidden; pointer-events: auto;
+  }
+  .progress-fill {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .chrome-bottom {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 40;
+    padding: 14px 28px 18px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 24px;
+    pointer-events: none;
+    background: linear-gradient(0deg, rgba(11,15,20,0.9) 0%, rgba(11,15,20,0.0) 100%);
+  }
+  .hint {
+    font-size: 11px; color: var(--mute-2); letter-spacing: 0.04em;
+    pointer-events: auto;
+  }
+  .hint kbd {
+    display: inline-block;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10px;
+    padding: 2px 6px;
+    background: var(--ink-3);
+    border: 1px solid var(--line-2);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    color: var(--fg-2);
+    margin: 0 2px;
+  }
+  .dots {
+    display: flex; gap: 8px; justify-content: center;
+    pointer-events: auto;
+  }
+  .dot-btn {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--line-2); border: 0; padding: 0;
+    cursor: pointer; transition: all 0.2s ease;
+  }
+  .dot-btn:hover { background: var(--mute); }
+  .dot-btn.active {
+    background: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-dim);
+    width: 24px; border-radius: 4px;
+  }
+  .counter {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11px;
+    color: var(--mute);
+    text-align: right;
+    letter-spacing: 0.04em;
+    pointer-events: auto;
+    font-variant-numeric: tabular-nums;
+  }
+  .counter .current { color: var(--fg); }
+
+  /* ---------- slide stage ----------------------------------------------- */
+
+  .deck {
+    position: relative;
+    width: 100vw; height: 100vh;
+    overflow: hidden;
+  }
+  .slide {
+    position: absolute; inset: 0;
+    padding: 80px 96px 120px;
+    display: flex; flex-direction: column;
+    opacity: 0;
+    transform: translateY(12px);
+    pointer-events: none;
+    transition: opacity 0.45s ease, transform 0.45s ease;
+    overflow: auto;
+  }
+  .slide.active {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+  .slide.prev {
+    transform: translateY(-8px);
+  }
+
+  .slide-meta {
+    display: flex; align-items: baseline; gap: 14px;
+    color: var(--mute);
+    font-size: 11px; letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+  .slide-meta .num {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .slide-meta .bar {
+    flex: 0 0 48px; height: 1.5px; background: var(--accent);
+  }
+
+  /* ---------- typography ------------------------------------------------ */
+
+  .h1 {
+    font-family: "Inter", sans-serif;
+    font-size: clamp(48px, 6.4vw, 104px);
+    font-weight: 700;
+    letter-spacing: -0.028em;
+    line-height: 1.02;
+    margin: 0 0 24px;
+  }
+  .h2 {
+    font-size: clamp(32px, 4vw, 60px);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+    margin: 0 0 24px;
+  }
+  .h3 {
+    font-size: clamp(20px, 2vw, 26px);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+    margin: 0 0 12px;
+  }
+  .kicker {
+    color: var(--accent);
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  .lede {
+    font-size: clamp(18px, 1.5vw, 22px);
+    color: var(--fg-2);
+    max-width: 58ch;
+    line-height: 1.55;
+  }
+  .body {
+    font-size: clamp(15px, 1.05vw, 17px);
+    color: var(--fg-2);
+    max-width: 68ch;
+    line-height: 1.6;
+  }
+  .body p { margin: 0 0 14px; }
+  .body strong { color: var(--fg); font-weight: 600; }
+  .body .hl {
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .tiny { font-size: 12px; color: var(--mute); letter-spacing: 0.02em; }
+
+  .accent { color: var(--accent); }
+
+  /* ---------- reusable blocks ------------------------------------------ */
+
+  .card {
+    border: 1px solid var(--line);
+    background: var(--ink-2);
+    border-radius: 8px;
+    padding: 20px 22px;
+  }
+  .card.accent {
+    border-color: var(--accent);
+    background: var(--accent-dim);
+  }
+  .grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+  .grid4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 3px 10px;
+    background: var(--ink-3);
+    border: 1px solid var(--line-2);
+    border-radius: 99px;
+    font-size: 11px;
+    color: var(--fg-2);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    letter-spacing: 0.02em;
+  }
+  .pill.accent {
+    background: var(--accent-dim);
+    border-color: var(--accent);
+    color: var(--accent-2);
+  }
+
+  .metric {
+    display: flex; flex-direction: column; gap: 4px;
+    padding: 16px 20px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--ink-2);
+  }
+  .metric .value {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: clamp(26px, 2.6vw, 38px);
+    color: var(--fg);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  /* Compact pill-style stat row (slide 8 receipts). */
+  .stat-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .stat-pill {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 6px 14px;
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: 12.5px;
+  }
+  .stat-pill .stat-value {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    color: var(--accent);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+  .stat-pill .stat-label {
+    color: var(--mute);
+    letter-spacing: 0.01em;
+  }
+
+  .metric .label {
+    font-size: 11px;
+    color: var(--mute);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* table */
+  table.basic {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    color: var(--fg-2);
+  }
+  table.basic thead th {
+    text-align: left;
+    font-size: 10.5px;
+    color: var(--mute);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    border-bottom: 1px solid var(--line-2);
+    padding: 10px 12px;
+  }
+  table.basic td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  table.basic td.num {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-variant-numeric: tabular-nums;
+    color: var(--fg);
+    white-space: nowrap;
+  }
+  table.basic tr:last-child td { border-bottom: 0; }
+  table.basic td strong { color: var(--fg); font-weight: 600; }
+  /* Call out a row that's structurally "stuck" — visible red left bar
+     and a subtle bg tint, without adding any new content. */
+  table.basic tr.stuck td {
+    background: linear-gradient(90deg, rgba(255, 123, 114, 0.08), transparent 70%);
+  }
+  table.basic tr.stuck td:first-child {
+    position: relative;
+    padding-left: 18px;
+  }
+  table.basic tr.stuck td:first-child::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--red);
+    border-radius: 2px;
+  }
+
+  /* Neutral evidence-panel wrapper — used for the two-clocks table
+     on slide 4 so it reads with the same visual weight as the
+     accent-bordered ILT panel beside it. */
+  .phase-panel {
+    padding: 18px 22px 14px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--ink-2);
+  }
+  .phase-panel .phase-kicker {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mute);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  /* Appendix B: real markdown outline pulled from stoa-cli's AS-BUILT
+     doc, rendered as a line-numbered text view (no macOS chrome). The
+     intent is "you could open this file right now" — so it looks like
+     the file itself. */
+  .doc-mockup {
+    margin-top: 10px;
+    max-width: 1280px;
+  }
+  .doc-filebar {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    padding: 0 4px 12px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 0;
+  }
+  .doc-filebar .filename {
+    color: var(--fg);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    font-size: 13px;
+  }
+  .doc-filebar .file-meta {
+    margin-left: auto;
+    color: var(--mute);
+    font-size: 11px;
+    letter-spacing: 0.02em;
+  }
+  /* Markdown outline preview: line-number gutter + syntax-tinted # marks
+     + real line numbers from the source file. */
+  .md-preview {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 13px;
+    line-height: 1.75;
+    background: transparent;
+    max-height: calc(100vh - 260px);
+    overflow-y: auto;
+  }
+  .md-row {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    border-top: 1px solid rgba(255, 255, 255, 0.02);
+  }
+  .md-row:first-child { border-top: 0; }
+  .md-row .ln {
+    text-align: right;
+    color: var(--mute-2);
+    padding: 3px 14px 3px 0;
+    border-right: 1px solid var(--line);
+    user-select: none;
+    font-variant-numeric: tabular-nums;
+    font-size: 11px;
+  }
+  .md-row .ct {
+    padding: 3px 20px;
+    color: var(--fg-2);
+    white-space: pre;
+    overflow-x: auto;
+  }
+  .md-row .hash   { color: var(--mute-2); }
+  .md-row .md-h1  { color: var(--accent); font-weight: 700; font-size: 1.05em; }
+  .md-row .md-h2  { color: var(--accent); font-weight: 600; }
+  .md-row .md-h3  { color: var(--blue);   font-weight: 500; }
+  .md-row .meta   { color: var(--mute);   font-style: italic; }
+  .md-row .more   { color: var(--mute);   font-style: italic; }
+  /* subtle background tint on section-break rows so `##` lines pop */
+  .md-row.sec     { background: rgba(227, 90, 44, 0.03); }
+
+  /* Slide 5 ILT sub-component breakdown: a striped bar in the visual
+     language of slide 4's ILT segment, divided into the four latencies.
+     The load-bearing "Capture" segment fills solid; the three segments
+     that collapse to zero keep the diagonal-stripe pattern to signal
+     "still here, but fading". Event markers above the bar echo slide
+     4's timeline markers so the two slides visually dovetail. */
+  .ilt-breakdown {
+    position: relative;
+    margin: 64px 0 46px;
+    max-width: 960px;
+  }
+  .ilt-breakdown-bar {
+    display: flex;
+    height: 44px;
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .ilt-breakdown-seg {
+    flex: 1;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 8px;
+    border-right: 1px dashed rgba(227, 90, 44, 0.35);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12px;
+    letter-spacing: 0.02em;
+    color: var(--accent);
+    background: repeating-linear-gradient(45deg,
+      var(--accent-dim) 0,
+      var(--accent-dim) 10px,
+      transparent 10px,
+      transparent 20px);
+  }
+  .ilt-breakdown-seg:last-child { border-right: 0; }
+  .ilt-breakdown-seg.live {
+    background: var(--accent-dim);
+    color: var(--fg);
+    font-weight: 600;
+  }
+  .ilt-breakdown-marker {
+    position: absolute;
+    top: -36px;
+    bottom: -20px;
+    width: 1.5px;
+    background: var(--line-2);
+    pointer-events: none;
+  }
+  .ilt-breakdown-marker::before {
+    content: "";
+    position: absolute;
+    top: 0; left: -4px;
+    width: 9px; height: 9px;
+    background: var(--fg);
+    border-radius: 50%;
+  }
+  .ilt-breakdown-marker.first::before { background: var(--accent); }
+  .ilt-breakdown-marker.last::before  { background: var(--blue); }
+  .ilt-breakdown-marker .mk-label {
+    position: absolute;
+    top: -26px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10.5px;
+    line-height: 1.2;
+    color: var(--fg-2);
+    text-align: center;
+    white-space: nowrap;
+  }
+  .ilt-breakdown-marker.first .mk-label { left: 0; transform: none; text-align: left; }
+  .ilt-breakdown-marker.last  .mk-label { left: auto; right: 0; transform: none; text-align: right; }
+  .ilt-breakdown-legend {
+    margin-top: 14px;
+    display: flex;
+    gap: 18px;
+    font-size: 11px;
+    color: var(--mute);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    flex-wrap: wrap;
+  }
+  .ilt-breakdown-legend .swatch {
+    display: inline-block;
+    width: 10px; height: 10px;
+    border: 1px solid var(--accent);
+    margin-right: 6px;
+    vertical-align: -1px;
+  }
+  .ilt-breakdown-legend .swatch.live { background: var(--accent-dim); }
+  .ilt-breakdown-legend .swatch.fade {
+    background: repeating-linear-gradient(45deg,
+      var(--accent-dim) 0,
+      var(--accent-dim) 4px,
+      transparent 4px,
+      transparent 8px);
+  }
+
+  /* ILT presentation panel used on slide 4: unifies the "new metric"
+     label, the formula, and the dovetail timeline into one framed block
+     so they read as a single visual statement instead of three stacked
+     elements. */
+  .ilt-panel {
+    margin-top: 32px;
+    padding: 22px 26px 26px;
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    background:
+      radial-gradient(ellipse at top left, rgba(227, 90, 44, 0.10) 0%, transparent 55%),
+      var(--ink-2);
+    max-width: 960px;
+    position: relative;
+  }
+  .ilt-panel .kicker {
+    margin-bottom: 10px;
+  }
+  .ilt-panel .formula {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: clamp(13px, 1.1vw, 18px);
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    padding: 6px 0 18px;
+    border-bottom: 1px dashed rgba(227, 90, 44, 0.35);
+    white-space: nowrap;
+    overflow-x: auto;
+  }
+  .ilt-panel .timeline-wrap {
+    margin-top: 0;
+    padding: 36px 0 0;
+  }
+  .ilt-panel .timeline-bar {
+    margin-top: 46px;
+  }
+
+  /* strike-through card for slide 5 */
+  .kill-card {
+    border: 1px solid var(--line);
+    background: var(--ink-2);
+    border-radius: 8px;
+    padding: 18px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .kill-card .label {
+    font-size: 10px;
+    color: var(--red);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .kill-card.live .label { color: var(--green); }
+  .kill-card .what {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--fg);
+    position: relative;
+    display: inline-block;
+  }
+  .kill-card .what::after {
+    content: "";
+    position: absolute;
+    top: 53%; left: -4px; right: -4px;
+    height: 2px;
+    background: var(--red);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.8s 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .slide.active .kill-card:not(.live) .what::after {
+    transform: scaleX(1);
+  }
+  .kill-card.live {
+    border-color: var(--accent);
+    background: var(--accent-dim);
+  }
+  .kill-card.live .what { color: var(--fg); }
+  .kill-card .why {
+    color: var(--mute); font-size: 13px; margin-top: 8px;
+    line-height: 1.5;
+  }
+  .kill-card.live .why { color: var(--fg-2); }
+
+  /* ---------- SVG / chart common ------------------------------------- */
+
+  svg .axis-line { stroke: var(--line-2); stroke-width: 1; }
+  svg .axis-tick { stroke: var(--line); stroke-width: 1; }
+  svg .axis-label { fill: var(--mute); font-size: 10px; letter-spacing: 0.04em; font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+  svg .bar-label { fill: var(--fg-2); font-size: 11px; font-family: "Inter", sans-serif; }
+  svg .bar-val { fill: var(--fg); font-size: 11px; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-variant-numeric: tabular-nums; }
+  svg .ttl { fill: var(--fg); font-size: 13px; font-weight: 600; font-family: "Inter", sans-serif; }
+
+  /* author / social links — used on slide 1 byline and slide 10 end-card */
+  a.author-name {
+    color: var(--fg);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--line-2);
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+  a.author-name:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+    text-decoration: none;
+  }
+  a.social-link {
+    display: inline-flex;
+    align-items: center;
+    color: var(--mute);
+    padding: 0 2px;
+    vertical-align: middle;
+    transition: color 0.15s ease;
+  }
+  a.social-link:hover {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  a.social-link svg { display: block; }
+
+  /* slide 1 specific */
+  .title-slide {
+    justify-content: center;
+  }
+  .title-slide .overline {
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+  .title-slide .h1 em {
+    color: var(--accent);
+    font-style: normal;
+  }
+  .title-slide .byline {
+    margin-top: 48px;
+    color: var(--mute);
+    font-size: 14px;
+    letter-spacing: 0.02em;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .title-slide .byline strong { color: var(--fg); }
+  .title-slide .receipt {
+    margin-top: 24px;
+    color: var(--fg-2);
+    max-width: 52ch;
+    font-size: 18px;
+    font-style: italic;
+    border-left: 2px solid var(--accent);
+    padding-left: 18px;
+    line-height: 1.5;
+  }
+
+  /* slide 3 timeline */
+  .timeline-wrap {
+    margin-top: 12px;
+    padding: 32px 8px 12px;
+  }
+  .timeline-bar {
+    position: relative;
+    height: 48px;
+    margin-top: 48px;
+    border-radius: 6px;
+    overflow: visible;
+    display: flex;
+  }
+  .timeline-seg {
+    height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12px;
+    color: var(--fg);
+    letter-spacing: 0.04em;
+    position: relative;
+  }
+  .timeline-seg.ilt {
+    background: repeating-linear-gradient(
+      45deg,
+      var(--accent-dim) 0,
+      var(--accent-dim) 10px,
+      transparent 10px,
+      transparent 20px
+    );
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    flex: 4;
+  }
+  .timeline-seg.dora {
+    background: rgba(88, 166, 255, 0.1);
+    border: 1px solid var(--blue);
+    color: var(--blue);
+    flex: 2;
+    border-left: 0;
+  }
+  .timeline-marker {
+    position: absolute;
+    top: -32px; bottom: -24px;
+    width: 1.5px;
+    background: var(--fg-2);
+  }
+  .timeline-marker::before {
+    content: "";
+    position: absolute;
+    top: 0; left: -4px;
+    width: 9px; height: 9px;
+    background: var(--fg);
+    border-radius: 50%;
+  }
+  .timeline-marker .ml {
+    position: absolute;
+    top: -22px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    color: var(--fg-2);
+    white-space: nowrap;
+  }
+  .timeline-marker.ilt-start { left: 0; }
+  .timeline-marker.ilt-start::before { background: var(--accent); }
+  /* First marker sits at x=0 of the panel; align its label flush-left
+     so it doesn't overflow the left edge. */
+  .timeline-marker.ilt-start .ml {
+    left: 0;
+    transform: none;
+  }
+  .timeline-marker.commit { left: 66.66%; }
+  .timeline-marker.commit::before { background: var(--blue); }
+  .timeline-marker.prod { left: 100%; }
+  .timeline-marker.prod::before { background: var(--green); }
+  /* Last marker sits at x=100% (right edge); align its label flush-right
+     so the text stays inside the panel box. */
+  .timeline-marker.prod .ml {
+    left: auto;
+    right: 0;
+    transform: none;
+  }
+
+  /* slide 4 stacks */
+  .stack {
+    display: flex; flex-direction: column; gap: 2px;
+    align-items: stretch;
+    max-width: 360px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .stack .layer {
+    padding: 24px 28px;
+    border: 1px solid var(--line);
+    background: var(--ink-2);
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 18px;
+    letter-spacing: -0.005em;
+    color: var(--fg);
+    text-align: center;
+    position: relative;
+  }
+  .stack .layer small {
+    display: block;
+    font-weight: 400;
+    font-size: 11px;
+    color: var(--mute);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 3px;
+  }
+  .stack .layer.intent {
+    border-color: var(--accent);
+    background: var(--accent-dim);
+    color: var(--accent);
+  }
+  .stack .layer.intent small { color: var(--accent-2); }
+  .stack-label {
+    font-size: 12px; color: var(--mute);
+    letter-spacing: 0.14em; text-transform: uppercase;
+    text-align: center; margin-bottom: 14px;
+  }
+
+  /* slide 7 pipeline — three-stage agentic flow */
+  .pipeline {
+    display: grid;
+    grid-template-columns: 1fr 56px 1.15fr 56px 1fr;
+    align-items: stretch;
+    gap: 0;
+    margin-top: 32px;
+  }
+  .pipeline-node {
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 20px 20px 16px;
+    display: flex; flex-direction: column;
+    min-height: 240px;
+  }
+  .pipeline-node.hero {
+    border-color: var(--accent);
+    background: linear-gradient(180deg, rgba(227, 90, 44, 0.08) 0%, var(--ink-2) 55%);
+    box-shadow: 0 0 0 1px rgba(227, 90, 44, 0.35);
+  }
+  .pipeline-node .badge {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--ink-3);
+    border: 1.5px solid var(--line-2);
+    color: var(--fg-2);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11.5px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 14px;
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+  }
+  .pipeline-node.hero .badge {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--ink);
+  }
+  .pipeline-node .role {
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--mute);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .pipeline-node.hero .role { color: var(--accent); }
+  .pipeline-node .file {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 14px;
+    color: var(--fg);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+    word-break: break-word;
+  }
+  .pipeline-node .desc {
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--mute);
+    flex: 1;
+  }
+  .pipeline-node.hero .desc { color: var(--fg-2); }
+  .pipeline-node .foot {
+    margin-top: 14px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--line-2);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10.5px;
+    line-height: 1.55;
+    color: var(--mute);
+    letter-spacing: 0.02em;
+  }
+  .pipeline-node .foot strong {
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+  /* connector: a plain arrow, no captions (they clipped behind cards) */
+  .pipeline-connector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .pipeline-connector svg {
+    width: 100%; height: 18px;
+    color: var(--line-2);
+  }
+  .pipeline-connector.hot svg { color: var(--accent); }
+
+  /* slide 8 bands */
+  .bands-row {
+    display: grid;
+    grid-template-columns: 120px 160px 1fr;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .bands-row .band-name {
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .bands-row .band-ilt {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 13px;
+    color: var(--fg);
+  }
+  .bands-row .band-desc {
+    color: var(--mute);
+    font-size: 13px;
+  }
+  .bands-row.elite .band-name { color: var(--accent); }
+  .bands-row.high  .band-name { color: var(--green); }
+  .bands-row.median .band-name { color: var(--yellow); }
+  .bands-row.low   .band-name { color: var(--red); }
+
+  /* slide 9 chevrons */
+  .chevron-row {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 2px;
+    margin-top: 20px;
+  }
+  .chev {
+    position: relative;
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    padding: 20px 22px 18px;
+    clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 50%, calc(100% - 18px) 100%, 0 100%, 18px 50%);
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+  }
+  .chev:first-child { clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 50%, calc(100% - 18px) 100%, 0 100%); }
+  .chev:last-child { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 18px 50%); }
+  .chev .phase {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .chev h5 {
+    margin: 0 0 10px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--fg);
+    letter-spacing: -0.005em;
+  }
+  .chev .role {
+    display: flex; gap: 8px;
+    margin-top: auto;
+    padding-top: 12px;
+    flex-wrap: wrap;
+  }
+  .chev .role span {
+    display: inline-block; padding: 2px 8px;
+    font-size: 10.5px;
+    border-radius: 3px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    letter-spacing: 0.04em;
+  }
+  .chev .role .human { background: rgba(126, 231, 135, 0.15); color: var(--green); }
+  .chev .role .ai    { background: rgba(88, 166, 255, 0.15); color: var(--blue); }
+  .chev.test {
+    border-color: var(--accent);
+    background: linear-gradient(0deg, var(--accent-dim), var(--ink-2));
+  }
+  .chev.endpoint {
+    border-color: var(--green);
+    background: linear-gradient(0deg, rgba(126, 231, 135, 0.08), var(--ink-2));
+  }
+  .chev.endpoint .phase { color: var(--green); }
+  .chev .bottom-note {
+    position: absolute; bottom: 8px; left: 22px; right: 22px;
+    font-size: 11px; color: var(--mute);
+    line-height: 1.4;
+  }
+
+  /* slide 10 takeaways */
+  .take-card {
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 24px;
+    display: flex; flex-direction: column; gap: 10px;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .take-card::before {
+    content: attr(data-num);
+    position: absolute;
+    top: 14px; right: 20px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 42px;
+    color: var(--line-2);
+    font-weight: 700;
+    line-height: 1;
+    transition: color 0.3s ease;
+  }
+  .take-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .take-card:hover::before { color: var(--accent); }
+  .take-card h4 {
+    margin: 0; font-size: 18px; font-weight: 600;
+    color: var(--fg); letter-spacing: -0.005em;
+    padding-right: 40px;
+  }
+  .take-card p { margin: 0; color: var(--mute); font-size: 13.5px; line-height: 1.5; }
+  .take-card .path {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11.5px;
+    color: var(--accent);
+    margin-top: 4px;
+    letter-spacing: -0.01em;
+  }
+
+  .moves {
+    margin-top: 32px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  .move {
+    padding: 16px 18px;
+    border-top: 2px solid var(--accent);
+    background: var(--ink-2);
+  }
+  .move .num {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10px; letter-spacing: 0.16em;
+    color: var(--accent); text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .move h5 { margin: 0 0 6px; font-size: 15px; color: var(--fg); font-weight: 600; }
+  .move p { margin: 0; color: var(--mute); font-size: 12.5px; line-height: 1.5; }
+
+  .pull {
+    font-size: clamp(22px, 2vw, 28px);
+    font-weight: 500;
+    line-height: 1.35;
+    color: var(--fg);
+    letter-spacing: -0.01em;
+    max-width: 40ch;
+    padding-left: 22px;
+    border-left: 3px solid var(--accent);
+    margin: 20px 0;
+  }
+  .pull cite {
+    display: block;
+    font-style: normal;
+    font-size: 13px;
+    color: var(--mute);
+    letter-spacing: 0.04em;
+    margin-top: 12px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+
+  .tag {
+    display: inline-block;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10.5px;
+    padding: 2px 6px;
+    background: var(--ink-3);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    color: var(--fg-2);
+    letter-spacing: 0.02em;
+    margin-right: 4px;
+  }
+
+  /* colors for theme bars */
+  .theme-design { fill: var(--accent); }
+  .theme-impl   { fill: var(--blue); }
+
+  /* end-card */
+  .end-card {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12px;
+    color: var(--mute);
+    letter-spacing: 0.04em;
+  }
+  .end-card strong { color: var(--fg); }
+
+  @media (max-width: 900px) {
+    .slide { padding: 60px 28px 100px; }
+    .grid2, .grid3, .grid4 { grid-template-columns: 1fr; }
+    .chevron-row { grid-template-columns: repeat(2, 1fr); }
+    .moves { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- mobile ------------------------------------------------
+     Below 720px we retarget layouts that assume side-by-side columns.
+     Desktop styles above are untouched. */
+  @media (max-width: 720px) {
+    /* Chrome */
+    .chrome-top   { padding: 10px 14px; gap: 10px; }
+    .chrome-bottom{ padding: 10px 14px 12px; grid-template-columns: 1fr auto; gap: 12px; }
+    .brand span:last-child { font-size: 10px; line-height: 1.3; }
+    .hint { display: none; }               /* keyboard hints are desktop-only */
+    .counter { font-size: 10px; }
+
+    /* Slides */
+    .slide { padding: 54px 18px 96px; }
+
+    /* Typography */
+    .h1           { font-size: clamp(36px, 9vw, 64px); line-height: 1.05; }
+    .h2           { font-size: clamp(26px, 6.5vw, 40px); line-height: 1.12; }
+    .h3           { font-size: 18px; }
+    .lede         { font-size: 15.5px; line-height: 1.5; }
+    .body         { font-size: 14.5px; line-height: 1.55; }
+    .pull         { font-size: 18px; padding-left: 16px; }
+    .chapter-desc { font-size: 14px; }
+
+    /* Ledes that were pinned nowrap on slides 11 and 12 are too wide on phones */
+    .slide p.lede[style*="nowrap"] { white-space: normal !important; }
+
+    /* Title slide refinements */
+    .title-slide .h1 { font-size: clamp(34px, 9.5vw, 60px); }
+    .title-slide .byline,
+    .title-slide .receipt { font-size: 13px; }
+    .title-slide .receipt { font-size: 15px; }
+
+    /* Any inline-styled grid on a slide (1.2fr 1fr, 1fr 1fr, 1fr 1.25fr, etc.)
+       collapses to a single column on mobile. Classed grids (.grid2/3/4,
+       .chevron-row, .pipeline) are handled separately. */
+    .slide > div[style*="grid-template-columns"],
+    .slide article > div[style*="grid-template-columns"] {
+      grid-template-columns: 1fr !important;
+      gap: 28px !important;
+    }
+
+    /* Slide 2 cards container (inline 2x2 grid) */
+    .grid2 { gap: 14px; }
+
+    /* Slide 3 table */
+    table.basic td, table.basic th { padding: 8px 8px; font-size: 13px; }
+
+    /* Slide 3 / 4 timeline */
+    .timeline-bar { height: 40px; margin-top: 56px; }
+    .timeline-seg { font-size: 10px; }
+    .timeline-marker .ml { font-size: 10px; }
+
+    /* Slide 4 bands */
+    .bands-row { grid-template-columns: 1fr; gap: 4px; padding: 10px 0; }
+    .bands-row .band-name { font-size: 13px; }
+    .bands-row .band-ilt  { font-size: 12px; }
+    .bands-row .band-desc { font-size: 12px; }
+
+    /* Slide 5 stacks: stop side-by-side, center each full-width */
+    .stack { max-width: 100%; margin: 0 auto; }
+    .stack .layer { padding: 18px 20px; font-size: 16px; }
+
+    /* Slide 6 kill cards (grid4 already collapses to 1fr via 900px query) */
+    .kill-card { padding: 14px 16px; }
+    .kill-card .what { font-size: 17px; }
+
+    /* Slide 6 receipt metrics */
+    .grid4 { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .metric { padding: 12px 14px; }
+    .metric .value { font-size: clamp(22px, 6vw, 30px); }
+
+    /* Slide 8 pipeline: stack the five cells into one column and rotate
+       the connector arrows so they point down instead of right. */
+    .pipeline {
+      grid-template-columns: 1fr;
+    }
+    .pipeline-node { min-height: 0; }
+    .pipeline-connector {
+      height: 36px;
+      width: 100%;
+      padding: 4px 0;
+    }
+    .pipeline-connector svg {
+      width: 24px;
+      height: 36px;
+      transform: rotate(90deg);
+    }
+
+    /* Slide 9 chevrons: one column, rectangle cards (clip-path removed
+       so stacked chevrons don't leave pointed gaps) */
+    .chevron-row { grid-template-columns: 1fr; gap: 10px; }
+    .chev, .chev:first-child, .chev:last-child {
+      clip-path: none;
+      min-height: 0;
+      padding: 16px 18px 14px;
+    }
+    .chev .phase { font-size: 10px; }
+    .chev h5 { font-size: 14px; }
+
+    /* Slide 10 take-home cards */
+    .take-card { padding: 18px; }
+    .take-card h4 { font-size: 16px; }
+    .take-card::before { font-size: 32px; top: 12px; right: 16px; }
+    .moves { margin-top: 24px; gap: 12px; }
+    .move { padding: 14px 16px; }
+
+    /* Slide 10 end-card: stack gracefully */
+    .end-card { gap: 10px 18px; font-size: 11px; }
+
+    /* Pipeline node metadata */
+    .pipeline-node .file { font-size: 13px; }
+    .pipeline-node .desc { font-size: 12px; }
+    .pipeline-node .foot { font-size: 10px; }
+
+    /* Legend, if present, wraps tighter */
+    .viz-legend { font-size: 11px; gap: 8px 10px; }
+  }
+
+  /* Very narrow phones (≤ 400px) */
+  @media (max-width: 400px) {
+    .slide { padding: 52px 14px 88px; }
+    .h1 { font-size: clamp(30px, 10vw, 52px); }
+    .h2 { font-size: clamp(22px, 7vw, 34px); }
+    .grid4 { grid-template-columns: 1fr; }
+    .chrome-top .progress-track { display: none; }
+  }
+  @media print {
+    body { overflow: auto; background: white; color: black; }
+    .chrome-top, .chrome-bottom { display: none; }
+    .slide { position: relative; inset: auto; opacity: 1 !important; page-break-after: always; height: auto; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- top chrome: brand + progress -->
+<div class="chrome-top">
+  <div class="brand">
+    <span class="dot"></span>
+    <span><strong>Scaling AI agents in software development</strong> · Q&amp;A for Blackbaud · 2026</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progress"></div></div>
+</div>
+
+<!-- slide deck -->
+<main class="deck" id="deck">
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 1 — Title                                               -->
+  <!-- ============================================================ -->
+  <section class="slide title-slide active" data-slide="1" id="s1">
+    <div class="overline">A Q&amp;A briefing for Blackbaud product &amp; engineering leadership</div>
+    <h1 class="h1">Scaling AI agents<br />in <em>software&nbsp;development</em>.</h1>
+    <p class="lede">Nine questions. Nine field-tested answers.</p>
+    <div class="receipt">
+      Synthesized from conversations with ~12 named teams (Abacus, Instacart, Cargurus, Fidelity, Docker, DigitalOcean, GitHub, Archimedes, Veritta, Domino, Assignar) — plus 7 months of Stoa shipped fully agentic.
+    </div>
+    <div class="byline">
+      <strong><a class="author-name" href="https://gregceccarelli.com">Greg Ceccarelli</a></strong>
+      <a class="social-link" href="https://www.linkedin.com/in/gregceccarelli/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.063 2.063 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      </a>
+      <a class="social-link" href="https://x.com/gregce10" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg>
+      </a>
+      &middot; Co-founder &amp; CPO, SpecStory &middot; Building <a href="https://withstoa.com">withstoa.com</a> &middot; April 2026
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 2 — The "before" picture                                -->
+  <!-- ============================================================ -->
+  <section class="slide" data-slide="2" id="s2">
+    <div class="slide-meta"><span class="bar"></span><span class="num">02</span><span>Q1 · The "before" picture</span></div>
+    <h2 class="h2">Where teams started.<br />And what triggered the change.</h2>
+    <p class="body" style="max-width: 84ch;">
+      Team size, release cadence, and how manual the pipeline was — different for startups than for established companies. But three things were near-universal.
+    </p>
+
+    <div class="grid3" style="margin-top: 24px; max-width: 1280px;">
+      <div class="card">
+        <div class="kicker">01 · Org shape</div>
+        <div style="font-size: 17px; font-weight: 600; color: var(--fg); margin-bottom: 8px;">Agile + SAFe at the top, monolith startups at the bottom.</div>
+        <p class="tiny" style="line-height: 1.55;">Larger orgs: scaled-Agile / microservices, autonomous-ish teams that "end up struggling with a roadmap planning cadence that tries to cut across all of them." Startups: monolith, "everybody's building everything," workflow not as tight or rigorous.</p>
+      </div>
+      <div class="card">
+        <div class="kicker">02 · Git posture</div>
+        <div style="font-size: 17px; font-weight: 600; color: var(--fg); margin-bottom: 8px;">Feature branches, foregone conclusion.</div>
+        <p class="tiny" style="line-height: 1.55;">Larger orgs: long-lived branches (days to weeks). Smaller, more agile shops: held open for "only a few days." Manual CI/CD, mostly. Releases tied to those branches, not to push-to-dev.</p>
+      </div>
+      <div class="card accent">
+        <div class="kicker">03 · Trigger to transform</div>
+        <div style="font-size: 17px; font-weight: 700; color: var(--fg); margin-bottom: 8px;">CEO-led, top-down, was the fastest pattern.</div>
+        <p class="tiny" style="line-height: 1.55; color: var(--fg-2);">Instacart: CEO-championed across ~1,000 engineers. Implementation: a dedicated AI-tooling subset of platform engineering owning purchasing, training, <em>and</em> adoption measurement.</p>
+      </div>
+    </div>
+
+    <div class="pull" style="margin-top: 36px; max-width: 78ch;">
+      "In the cases where it happened the fastest, the trigger decision came from <span class="accent">top down</span>. And in a lot of cases from the CEO directly."
+      <cite>— Greg, on the trigger pattern across portfolio conversations</cite>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 3 — How people reacted                                  -->
+  <!-- ============================================================ -->
+  <section class="slide" data-slide="3" id="s3">
+    <div class="slide-meta"><span class="bar"></span><span class="num">03</span><span>Q2 · How teams &amp; people reacted</span></div>
+    <h2 class="h2">Two true stories.<br />Sized very differently.</h2>
+
+    <div class="grid2" style="gap: 28px; margin-top: 22px; max-width: 1280px;">
+      <div class="card">
+        <div class="kicker">Case A · the 5-person greenfield</div>
+        <div style="font-size: 19px; font-weight: 700; color: var(--fg); margin-bottom: 10px;">Assignar &middot; new construction-finance product</div>
+        <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: var(--fg-2); line-height: 1.65;">
+          <li>20–30 eng org, 5-person team carved off · 1 PM, 4 engineers, CTO active <em>on</em> the team.</li>
+          <li>Stuck with familiar GitHub flow. Injected agents <strong>as the assignee on tickets</strong> — Copilot picks up the ticket, makes the feature branch, opens the PR.</li>
+          <li><strong>Most of their time writing tickets and reviewing agent output</strong> — very little time on the code itself. Code review became <em>structural</em>; security scans run by a second agent.</li>
+          <li>Engineers pushed <em>into</em> product/requirements. PM pushed <em>into</em> technical/architectural specs. Everybody stretched.</li>
+          <li>Hierarchy collapsed flat. CTO's role: <strong>"acting as traffic cop"</strong> — sequencing async agent merges to minimize conflicts.</li>
+          <li>Mood: excited, "maybe a little trepidatious." Greenfield + new team made it possible.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="kicker">Case B · the 1,000-engineer org</div>
+        <div style="font-size: 19px; font-weight: 700; color: var(--fg); margin-bottom: 10px;">Instacart &middot; top-down expectation, no kickoff</div>
+        <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: var(--fg-2); line-height: 1.65;">
+          <li>Existing teams, existing process — AI enablement layered tooling, training, Slack channels, in-person sessions <em>on top</em>.</li>
+          <li>Distribution of reactions: early adopters who loved it, real resistance from others, a long tail "not actively against, but really dragging their feet."</li>
+          <li>"A whole mix" across a thousand-engineer org — and that's the point: scale guarantees a distribution.</li>
+          <li>Enablement team's own framing: <strong>"doing everything they could to drag people along."</strong> They literally flew to offices to sit with engineers in person.</li>
+          <li>No project, no kickoff, no cutover point. The expectation was clear; the mechanism for arrival was diffuse.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pull" style="margin-top: 36px; max-width: 80ch;">
+      "Most of their time writing tickets and reviewing the output of agents. Very little time on the code itself."
+      <cite>— Assignar engineer, on the day-to-day inversion</cite>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 4 — Where it failed / surprised                         -->
+  <!-- ============================================================ -->
+  <section class="slide" data-slide="4" id="s4">
+    <div class="slide-meta"><span class="bar"></span><span class="num">04</span><span>Q3 · Where it failed &amp; what surprised us</span></div>
+    <h2 class="h2">Failure modes we (and the field) actually hit.</h2>
+
+    <div class="grid2" style="gap: 24px; margin-top: 22px; max-width: 1240px;">
+      <div class="card">
+        <div class="kicker" style="color: var(--red);">Failure 01</div>
+        <div style="font-size: 18px; font-weight: 700; color: var(--fg); margin-bottom: 8px;">Prompt-based, not spec-based.</div>
+        <p class="tiny" style="line-height: 1.6;">Early teams threw prompts at the model and watched output drift. Most are past this. Agents perform much better when fed context intentionally — when planning and executing are <em>separate turns of the crank.</em> Specdocs loaded upfront → much better results.</p>
+      </div>
+
+      <div class="card">
+        <div class="kicker" style="color: var(--red);">Failure 02</div>
+        <div style="font-size: 18px; font-weight: 700; color: var(--fg); margin-bottom: 8px;">One teammate runs ahead. Shared mental model collapses.</div>
+        <p class="tiny" style="line-height: 1.6;">The fast person has the system in their head. As they ship, complexity grows; others can't keep up. <em>"Context isn't fully self-contained, even if you check in a bunch of spec documents."</em> The fix is counterintuitive: <strong>intentionally slow down</strong> to rebuild shared mental models.</p>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; margin-top: 28px; max-width: 1280px; align-items: start;">
+      <div class="phase-panel">
+        <div class="phase-kicker">Hardest stages to hand to AI</div>
+        <table class="basic">
+          <thead><tr><th>Stage</th><th>Hand-off</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Unit tests</strong></td><td class="num" style="color: var(--yellow);">mostly safe</td><td>Agents are good — except when they hallucinate stub-only tests that always pass.</td></tr>
+            <tr class="stuck"><td><strong>Integration tests</strong></td><td class="num" style="color: var(--red);">human-led</td><td>Cross-component judgment; agents can't see the whole system.</td></tr>
+            <tr class="stuck"><td><strong>Smoke tests</strong></td><td class="num" style="color: var(--red);">human-led</td><td>Live in your product daily; what the model can't simulate.</td></tr>
+            <tr class="stuck"><td><strong>Manual / exploratory</strong></td><td class="num" style="color: var(--red);">human-led</td><td>"The major human gate between staging and prod."</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <div class="kicker">What surprised us — positively</div>
+        <div style="font-size: 17px; font-weight: 600; color: var(--fg); margin: 6px 0 10px; line-height: 1.4;">The unit of hand-off keeps growing.</div>
+        <p class="tiny" style="line-height: 1.6;">Two years ago: 30-second nudges. Now: <strong>10–30-minute, sometimes hour-long tasks</strong> are routinely delegated. If your assumptions are based on the experience you had even six months ago, recalibrate.</p>
+        <div class="pull" style="margin-top: 22px; max-width: none; font-size: 16px;">
+          "A need to <span class="accent">intentionally slow down</span> to increase shared understanding and shared mental models."
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 5 — Decision gates                                      -->
+  <!-- ============================================================ -->
+  <section class="slide" data-slide="5" id="s5">
+    <div class="slide-meta"><span class="bar"></span><span class="num">05</span><span>Q4 · Decision gates — what stays human</span></div>
+    <h2 class="h2">Code review broke.<br />Two new gates moved in.</h2>
+
+    <p class="body" style="max-width: 84ch;">
+      <strong>You can no longer review code line by line</strong> the way you would when humans wrote it. Two reasons: <em>quantity</em>, and a mismatch around <em>intention vs. expectation</em>. Larger orgs still try; faster-moving teams (Stoa, Assignar) let it go and replaced it.
+    </p>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 26px; max-width: 1280px; align-items: stretch;">
+      <div class="card accent">
+        <div class="kicker">Gate 01 · before implementation</div>
+        <div style="font-size: 22px; font-weight: 700; color: var(--fg); margin-bottom: 6px;">Intent review</div>
+        <div class="pill" style="margin-bottom: 12px;">soft &middot; non-gating</div>
+        <p class="tiny" style="line-height: 1.65; color: var(--fg-2);">
+          Share the spec, design, or intention with the team <em>before</em> the agent starts (or while it's working). Outcomes: shared mental model, alignment on what's changing, course-correct early when intent is wrong. Worst case, you scrap what the agent did and re-implement.
+        </p>
+        <p class="tiny" style="line-height: 1.65; color: var(--fg-2); margin-top: 10px;"><strong>Doesn't gate.</strong> The agent can implement in parallel while feedback comes in.</p>
+      </div>
+
+      <div class="card" style="border-color: var(--red); background: linear-gradient(180deg, rgba(255,123,114,0.08), var(--ink-2) 60%);">
+        <div class="kicker" style="color: var(--red);">Gate 02 · between staging &amp; prod</div>
+        <div style="font-size: 22px; font-weight: 700; color: var(--fg); margin-bottom: 6px;">Integration / smoke / manual testing</div>
+        <div class="pill" style="margin-bottom: 12px; border-color: var(--red); color: var(--red);">hard &middot; gating</div>
+        <p class="tiny" style="line-height: 1.65; color: var(--fg-2);">
+          Where humans "exert heavy influence." Live in the product daily in staging; decide what's release-worthy. Agents can write good unit tests when constrained, but cross-component, smoke, and exploratory tests stay human.
+        </p>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 28px; max-width: 1280px;">
+      <div>
+        <div class="kicker">Moved to agents</div>
+        <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: var(--fg-2); line-height: 1.7;">
+          <li>✓ Unit-test authoring (with humans on the spec)</li>
+          <li>✓ Structural code review</li>
+          <li>✓ Security scans (a second agent watches the first)</li>
+          <li>✓ Commit + PR mechanics, release-note writing</li>
+        </ul>
+      </div>
+      <div>
+        <div class="kicker">Stayed human</div>
+        <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: var(--fg-2); line-height: 1.7;">
+          <li>✓ Intent &amp; spec authorship</li>
+          <li>✓ Integration / smoke / manual test design + execution</li>
+          <li>✓ Architectural-impact review of agent output</li>
+          <li>✓ Release-go decision at the staging→prod boundary</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 6 — Metrics                                             -->
+  <!-- ============================================================ -->
+  <section class="slide" data-slide="6" id="s6">
+    <div class="slide-meta"><span class="bar"></span><span class="num">06</span><span>Q5 · Metrics &amp; what actually changed</span></div>
+    <h2 class="h2">Heavy adoption.<br />Fuzzy gains. Bottlenecks moving.</h2>
+
+    <div class="stat-pills" style="margin-top: 24px;">
+      <div class="stat-pill"><span class="stat-value">16.3%</span><span class="stat-label">of <strong>30,000</strong> developers say AI agents significantly improve productivity &middot; <em>2025 dev survey</em></span></div>
+      <div class="stat-pill"><span class="stat-value">75%</span><span class="stat-label">of engineers use AI tools — most orgs see <strong>no measurable performance gains</strong> &middot; <em>Faros studies</em></span></div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 36px; margin-top: 30px; max-width: 1280px; align-items: start;">
+      <div>
+        <div class="kicker">Why aggregate gains look fuzzy</div>
+        <p class="body" style="margin-top: 8px; max-width: none;">
+          <strong>Multiple bottlenecks.</strong> If you only watch lead time — change-to-prod — yes, it improved. But the bottlenecks <em>move around.</em> Code-gen collapsed; <strong>code review</strong> became the new pinch (sheer volume to review). Teams are still figuring out where else to put gates.
+        </p>
+        <p class="body" style="max-width: none; margin-top: 14px;">
+          The honest answer to <em>"what % improvement?"</em> is: meaningful for shipping speed, invisible to most macro dashboards, and still being re-baselined as the bottleneck shifts.
+        </p>
+      </div>
+
+      <div class="ilt-panel" style="margin-top: 0;">
+        <div class="kicker">The metric the field isn't measuring yet</div>
+        <div style="font-size: 22px; font-weight: 700; color: var(--fg); margin-bottom: 6px;">Intent Lead Time</div>
+        <div class="formula">ILT = t(first commit) − t(decision captured)</div>
+        <p class="tiny" style="margin-top: 14px; line-height: 1.6; color: var(--fg-2);">
+          DORA's clock starts at <code>git commit</code>. The expensive thing now happens <em>before</em> commit — meetings, decisions, PRDs, tickets. ILT is the companion to DORA Lead Time. Together, end-to-end. <strong>Stoa is tracking it; we'd argue every transformation should baseline it this quarter.</strong>
+        </p>
+      </div>
+    </div>
+
+    <div class="pull" style="margin-top: 32px; max-width: 78ch;">
+      "Yes, there are improvements in lead time. But the <span class="accent">bottlenecks move around</span>."
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 7 — Security                                            -->
+  <!-- ============================================================ -->
+  <section class="slide" data-slide="7" id="s7">
+    <div class="slide-meta"><span class="bar"></span><span class="num">07</span><span>Q6 · Security, compliance, IP</span></div>
+    <h2 class="h2">Data exfiltration was the early fear.<br /><em class="accent" style="font-style: normal;">Supply chain</em> is the live one.</h2>
+
+    <div style="display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 36px; margin-top: 28px; max-width: 1280px; align-items: start;">
+      <div class="card">
+        <div class="kicker">Mostly solved</div>
+        <div style="font-size: 17px; font-weight: 700; color: var(--fg); margin-bottom: 8px;">Cloud AI data risk.</div>
+        <p class="tiny" style="line-height: 1.65;">
+          Early posture at advanced orgs (e.g. <strong>DigitalOcean</strong>): blanket policy <em>blocking cloud AI models entirely</em> — confusion about training data and exfiltration risk.
+        </p>
+        <p class="tiny" style="line-height: 1.65; margin-top: 10px;">
+          Resolved by cloud-provider partnerships, Bedrock availability, and contractual data terms. <strong>"A well-established sense of trusted computing for AI usage."</strong> Security teams got comfortable.
+        </p>
+      </div>
+
+      <div>
+        <div class="kicker">Live concerns &mdash; growing, not shrinking</div>
+        <div class="grid2" style="gap: 16px; margin-top: 8px;">
+          <div class="card" style="border-color: var(--red);">
+            <div style="font-size: 16px; font-weight: 700; color: var(--fg); margin-bottom: 6px;">01 · Secrets leak more easily</div>
+            <p class="tiny" style="line-height: 1.6;">Subtle but trending. Agents touch more files, faster, with less ceremony.</p>
+          </div>
+          <div class="card" style="border-color: var(--red);">
+            <div style="font-size: 16px; font-weight: 700; color: var(--fg); margin-bottom: 6px;">02 · Supply chain hygiene degrading</div>
+            <p class="tiny" style="line-height: 1.6;">NPM &amp; OSS packages compromised; agents incorporate them; <em>human review on those things has been dropping down.</em> Outdated versions slip through.</p>
+          </div>
+        </div>
+
+        <div class="kicker" style="margin-top: 22px;">Guardrails to put in place</div>
+        <ul style="list-style: none; padding: 0; margin: 6px 0 0; font-size: 14px; color: var(--fg-2); line-height: 1.75;">
+          <li>✓ A real <strong>decision gate around third-party package inclusion</strong> — currently left to individual devs, "doesn't happen as often as it should."</li>
+          <li>✓ <strong>Continuous review</strong> with software-supply-chain security scanners — "absolutely critical, if not more so than in the past."</li>
+          <li>✓ Treat <strong>secrets-scanning</strong> as a first-class CI step, not an afterthought.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pull" style="margin-top: 32px; max-width: 90ch;">
+      "Human review on those things has been <span class="accent">dropping down</span>. Software-supply-chain security scanners become absolutely critical — if not more so than in the past."
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 8 — Process / org                                       -->
+  <!-- ============================================================ -->
+  <section class="slide" data-slide="8" id="s8">
+    <div class="slide-meta"><span class="bar"></span><span class="num">08</span><span>Q7 · Idea → delivery → maintenance</span></div>
+    <h2 class="h2">The methodology mostly stayed.<br />The <em class="accent" style="font-style: normal;">artifacts</em> got promoted.</h2>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 36px; margin-top: 28px; max-width: 1280px; align-items: start;">
+      <div>
+        <div class="kicker">What's the same</div>
+        <div style="font-size: 17px; font-weight: 600; color: var(--fg); margin: 6px 0 8px;">Most teams: Agile / SAFe + a homegrown roadmap layer.</div>
+        <p class="tiny" style="line-height: 1.65;">We aren't making the case for ripping that out. We <em>are</em> making the case that the artifacts inside it have changed weight.</p>
+
+        <div class="kicker" style="margin-top: 24px;">The silent loser: stakeholder context</div>
+        <p class="tiny" style="line-height: 1.65;">Things move so fast that team members "who used to be intimately involved start to lose context." Stakeholders, customers, internal partners — <strong>it's hard for people to keep up.</strong></p>
+
+        <div class="kicker" style="margin-top: 22px;">The hidden win</div>
+        <p class="tiny" style="line-height: 1.65;">The same agents producing the code can produce <em>and maintain</em> the secondary artifacts: change logs, release notes, documentation, internal playbooks, support books. The best teams already do this.</p>
+      </div>
+
+      <div class="phase-panel">
+        <div class="phase-kicker">Artifact promotion</div>
+        <table class="basic">
+          <thead><tr><th>Artifact</th><th>Before agents</th><th>With agents</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Code</strong></td><td>source of truth</td><td class="num">one valid impl</td></tr>
+            <tr><td><strong>Release notes</strong></td><td>"write &amp; toss"</td><td class="num" style="color: var(--accent);">agent-maintained</td></tr>
+            <tr><td><strong>Changelog / playbook</strong></td><td>tertiary, drifts</td><td class="num" style="color: var(--accent);">agent-maintained</td></tr>
+            <tr><td><strong>Spec / PRD</strong></td><td>PDF nobody reopens</td><td class="num" style="color: var(--accent);"><strong>first-class</strong></td></tr>
+            <tr><td><strong>AS-BUILT architecture</strong></td><td>didn't exist</td><td class="num" style="color: var(--accent);"><strong>critical</strong></td></tr>
+          </tbody>
+        </table>
+        <p class="tiny" style="margin-top: 14px; line-height: 1.6;">
+          <em>"Before, we'd write them and toss them and say the code is the source of truth."</em> Now specs and AS-BUILT architecture are <strong>absolutely critical</strong> — agents need them as context; humans need them as shared mental model.
+        </p>
+      </div>
+    </div>
+
+    <div class="pull" style="margin-top: 30px; max-width: 84ch;">
+      "Secondary or non-code artifacts end up taking on a <span class="accent">higher weight than they ever had before</span>."
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 9 — Sequencing                                          -->
+  <!-- ============================================================ -->
+  <section class="slide" data-slide="9" id="s9">
+    <div class="slide-meta"><span class="bar"></span><span class="num">09</span><span>Q8 · Sequencing</span></div>
+    <h2 class="h2">Roll the <em>tools</em> out wide.<br />Roll the <em class="accent" style="font-style: normal;">workflow</em> out narrow.</h2>
+
+    <div class="grid2" style="gap: 28px; margin-top: 28px; max-width: 1280px;">
+      <div class="card accent">
+        <div class="kicker">Tool rollout · wide</div>
+        <div style="font-size: 22px; font-weight: 700; color: var(--fg); margin-bottom: 6px;">Org-wide. Now.</div>
+        <div class="pill accent" style="margin-bottom: 12px;">force multiplier</div>
+        <p class="tiny" style="line-height: 1.65; color: var(--fg-2);">
+          <strong>"Even if nothing else about your process changes, there is a difference in productivity"</strong> for the portion of your team that adopts. Pair the rollout with training, Slack channels, in-person sessions. Night-and-day vs. not using.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="kicker">Workflow rollout · narrow</div>
+        <div style="font-size: 22px; font-weight: 700; color: var(--fg); margin-bottom: 6px;">One controlled team. Greenfield if you can.</div>
+        <div class="pill" style="margin-bottom: 12px;">controlled experiment</div>
+        <p class="tiny" style="line-height: 1.65;">
+          <em>Fully agentic</em> workflow — agents writing large chunks of code, not just autocompleting — needs a team that's bought in, ideally on a new product surface. Let them establish the approach inside <em>your</em> culture, then expand.
+        </p>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 28px; max-width: 1280px;">
+      <div>
+        <div class="kicker">Pattern that worked</div>
+        <p class="tiny" style="line-height: 1.65;">Stoa: greenfield, small team — not fair to extrapolate. Across the field: <strong>start with one team, ideal circumstances, new product. Establish the approach. Then expand.</strong></p>
+      </div>
+      <div>
+        <div class="kicker" style="color: var(--red);">Pattern that didn't</div>
+        <p class="tiny" style="line-height: 1.65;">Force-top-down adoption across all engineers without a controlled team to shape the workflow → enablement burns cycles "dragging people along."</p>
+      </div>
+    </div>
+
+    <div class="pull" style="margin-top: 28px; max-width: 86ch;">
+      "Force AI adoption top-down across your entire engineering org seems like it was <span class="accent">more effort and missteps</span> than starting with one team in ideal circumstances."
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 10 — If starting over                                   -->
+  <!-- ============================================================ -->
+  <section class="slide" data-slide="10" id="s10">
+    <div class="slide-meta"><span class="bar"></span><span class="num">10</span><span>Q9 · If we were starting over</span></div>
+    <h2 class="h2">Two extremes.<br />Both ends will burn you.</h2>
+
+    <div class="grid2" style="gap: 28px; margin-top: 30px; max-width: 1280px;">
+      <div class="card">
+        <div class="kicker">Extreme 01 · the timid end</div>
+        <div style="font-size: 21px; font-weight: 700; color: var(--fg); margin-bottom: 8px;">Underestimating what agents can do.</div>
+        <p class="tiny" style="line-height: 1.65;">
+          Capabilities have changed <strong>dramatically every six months</strong>. If your assumptions are based on the experience you had even six months ago — they're stale.
+        </p>
+        <p class="tiny" style="line-height: 1.65; margin-top: 10px;">
+          <strong>Countermove:</strong> a special team (or small set of teams) <em>pushing agents past what you'd assume they can do.</em> Give them latitude to break your old mental model.
+        </p>
+      </div>
+
+      <div class="card accent">
+        <div class="kicker">Extreme 02 · the careless end</div>
+        <div style="font-size: 21px; font-weight: 700; color: var(--fg); margin-bottom: 8px;">Letting go of things you shouldn't.</div>
+        <p class="tiny" style="line-height: 1.65; color: var(--fg-2);">
+          <strong>Retain control over intent.</strong> Be explicit about what you want from agents. The intent is yours; the output isn't trustworthy without it.
+        </p>
+        <p class="tiny" style="line-height: 1.65; color: var(--fg-2); margin-top: 10px;">
+          <strong>Be rigorous and ruthless</strong> in assessing output quality — <em>not</em> in terms of code style. In terms of <strong>functionality and architectural impact.</strong> That is the human's last and most important job.
+        </p>
+      </div>
+    </div>
+
+    <div class="pull" style="margin-top: 36px; max-width: 92ch;">
+      "Be rigorous and ruthless in assessing the quality of the output — <span class="accent">not in terms of the code, but the functionality and architectural impact</span>."
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 11 — The thesis underneath                              -->
+  <!-- ============================================================ -->
+  <section class="slide" data-slide="11" id="s11">
+    <div class="slide-meta"><span class="bar"></span><span class="num">11</span><span>Synthesis · the thesis underneath all nine answers</span></div>
+    <h2 class="h2">The shift, in one sentence per layer.</h2>
+
+    <div style="margin-top: 24px; max-width: 1280px;">
+      <table class="basic">
+        <thead><tr><th>Layer</th><th>Before agents</th><th>With agents</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Bottleneck</strong></td>
+            <td>code-gen &amp; deploy</td>
+            <td class="num" style="color: var(--accent);">intent (decision → commit)</td>
+          </tr>
+          <tr>
+            <td><strong>Gate</strong></td>
+            <td>line-by-line code review</td>
+            <td class="num" style="color: var(--accent);">intent review (soft) + integration / smoke / manual (hard)</td>
+          </tr>
+          <tr>
+            <td><strong>Artifact</strong></td>
+            <td>code is the source of truth; specs &amp; arch tertiary</td>
+            <td class="num" style="color: var(--accent);">specs + AS-BUILT architecture become first-class</td>
+          </tr>
+          <tr>
+            <td><strong>Measurement</strong></td>
+            <td>DORA Lead Time (post-commit)</td>
+            <td class="num" style="color: var(--accent);">DORA + Intent Lead Time (pre-commit)</td>
+          </tr>
+          <tr>
+            <td><strong>Org pattern</strong></td>
+            <td>process is the lever</td>
+            <td class="num" style="color: var(--accent);">tools wide · workflow narrow · named AI-enablement function</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="body" style="max-width: 86ch; margin-top: 26px;">
+      The point of building Stoa is to make this loop <strong>routine</strong>: capture intent live, version it next to the code, let agents pick the spec up directly, keep tests and integration sacred, and watch ILT fall.
+    </p>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 12 — Take it home + Q&A                                 -->
+  <!-- ============================================================ -->
+  <section class="slide" data-slide="12" id="s12">
+    <div class="slide-meta"><span class="bar"></span><span class="num">12</span><span>Take it home + open questions</span></div>
+    <h2 class="h2">Three artifacts.<br />Three moves.<br />Three open questions.</h2>
+
+    <div class="grid3" style="margin-top: 24px;">
+      <a href="takeaways/release-pr-automation/" class="take-card" data-num="01">
+        <h4>Agentic release-PR workflow</h4>
+        <p>Drop-in GitHub Actions + gh-aw prompt. Release notes write themselves tonight.</p>
+        <div class="path">takeaways/release-pr-automation/</div>
+      </a>
+      <a href="takeaways/intent-driven-prd-template.md" class="take-card" data-num="02">
+        <h4>Intent-driven PRD template</h4>
+        <p>The shape of a spec an agent can pick up. Four sections. No ticket required.</p>
+        <div class="path">takeaways/intent-driven-prd-template.md</div>
+      </a>
+      <a href="takeaways/ai-pdlc-journey-map.md" class="take-card" data-num="03">
+        <h4>AI-PDLC journey map</h4>
+        <p>Which tool, which phase, who owns what — at every step of the loop.</p>
+        <div class="path">takeaways/ai-pdlc-journey-map.md</div>
+      </a>
+    </div>
+
+    <div class="moves">
+      <div class="move">
+        <div class="num">Move 01</div>
+        <h5>Stand up an intent review.</h5>
+        <p>Non-gating checkpoint upstream of any agent-driven implementation. The first artifact your AI-enablement team can ship.</p>
+      </div>
+      <div class="move">
+        <div class="num">Move 02</div>
+        <h5>Add a third-party-package gate.</h5>
+        <p>Decision step + a software-supply-chain scanner on every push. The single highest-leverage AI-era guardrail.</p>
+      </div>
+      <div class="move">
+        <div class="num">Move 03</div>
+        <h5>Baseline ILT for one feature.</h5>
+        <p><code>t(first commit) − t(decision)</code>. Anything is a baseline.</p>
+      </div>
+    </div>
+
+    <div style="margin-top: 36px; max-width: 1280px;">
+      <div class="kicker">Open questions I'd love to push on with you</div>
+      <ul style="list-style: none; padding: 0; margin: 8px 0 0; font-size: 16px; color: var(--fg-2); line-height: 1.85;">
+        <li><span class="hl">→</span> Which Blackbaud surface is <em>most ready</em> for a fully-agentic-workflow pilot? (Greenfield &gt; brownfield, by a lot.)</li>
+        <li><span class="hl">→</span> What's your current AS-BUILT-doc posture? If "we don't have one," that's the first artifact to commission.</li>
+        <li><span class="hl">→</span> Where would you rather pay the coordination cost — at the tool layer (wide), or the workflow layer (narrow)?</li>
+      </ul>
+    </div>
+
+    <div class="pull" style="margin-top: 36px; font-size: clamp(22px, 2vw, 30px);">
+      The clock starts the moment your team agrees.
+    </div>
+
+    <div class="end-card" style="margin-top: 28px; display: flex; gap: 28px; align-items: baseline; flex-wrap: wrap;">
+      <span style="display: inline-flex; align-items: baseline; gap: 8px;">
+        <strong><a class="author-name" href="https://gregceccarelli.com">Greg Ceccarelli</a></strong>
+        <a class="social-link" href="https://www.linkedin.com/in/gregceccarelli/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.063 2.063 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a class="social-link" href="https://x.com/gregce10" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg>
+        </a>
+      </span>
+      <span class="tiny">Co-founder &amp; CPO, SpecStory &middot; <a href="https://withstoa.com">withstoa.com</a> &middot; deck source: <code>blackbaud.html</code> on branch <code>blackbaud-qa</code></span>
+    </div>
+  </section>
+
+</main>
+
+
+<!-- bottom chrome: dots + counter + hint -->
+<div class="chrome-bottom">
+  <div class="hint">
+    <kbd>←</kbd><kbd>→</kbd> navigate &nbsp; <kbd>Space</kbd> next &nbsp; <kbd>Home</kbd> / <kbd>End</kbd> jump
+  </div>
+  <div class="dots" id="dots"></div>
+  <div class="counter"><span class="current" id="cur">01</span> &nbsp;/&nbsp; <span id="total">10</span></div>
+</div>
+
+<!-- Inlined analysis snapshot, generated at deck-build time from
+     specstoryai/stoa. The charts on slides 6 and 7 read from this payload. -->
+<script id="slide-data" type="application/json">{"design":{"total":168,"range":{"first":"2025-01-16","last":"2026-04-18"}},"impl":{"total":177,"range":{"first":"2025-09-15","last":"2026-04-19"}},"as_built":{"components":[{"name":"stoa-cli","lines":3250,"last_updated":"2026-04-13","diagrams":21,"code_fences":50},{"name":"stoa-web","lines":3133,"last_updated":"2026-04-14","diagrams":19,"code_fences":46},{"name":"stoa-web-supabase","lines":2237,"last_updated":"2026-04-12","diagrams":10,"code_fences":55},{"name":"stoa-desktop-mac","lines":1087,"last_updated":"2026-04-12","diagrams":8,"code_fences":13},{"name":"stoa-desktop-windows","lines":965,"last_updated":"2026-04-12","diagrams":7,"code_fences":12}],"totals":{"lines":10672,"components":5,"ascii_diagrams":65,"code_fences":176,"top_level_bullets":908}},"months":[{"month":"2025-09","design":22,"impl":15},{"month":"2025-10","design":23,"impl":20},{"month":"2025-11","design":17,"impl":34},{"month":"2025-12","design":20,"impl":4},{"month":"2026-01","design":13,"impl":12},{"month":"2026-02","design":13,"impl":11},{"month":"2026-03","design":38,"impl":46},{"month":"2026-04","design":20,"impl":35}],"themes":[{"theme":"platform_arch","design":52,"impl":28},{"theme":"agents","design":40,"impl":32},{"theme":"crdt","design":26,"impl":32},{"theme":"meetings_voice","design":21,"impl":23},{"theme":"cli_terminal","design":18,"impl":26},{"theme":"p2p_sync","design":18,"impl":11},{"theme":"ui_ux","design":12,"impl":10},{"theme":"version_history","design":12,"impl":11},{"theme":"billing_auth","design":3,"impl":26},{"theme":"desktop","design":6,"impl":7},{"theme":"provenance","design":4,"impl":3},{"theme":"community_forum","design":2,"impl":1}],"top_term_intent_total":7589,"release":{"workflows":[{"name":"release-pr-sync.yml","role":"Push-to-dev hook that finds or opens the single standing dev\u2192main release PR, delegates the body rewrite to the agentic workflow, then posts the rewritten summary to Slack. This is the orchestrator.","lines":152},{"name":"release-pr-body.md","role":"gh-aw agentic prompt: instructs Claude to read the generated main\u2194dev diff context and rewrite the release PR body into a structured human-readable summary.","lines":105},{"name":"release-pr-body.lock.yml","role":"Generated lock file produced by `gh aw compile` from release-pr-body.md. Do not edit by hand \u2014 it is the actual YAML GitHub Actions runs.","lines":1284},{"name":"main-from-dev-only.yml","role":"Branch-protection workflow: rejects any PR into main whose head is not `dev`. Guarantees main only ever receives changes through the standing release PR.","lines":35}],"recent_prs":[{"createdAt":"2026-04-19T22:21:40Z","mergedAt":null,"number":16,"state":"OPEN","title":"Release dev to main"},{"createdAt":"2026-04-17T15:07:30Z","mergedAt":"2026-04-18T15:21:42Z","number":14,"state":"MERGED","title":"Release dev to main"},{"createdAt":"2026-04-17T03:59:49Z","mergedAt":"2026-04-17T04:07:06Z","number":13,"state":"MERGED","title":"Release dev to main"},{"createdAt":"2026-04-16T21:13:56Z","mergedAt":"2026-04-16T21:20:45Z","number":12,"state":"MERGED","title":"Release dev to main"},{"createdAt":"2026-04-16T04:30:13Z","mergedAt":"2026-04-16T20:15:26Z","number":11,"state":"MERGED","title":"Release dev to main"}],"dev_ahead":[{"sha":"652b63a1","subject":"fix: require bound guest session for guest principals"},{"sha":"482fe846","subject":"feat: allow guests to use agents in hosted sessions"}],"agentic":{"engine":"claude","toolsets":["repos","pull_requests"],"safe_outputs":["update-pull-request"],"instruction_char_count":1793,"instructions":"# release-pr-body\n\nRewrite the body of release pull request #${{ inputs.pr_number }} so it reflects\nthe **current total accumulated diff from `main` to `dev`**.\n\n## Required source of truth\n\nUse these sources in this order:\n\n1. Read `.github/workflows/.release-pr-context.md`.\n2. Use the commit range and changed files in that context as the canonical scope.\n3. If helpful, read any referenced files under:\n   - `docs/changelogs/`\n   - `docs/implementation/`\n   - `docs/design/`\n\nDo **not** summarize only the latest push. The goal is a full release summary for\neverything currently on `dev` that is not yet on `main`.\n\n## What the PR body should contain\n\nWrite a readable, comprehensive release body with this structure:\n\n1. A short opening paragraph summarizing the release.\n2. `## Highlights`\n   - 3-6 concise bullets for the most important changes.\n3. `## Major Change Areas`\n   - group related work into clear themes\n   - for each theme, include a short paragraph or a few bullets\n4. `## Operational Notes`\n   - migrations, deploy implications, env/config changes, follow-up validation, or risks\n   - if there are no notable operational notes, say that explicitly\n5. `## Commits`\n   - compact bullet list of commits, grouped by theme when possible\n\n## Style\n\n- Optimize for humans reviewing a release PR.\n- Be specific, but avoid changelog spam.\n- Prefer grouping and synthesis over repeating every commit subject verbatim.\n- Mention docs, migration, or infra changes when they matter operationally.\n- Avoid speculation beyond what the commit range and touched docs support.\n\n## Final action\n\nUse `update_pull_request` exactly once with:\n\n- `pull_request_number`: `${{ inputs.pr_number }}`\n- `operation`: `\"replace\"`\n- `body`: the full rewritten markdown body\n\nDo not update the PR title."},"talking_points":["Every push to `dev` triggers a workflow that guarantees a single standing release PR into `main` is current.","The PR body itself is rewritten by Claude, over a gh-aw prompt with bounded tool access (repos + pull_requests) and a one-shot `update-pull-request` safe output.","A sibling workflow enforces that `main` only ever accepts PRs from `dev`, so the agentic summary is the canonical release narrative, not a nice-to-have.","The rewritten body is also fanned out to Slack with `## Header`\u2192`*Header*` conversion and a 2.8KB cap \u2014 so the LLM's release note becomes the channel post.","`release-pr-body.lock.yml` is machine-generated from the prompt .md by `gh aw compile`; the humans edit the prompt, the tooling owns the YAML."]}}</script>
+
+<script>
+(function () {
+  "use strict";
+
+  // ----- data ---------------------------------------------------------
+
+  const DATA = JSON.parse(document.getElementById("slide-data").textContent);
+
+  // ----- slide navigation --------------------------------------------
+
+  const deck   = document.getElementById("deck");
+  const slides = [...deck.querySelectorAll(".slide")];
+  const dots   = document.getElementById("dots");
+  const total  = slides.length;
+  let current  = 0;
+
+  document.getElementById("total").textContent = String(total).padStart(2, "0");
+  for (let i = 0; i < total; i++) {
+    const btn = document.createElement("button");
+    btn.className = "dot-btn" + (i === 0 ? " active" : "");
+    btn.setAttribute("aria-label", "Slide " + (i + 1));
+    btn.addEventListener("click", () => go(i));
+    dots.appendChild(btn);
+  }
+
+  function go(idx) {
+    if (idx < 0 || idx >= total || idx === current) return;
+    slides[current].classList.remove("active");
+    slides[current].classList.add("prev");
+    slides[idx].classList.remove("prev");
+    slides[idx].classList.add("active");
+    dots.children[current].classList.remove("active");
+    dots.children[idx].classList.add("active");
+    current = idx;
+    document.getElementById("cur").textContent = String(idx + 1).padStart(2, "0");
+    document.getElementById("progress").style.width = ((idx + 1) / total * 100) + "%";
+    window.location.hash = "s" + (idx + 1);
+  }
+
+  document.addEventListener("keydown", (e) => {
+    if (e.target && (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA")) return;
+    switch (e.key) {
+      case "ArrowRight": case " ": case "PageDown": case "j": go(current + 1); e.preventDefault(); break;
+      case "ArrowLeft":  case "PageUp":   case "k": go(current - 1); e.preventDefault(); break;
+      case "Home": go(0); e.preventDefault(); break;
+      case "End":  go(total - 1); e.preventDefault(); break;
+      default:
+        if (/^[1-9]$/.test(e.key)) { go(parseInt(e.key, 10) - 1); e.preventDefault(); }
+        else if (e.key === "0") { go(9); e.preventDefault(); }
+    }
+  });
+
+  // touch / swipe
+  let tx = 0, ty = 0;
+  document.addEventListener("touchstart", (e) => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+  document.addEventListener("touchend", (e) => {
+    const dx = e.changedTouches[0].clientX - tx;
+    const dy = e.changedTouches[0].clientY - ty;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) go(current + (dx < 0 ? 1 : -1));
+  }, { passive: true });
+
+  // deep link (#s3)
+  const m = /^#s(\d+)$/.exec(window.location.hash);
+  if (m) { const idx = parseInt(m[1], 10) - 1; if (idx > 0) setTimeout(() => go(idx), 0); }
+
+  document.getElementById("progress").style.width = (1 / total * 100) + "%";
+
+  // ----- slide 6: theme bar chart ------------------------------------
+
+  function drawThemes() {
+    const svg = document.getElementById("theme-chart");
+    if (!svg) return;
+    const W = 640, H = 420;
+    const m = { top: 24, right: 140, bottom: 12, left: 150 };
+    const innerW = W - m.left - m.right;
+    const rowH = (H - m.top - m.bottom) / DATA.themes.length;
+    const maxVal = Math.max(...DATA.themes.map(t => Math.max(t.design, t.impl)));
+    const barH = Math.min(rowH * 0.36, 14);
+
+    const themeLabel = {
+      platform_arch: "platform / arch",
+      agents: "agents",
+      crdt: "crdt / automerge",
+      meetings_voice: "meetings / voice",
+      cli_terminal: "cli / terminal",
+      p2p_sync: "p2p / sync",
+      ui_ux: "ui / ux",
+      version_history: "version history",
+      billing_auth: "billing / auth",
+      desktop: "desktop",
+      provenance: "provenance",
+      community_forum: "community forum",
+    };
+
+    let svgHtml = "";
+    // legend
+    svgHtml += `<g transform="translate(${m.left},6)">`;
+    svgHtml += `<rect width="10" height="10" class="theme-design"/><text x="16" y="9" fill="#c9d1d9" font-size="11" font-family="Inter">design</text>`;
+    svgHtml += `<rect x="78" width="10" height="10" class="theme-impl"/><text x="94" y="9" fill="#c9d1d9" font-size="11" font-family="Inter">implementation</text>`;
+    svgHtml += `</g>`;
+
+    DATA.themes.forEach((t, i) => {
+      const y = m.top + i * rowH + rowH / 2;
+      const wDesign = (t.design / maxVal) * innerW;
+      const wImpl   = (t.impl   / maxVal) * innerW;
+      svgHtml += `<text x="${m.left - 10}" y="${y}" class="bar-label" text-anchor="end" dominant-baseline="middle">${themeLabel[t.theme] || t.theme}</text>`;
+      svgHtml += `<rect x="${m.left}" y="${y - barH - 1}" width="${wDesign}" height="${barH}" class="theme-design"/>`;
+      svgHtml += `<rect x="${m.left}" y="${y + 1}" width="${wImpl}" height="${barH}" class="theme-impl"/>`;
+      svgHtml += `<text x="${m.left + wDesign + 6}" y="${y - 3}" class="bar-val" dominant-baseline="middle" fill="#e35a2c">${t.design}</text>`;
+      svgHtml += `<text x="${m.left + wImpl   + 6}" y="${y + barH + 3}" class="bar-val" dominant-baseline="middle" fill="#58a6ff">${t.impl}</text>`;
+    });
+
+    svg.innerHTML = svgHtml;
+  }
+
+  // ----- slide 6: month chart ----------------------------------------
+
+  function drawMonths() {
+    const svg = document.getElementById("month-chart");
+    if (!svg) return;
+    const W = 520, H = 360;
+    const m = { top: 30, right: 16, bottom: 48, left: 40 };
+    const innerW = W - m.left - m.right;
+    const innerH = H - m.top - m.bottom;
+    const months = DATA.months;
+    const maxVal = Math.max(...months.flatMap(d => [d.design, d.impl]));
+    const groupW = innerW / months.length;
+    const barW   = Math.min(14, groupW * 0.35);
+
+    let svgHtml = "";
+    // y grid (4 ticks)
+    const yTicks = [0, 0.25, 0.5, 0.75, 1].map(t => t * maxVal);
+    yTicks.forEach(v => {
+      const y = m.top + innerH - (v / maxVal) * innerH;
+      svgHtml += `<line x1="${m.left}" x2="${W - m.right}" y1="${y}" y2="${y}" class="axis-tick"/>`;
+      svgHtml += `<text x="${m.left - 6}" y="${y + 3}" class="axis-label" text-anchor="end">${Math.round(v)}</text>`;
+    });
+
+    // bars
+    months.forEach((d, i) => {
+      const cx = m.left + (i + 0.5) * groupW;
+      const hD = (d.design / maxVal) * innerH;
+      const hI = (d.impl / maxVal) * innerH;
+      const yD = m.top + innerH - hD;
+      const yI = m.top + innerH - hI;
+      svgHtml += `<rect x="${cx - barW - 1}" y="${yD}" width="${barW}" height="${hD}" class="theme-design"/>`;
+      svgHtml += `<rect x="${cx + 1}" y="${yI}" width="${barW}" height="${hI}" class="theme-impl"/>`;
+      // month label
+      const shortMo = d.month.slice(5) + " '" + d.month.slice(2, 4);
+      svgHtml += `<text x="${cx}" y="${H - m.bottom + 14}" class="axis-label" text-anchor="middle">${shortMo}</text>`;
+    });
+
+    // axis line
+    svgHtml += `<line x1="${m.left}" x2="${W - m.right}" y1="${m.top + innerH}" y2="${m.top + innerH}" class="axis-line"/>`;
+
+    // legend top
+    svgHtml += `<g transform="translate(${m.left},10)">`;
+    svgHtml += `<rect width="10" height="10" class="theme-design"/><text x="16" y="9" fill="#c9d1d9" font-size="11" font-family="Inter">design/month</text>`;
+    svgHtml += `<rect x="110" width="10" height="10" class="theme-impl"/><text x="126" y="9" fill="#c9d1d9" font-size="11" font-family="Inter">impl/month</text>`;
+    svgHtml += `</g>`;
+
+    svg.innerHTML = svgHtml;
+  }
+
+  // ----- slide 7: PR table --------------------------------------------
+
+  function drawPRs() {
+    const rows = document.getElementById("pr-rows");
+    if (!rows) return;
+    rows.innerHTML = DATA.release.recent_prs.map(pr => {
+      const created = new Date(pr.createdAt);
+      const merged  = pr.mergedAt ? new Date(pr.mergedAt) : null;
+      const life = merged ? humanizeDuration(merged - created) : "open";
+      const state = pr.state === "MERGED" ? `<span style="color: var(--green); font-weight: 600;">● merged</span>` : `<span style="color: var(--blue); font-weight: 600;">● open</span>`;
+      return `<tr>
+        <td class="num">#${pr.number}</td>
+        <td>${pr.title}</td>
+        <td>${state}</td>
+        <td class="num">${life}</td>
+      </tr>`;
+    }).join("");
+  }
+
+  function humanizeDuration(ms) {
+    const h = Math.round(ms / 3600000);
+    if (h < 1) return Math.round(ms / 60000) + "m";
+    if (h < 24) return h + "h";
+    const d = Math.round(h / 24);
+    return d + "d";
+  }
+
+  // draw once; data is static
+  drawThemes();
+  drawMonths();
+  drawPRs();
+
+  // redraw on resize (SVG already scales, but if we added more dynamic things later)
+  window.addEventListener("resize", () => { drawThemes(); drawMonths(); });
+
+})();
+</script>
+
+</body>
+</html>
