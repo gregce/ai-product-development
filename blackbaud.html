@@ -713,6 +713,46 @@
     padding-left: 18px;
     line-height: 1.5;
   }
+  /* Sources block on the title slide: kicker + flow row of pills + plus
+     line. Replaces the comma-separated receipt prose. */
+  .title-slide .receipt-sources {
+    max-width: 880px;
+    font-style: normal;
+    font-size: 14px;
+    border-left-color: var(--accent);
+  }
+  .title-slide .receipt-sources .kicker { margin-bottom: 10px; }
+  .source-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 8px;
+    margin: 0 0 14px;
+  }
+  .source-pills .pill {
+    padding: 4px 12px;
+    font-size: 12.5px;
+    color: var(--fg);
+    background: var(--ink-3);
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+    letter-spacing: 0.01em;
+  }
+  .source-plus {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    color: var(--fg-2);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .source-plus .plus {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 18px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    line-height: 1;
+  }
+  .source-plus strong { color: var(--fg); }
 
   /* slide 3 timeline */
   .timeline-wrap {
@@ -1288,10 +1328,26 @@
   <!-- ============================================================ -->
   <section class="slide title-slide active" data-slide="1" id="s1">
     <div class="overline">A Q&amp;A briefing for Blackbaud product &amp; engineering leadership</div>
-    <h1 class="h1"><em>Agentic</em><br />Transformation.</h1>
-    <p class="lede">Nine questions. Nine field-tested answers.</p>
-    <div class="receipt">
-      Synthesized from conversations with ~12 named teams (Abacus, Instacart, Cargurus, Fidelity, Docker, DigitalOcean, GitHub, Archimedes, Variata, Domino, Assignar). Plus 7 months of Stoa shipped fully agentic.
+    <h1 class="h1" style="white-space: nowrap;"><em>Agentic</em> Transformation.</h1>
+    <div class="receipt receipt-sources">
+      <div class="kicker" style="margin-bottom: 10px;">Sourced from conversations with</div>
+      <div class="source-pills">
+        <span class="pill">Abacus</span>
+        <span class="pill">Instacart</span>
+        <span class="pill">Cargurus</span>
+        <span class="pill">Fidelity</span>
+        <span class="pill">Docker</span>
+        <span class="pill">DigitalOcean</span>
+        <span class="pill">GitHub</span>
+        <span class="pill">Archimedes</span>
+        <span class="pill">Variata</span>
+        <span class="pill">Domino</span>
+        <span class="pill">Assignar</span>
+      </div>
+      <div class="source-plus">
+        <span class="plus">+</span>
+        <span><strong>7 months</strong> of Stoa shipped fully agentic.</span>
+      </div>
     </div>
     <div class="byline">
       <div>
@@ -1323,7 +1379,7 @@
   <!-- ============================================================ -->
   <section class="slide" data-slide="2" id="s2">
     <div class="slide-meta"><span class="bar"></span><span class="num">02</span><span>Q1 · The "before" picture</span></div>
-    <h2 class="h2">Where teams started.<br />And what triggered the change.</h2>
+    <h2 class="h2" style="white-space: nowrap;">Where teams started, and what triggered the change.</h2>
     <p class="body" style="max-width: 84ch;">
       Team size, release cadence, and how manual the pipeline was. Different for startups than for established companies. But three things were near-universal.
     </p>
@@ -1368,7 +1424,7 @@
   <!-- ============================================================ -->
   <section class="slide" data-slide="3" id="s3">
     <div class="slide-meta"><span class="bar"></span><span class="num">03</span><span>Q2 · How teams &amp; people reacted</span></div>
-    <h2 class="h2">Two true stories.<br />Sized very differently.</h2>
+    <h2 class="h2" style="white-space: nowrap;">Two true stories, sized very differently.</h2>
 
     <div class="grid2" style="gap: 28px; margin-top: 22px; max-width: 1280px;">
       <div class="card">
@@ -1399,7 +1455,6 @@
 
     <div class="pull" style="margin-top: 36px; max-width: 80ch;">
       "Most of their time writing tickets and reviewing the output of agents. Very little time on the code itself."
-      <cite>Assignar engineer, on the day-to-day inversion</cite>
     </div>
   </section>
 
@@ -1454,7 +1509,7 @@
   <!-- ============================================================ -->
   <section class="slide" data-slide="5" id="s5">
     <div class="slide-meta"><span class="bar"></span><span class="num">05</span><span>Q4 · Decision gates: what stays human</span></div>
-    <h2 class="h2">Code review broke.<br />Two new gates moved in.</h2>
+    <h2 class="h2" style="white-space: nowrap;">Code review broke. Two new gates moved in.</h2>
 
     <p class="lede" style="max-width: 78ch;">
       <strong>You can no longer review code line by line.</strong> Volume + intent-vs-output mismatch. Faster teams (Stoa, Assignar) replaced it.
@@ -1508,7 +1563,7 @@
   <!-- ============================================================ -->
   <section class="slide" data-slide="6" id="s6">
     <div class="slide-meta"><span class="bar"></span><span class="num">06</span><span>Q5 · Metrics &amp; what actually changed</span></div>
-    <h2 class="h2">Heavy adoption.<br />Fuzzy gains. Bottlenecks moving.</h2>
+    <h2 class="h2" style="white-space: nowrap; font-size: clamp(28px, 3.4vw, 52px);">Heavy adoption. Fuzzy gains. Bottlenecks moving.</h2>
 
     <div class="stat-pills" style="margin-top: 24px;">
       <div class="stat-pill"><span class="stat-value">16.3%</span><span class="stat-label">of <strong>30,000</strong> developers say AI agents significantly improve productivity &middot; <em>2025 dev survey</em></span></div>
@@ -1689,7 +1744,7 @@
   <!-- ============================================================ -->
   <section class="slide" data-slide="10" id="s10">
     <div class="slide-meta"><span class="bar"></span><span class="num">10</span><span>Q9 · If we were starting over</span></div>
-    <h2 class="h2">Two extremes.<br />Both ends will burn you.</h2>
+    <h2 class="h2" style="white-space: nowrap;">Two extremes. Both ends will burn you.</h2>
 
     <div class="grid2" style="gap: 28px; margin-top: 30px; max-width: 1280px;">
       <div class="card">
@@ -1770,7 +1825,7 @@
   <!-- ============================================================ -->
   <section class="slide" data-slide="12" id="s12">
     <div class="slide-meta"><span class="bar"></span><span class="num">12</span><span>Take it home + open questions</span></div>
-    <h2 class="h2">Three artifacts.<br />Three moves.<br />Three open questions.</h2>
+    <h2 class="h2" style="white-space: nowrap; font-size: clamp(28px, 3.4vw, 52px);">Three artifacts. Three moves. Three open questions.</h2>
 
     <div class="grid3" style="margin-top: 24px;">
       <a href="takeaways/release-pr-automation/" class="take-card" data-num="01">
@@ -1817,11 +1872,7 @@
       </ul>
     </div>
 
-    <div class="pull" style="margin-top: 36px; font-size: clamp(22px, 2vw, 30px);">
-      The clock starts the moment your team agrees.
-    </div>
-
-    <div class="end-card" style="margin-top: 28px; display: flex; gap: 28px; align-items: baseline; flex-wrap: wrap;">
+    <div class="end-card" style="margin-top: 36px; display: flex; gap: 28px; align-items: baseline; flex-wrap: wrap;">
       <span style="display: inline-flex; align-items: baseline; gap: 8px;">
         <strong><a class="author-name" href="https://gregceccarelli.com">Greg Ceccarelli</a></strong>
         <a class="social-link" href="https://www.linkedin.com/in/gregceccarelli/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
