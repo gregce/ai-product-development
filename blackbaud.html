@@ -356,7 +356,7 @@
   }
   table.basic tr:last-child td { border-bottom: 0; }
   table.basic td strong { color: var(--fg); font-weight: 600; }
-  /* Call out a row that's structurally "stuck" — visible red left bar
+  /* Call out a row that's structurally "stuck": visible red left bar
      and a subtle bg tint, without adding any new content. */
   table.basic tr.stuck td {
     background: linear-gradient(90deg, rgba(255, 123, 114, 0.08), transparent 70%);
@@ -374,7 +374,7 @@
     border-radius: 2px;
   }
 
-  /* Neutral evidence-panel wrapper — used for the two-clocks table
+  /* Neutral evidence-panel wrapper. Used for the two-clocks table
      on slide 4 so it reads with the same visual weight as the
      accent-bordered ILT panel beside it. */
   .phase-panel {
@@ -394,7 +394,7 @@
 
   /* Appendix B: real markdown outline pulled from stoa-cli's AS-BUILT
      doc, rendered as a line-numbered text view (no macOS chrome). The
-     intent is "you could open this file right now" — so it looks like
+     intent is "you could open this file right now", so it looks like
      the file itself. */
   .doc-mockup {
     margin-top: 10px;
@@ -653,7 +653,7 @@
   svg .bar-val { fill: var(--fg); font-size: 11px; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-variant-numeric: tabular-nums; }
   svg .ttl { fill: var(--fg); font-size: 13px; font-weight: 600; font-family: "Inter", sans-serif; }
 
-  /* author / social links — used on slide 1 byline and slide 10 end-card */
+  /* author / social links. Used on slide 1 byline and slide 10 end-card */
   a.author-name {
     color: var(--fg);
     text-decoration: none;
@@ -839,7 +839,7 @@
     text-align: center; margin-bottom: 14px;
   }
 
-  /* slide 7 pipeline — three-stage agentic flow */
+  /* slide 7 pipeline: three-stage agentic flow */
   .pipeline {
     display: grid;
     grid-template-columns: 1fr 56px 1.15fr 56px 1fr;
@@ -1284,35 +1284,48 @@
 <main class="deck" id="deck">
 
   <!-- ============================================================ -->
-  <!-- SLIDE 1 — Title                                               -->
+  <!-- SLIDE 1: Title                                               -->
   <!-- ============================================================ -->
   <section class="slide title-slide active" data-slide="1" id="s1">
     <div class="overline">A Q&amp;A briefing for Blackbaud product &amp; engineering leadership</div>
     <h1 class="h1"><em>Agentic</em><br />Transformation.</h1>
     <p class="lede">Nine questions. Nine field-tested answers.</p>
     <div class="receipt">
-      Synthesized from conversations with ~12 named teams (Abacus, Instacart, Cargurus, Fidelity, Docker, DigitalOcean, GitHub, Archimedes, Variata, Domino, Assignar) — plus 7 months of Stoa shipped fully agentic.
+      Synthesized from conversations with ~12 named teams (Abacus, Instacart, Cargurus, Fidelity, Docker, DigitalOcean, GitHub, Archimedes, Variata, Domino, Assignar). Plus 7 months of Stoa shipped fully agentic.
     </div>
     <div class="byline">
-      <strong><a class="author-name" href="https://gregceccarelli.com">Greg Ceccarelli</a></strong>
-      <a class="social-link" href="https://www.linkedin.com/in/gregceccarelli/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.063 2.063 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-      </a>
-      <a class="social-link" href="https://x.com/gregce10" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
-        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg>
-      </a>
-      &middot; Co-founder &amp; CPO, SpecStory &middot; Building <a href="https://withstoa.com">withstoa.com</a> &middot; April 2026
+      <div>
+        <strong><a class="author-name" href="https://gregceccarelli.com">Greg Ceccarelli</a></strong>
+        <a class="social-link" href="https://www.linkedin.com/in/gregceccarelli/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.063 2.063 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a class="social-link" href="https://x.com/gregce10" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg>
+        </a>
+        &middot; Co-founder &amp; CPO, SpecStory
+      </div>
+      <div>
+        <strong>Jake Levirne</strong>
+        <a class="social-link" href="https://www.linkedin.com/in/jakelevirne/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.063 2.063 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a class="social-link" href="https://x.com/awakenjake" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg>
+        </a>
+        &middot; Co-founder &amp; CEO, SpecStory
+      </div>
+      <div style="margin-top: 10px;">Building <a href="https://withstoa.com">withstoa.com</a> &middot; April 2026</div>
     </div>
   </section>
 
   <!-- ============================================================ -->
-  <!-- SLIDE 2 — The "before" picture                                -->
+  <!-- SLIDE 2: The "before" picture                                -->
   <!-- ============================================================ -->
   <section class="slide" data-slide="2" id="s2">
     <div class="slide-meta"><span class="bar"></span><span class="num">02</span><span>Q1 · The "before" picture</span></div>
     <h2 class="h2">Where teams started.<br />And what triggered the change.</h2>
     <p class="body" style="max-width: 84ch;">
-      Team size, release cadence, and how manual the pipeline was — different for startups than for established companies. But three things were near-universal.
+      Team size, release cadence, and how manual the pipeline was. Different for startups than for established companies. But three things were near-universal.
     </p>
 
     <div class="grid3" style="margin-top: 24px; max-width: 1280px;">
@@ -1321,7 +1334,7 @@
         <div style="font-size: 17px; font-weight: 600; color: var(--fg); margin-bottom: 10px;">Agile + SAFe at the top, monolith startups at the bottom.</div>
         <ul class="card-bullets">
           <li>Larger orgs: scaled-Agile / microservices, autonomous-ish teams.</li>
-          <li>Roadmap-planning cadences "try to cut across all of them" — and struggle.</li>
+          <li>Roadmap-planning cadences "try to cut across all of them," and struggle.</li>
           <li>Startups: monolith. <em>"Everybody's building everything."</em> Workflow not as tight or rigorous.</li>
         </ul>
       </div>
@@ -1329,7 +1342,7 @@
         <div class="kicker">02 · Git posture</div>
         <div style="font-size: 17px; font-weight: 600; color: var(--fg); margin-bottom: 10px;">Feature branches, foregone conclusion.</div>
         <ul class="card-bullets">
-          <li>Larger orgs: long-lived branches — <strong>days to weeks.</strong></li>
+          <li>Larger orgs: long-lived branches, <strong>days to weeks.</strong></li>
           <li>Smaller, more agile shops: held open <strong>"only a few days."</strong></li>
           <li>Manual CI/CD, mostly. Releases tied to branches, not push-to-dev.</li>
         </ul>
@@ -1351,7 +1364,7 @@
   </section>
 
   <!-- ============================================================ -->
-  <!-- SLIDE 3 — How people reacted                                  -->
+  <!-- SLIDE 3: How people reacted                                  -->
   <!-- ============================================================ -->
   <section class="slide" data-slide="3" id="s3">
     <div class="slide-meta"><span class="bar"></span><span class="num">03</span><span>Q2 · How teams &amp; people reacted</span></div>
@@ -1363,10 +1376,10 @@
         <div style="font-size: 19px; font-weight: 700; color: var(--fg); margin-bottom: 12px;">Assignar &middot; new construction-finance product</div>
         <ul class="card-bullets lg">
           <li>20–30 eng org, 5-person team carved off · 1 PM, 4 engineers, CTO active <em>on</em> the team.</li>
-          <li>Stuck with familiar GitHub flow. Injected agents <strong>as the assignee on tickets</strong> — Copilot picks up the ticket, makes the feature branch, opens the PR.</li>
-          <li><strong>Most of their time writing tickets and reviewing agent output</strong> — very little time on the code. Code review became <em>structural</em>; security scans run by a second agent.</li>
+          <li>Stuck with familiar GitHub flow. Injected agents <strong>as the assignee on tickets</strong>. Copilot picks up the ticket, makes the feature branch, opens the PR.</li>
+          <li><strong>Most of their time writing tickets and reviewing agent output.</strong> Very little time on the code. Code review became <em>structural</em>; security scans run by a second agent.</li>
           <li>Engineers pushed <em>into</em> product/requirements. PM pushed <em>into</em> technical/architectural specs. Everybody stretched.</li>
-          <li>Hierarchy collapsed flat. CTO's role: <strong>"acting as traffic cop"</strong> — sequencing async agent merges to minimize conflicts.</li>
+          <li>Hierarchy collapsed flat. CTO's role: <strong>"acting as traffic cop."</strong> Sequencing async agent merges to minimize conflicts.</li>
           <li>Mood: excited, "maybe a little trepidatious." Greenfield + new team made it possible.</li>
         </ul>
       </div>
@@ -1375,9 +1388,9 @@
         <div class="kicker">Case B · the 1,000-engineer org</div>
         <div style="font-size: 19px; font-weight: 700; color: var(--fg); margin-bottom: 12px;">Instacart &middot; top-down expectation, no kickoff</div>
         <ul class="card-bullets lg">
-          <li>Existing teams, existing process — AI enablement layered tooling, training, Slack channels, in-person sessions <em>on top</em>.</li>
+          <li>Existing teams, existing process. AI enablement layered tooling, training, Slack channels, in-person sessions <em>on top</em>.</li>
           <li>Distribution of reactions: early adopters who loved it, real resistance from others, a long tail "not actively against, but really dragging their feet."</li>
-          <li>"A whole mix" across a thousand-engineer org — and that's the point: scale guarantees a distribution.</li>
+          <li>"A whole mix" across a thousand-engineer org, and that's the point: scale guarantees a distribution.</li>
           <li>Enablement team's framing: <strong>"doing everything they could to drag people along."</strong> Literally flew to offices to sit with engineers in person.</li>
           <li>No project, no kickoff, no cutover point. The expectation was clear; the mechanism for arrival was diffuse.</li>
         </ul>
@@ -1386,12 +1399,12 @@
 
     <div class="pull" style="margin-top: 36px; max-width: 80ch;">
       "Most of their time writing tickets and reviewing the output of agents. Very little time on the code itself."
-      <cite>— Assignar engineer, on the day-to-day inversion</cite>
+      <cite>Assignar engineer, on the day-to-day inversion</cite>
     </div>
   </section>
 
   <!-- ============================================================ -->
-  <!-- SLIDE 4 — Where it failed / surprised                         -->
+  <!-- SLIDE 4: Where it failed / surprised                         -->
   <!-- ============================================================ -->
   <section class="slide" data-slide="4" id="s4">
     <div class="slide-meta"><span class="bar"></span><span class="num">04</span><span>Q3 · Where it failed &amp; what surprised us</span></div>
@@ -1401,7 +1414,7 @@
       <div class="card">
         <div class="kicker" style="color: var(--red);">Failure 01</div>
         <div style="font-size: 18px; font-weight: 700; color: var(--fg); margin-bottom: 8px;">Prompt-based, not spec-based.</div>
-        <p class="tiny" style="line-height: 1.6;">Early teams threw prompts at the model and watched output drift. Most are past this. Agents perform much better when fed context intentionally — when planning and executing are <em>separate turns of the crank.</em> Specdocs loaded upfront → much better results.</p>
+        <p class="tiny" style="line-height: 1.6;">Early teams threw prompts at the model and watched output drift. Most are past this. Agents perform much better when fed context intentionally. Plan and execute on <em>separate turns of the crank.</em> Specdocs loaded upfront → much better results.</p>
       </div>
 
       <div class="card">
@@ -1417,7 +1430,7 @@
         <table class="basic">
           <thead><tr><th>Stage</th><th>Hand-off</th><th>Why</th></tr></thead>
           <tbody>
-            <tr><td><strong>Unit tests</strong></td><td class="num" style="color: var(--yellow);">mostly safe</td><td>Agents are good — except when they hallucinate stub-only tests that always pass.</td></tr>
+            <tr><td><strong>Unit tests</strong></td><td class="num" style="color: var(--yellow);">mostly safe</td><td>Agents are good, except when they hallucinate stub-only tests that always pass.</td></tr>
             <tr class="stuck"><td><strong>Integration tests</strong></td><td class="num" style="color: var(--red);">human-led</td><td>Cross-component judgment; agents can't see the whole system.</td></tr>
             <tr class="stuck"><td><strong>Smoke tests</strong></td><td class="num" style="color: var(--red);">human-led</td><td>Live in your product daily; what the model can't simulate.</td></tr>
             <tr class="stuck"><td><strong>Manual / exploratory</strong></td><td class="num" style="color: var(--red);">human-led</td><td>"The major human gate between staging and prod."</td></tr>
@@ -1426,7 +1439,7 @@
       </div>
 
       <div>
-        <div class="kicker">What surprised us — positively</div>
+        <div class="kicker">What surprised us, positively</div>
         <div style="font-size: 17px; font-weight: 600; color: var(--fg); margin: 6px 0 10px; line-height: 1.4;">The unit of hand-off keeps growing.</div>
         <p class="tiny" style="line-height: 1.6;">Two years ago: 30-second nudges. Now: <strong>10–30-minute, sometimes hour-long tasks</strong> are routinely delegated. If your assumptions are based on the experience you had even six months ago, recalibrate.</p>
         <div class="pull" style="margin-top: 22px; max-width: none; font-size: 16px;">
@@ -1437,10 +1450,10 @@
   </section>
 
   <!-- ============================================================ -->
-  <!-- SLIDE 5 — Decision gates                                      -->
+  <!-- SLIDE 5: Decision gates                                      -->
   <!-- ============================================================ -->
   <section class="slide" data-slide="5" id="s5">
-    <div class="slide-meta"><span class="bar"></span><span class="num">05</span><span>Q4 · Decision gates — what stays human</span></div>
+    <div class="slide-meta"><span class="bar"></span><span class="num">05</span><span>Q4 · Decision gates: what stays human</span></div>
     <h2 class="h2">Code review broke.<br />Two new gates moved in.</h2>
 
     <p class="lede" style="max-width: 78ch;">
@@ -1491,7 +1504,7 @@
   </section>
 
   <!-- ============================================================ -->
-  <!-- SLIDE 6 — Metrics                                             -->
+  <!-- SLIDE 6: Metrics                                             -->
   <!-- ============================================================ -->
   <section class="slide" data-slide="6" id="s6">
     <div class="slide-meta"><span class="bar"></span><span class="num">06</span><span>Q5 · Metrics &amp; what actually changed</span></div>
@@ -1499,7 +1512,7 @@
 
     <div class="stat-pills" style="margin-top: 24px;">
       <div class="stat-pill"><span class="stat-value">16.3%</span><span class="stat-label">of <strong>30,000</strong> developers say AI agents significantly improve productivity &middot; <em>2025 dev survey</em></span></div>
-      <div class="stat-pill"><span class="stat-value">75%</span><span class="stat-label">of engineers use AI tools — most orgs see <strong>no measurable performance gains</strong> &middot; <em>Faros studies</em></span></div>
+      <div class="stat-pill"><span class="stat-value">75%</span><span class="stat-label">of engineers use AI tools. Most orgs see <strong>no measurable performance gains</strong> &middot; <em>Faros studies</em></span></div>
     </div>
 
     <div style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 36px; margin-top: 30px; max-width: 1280px; align-items: start;">
@@ -1509,14 +1522,14 @@
         <div class="card" style="margin-top: 10px;">
           <div style="font-size: 16px; font-weight: 700; color: var(--fg); margin-bottom: 6px;">Multiple bottlenecks. They move around.</div>
           <ul class="card-bullets">
-            <li>Watch lead time only? <strong>Yes — it improved.</strong></li>
+            <li>Watch lead time only? <strong>Yes, it improved.</strong></li>
             <li>Code-gen collapsed → <strong>code review</strong> is the new pinch (sheer volume).</li>
             <li>Teams still figuring out where else to put gates.</li>
           </ul>
         </div>
 
         <div class="card" style="margin-top: 14px;">
-          <div style="font-size: 16px; font-weight: 700; color: var(--fg); margin-bottom: 6px;">"What % improvement?" — the honest answer</div>
+          <div style="font-size: 16px; font-weight: 700; color: var(--fg); margin-bottom: 6px;">"What % improvement?" The honest answer</div>
           <ul class="card-bullets">
             <li><strong>Meaningful</strong> for shipping speed.</li>
             <li><strong>Invisible</strong> to most macro dashboards.</li>
@@ -1530,7 +1543,7 @@
         <div style="font-size: 22px; font-weight: 700; color: var(--fg); margin-bottom: 6px;">Intent Lead Time</div>
         <div class="formula">ILT = t(first commit) − t(decision captured)</div>
         <p class="tiny" style="margin-top: 14px; line-height: 1.6; color: var(--fg-2);">
-          DORA's clock starts at <code>git commit</code>. The expensive thing now happens <em>before</em> commit — meetings, decisions, PRDs, tickets. ILT is the companion to DORA Lead Time. Together, end-to-end. <strong>Stoa is tracking it; we'd argue every transformation should baseline it this quarter.</strong>
+          DORA's clock starts at <code>git commit</code>. The expensive thing now happens <em>before</em> commit: meetings, decisions, PRDs, tickets. ILT is the companion to DORA Lead Time. Together, end-to-end. <strong>Stoa is tracking it; we'd argue every transformation should baseline it this quarter.</strong>
         </p>
       </div>
     </div>
@@ -1541,7 +1554,7 @@
   </section>
 
   <!-- ============================================================ -->
-  <!-- SLIDE 7 — Security                                            -->
+  <!-- SLIDE 7: Security                                            -->
   <!-- ============================================================ -->
   <section class="slide" data-slide="7" id="s7">
     <div class="slide-meta"><span class="bar"></span><span class="num">07</span><span>Q6 · Security, compliance, IP</span></div>
@@ -1554,7 +1567,7 @@
         <ul class="card-bullets">
           <li><strong>DigitalOcean</strong> once blocked cloud AI models entirely.</li>
           <li>Resolved by cloud-provider partnerships + Bedrock + data terms.</li>
-          <li>"Trusted computing for AI" — security teams got comfortable.</li>
+          <li>"Trusted computing for AI." Security teams got comfortable.</li>
         </ul>
       </div>
 
@@ -1581,12 +1594,12 @@
     </div>
 
     <div class="pull" style="margin-top: 32px; max-width: 90ch;">
-      "Human review on those things has been <span class="accent">dropping down</span>. Software-supply-chain security scanners become absolutely critical — if not more so than in the past."
+      "Human review on those things has been <span class="accent">dropping down</span>. Software-supply-chain security scanners become absolutely critical, if not more so than in the past."
     </div>
   </section>
 
   <!-- ============================================================ -->
-  <!-- SLIDE 8 — Process / org                                       -->
+  <!-- SLIDE 8: Process / org                                       -->
   <!-- ============================================================ -->
   <section class="slide" data-slide="8" id="s8">
     <div class="slide-meta"><span class="bar"></span><span class="num">08</span><span>Q7 · Idea → delivery → maintenance</span></div>
@@ -1599,7 +1612,7 @@
         <p class="tiny" style="line-height: 1.65;">We aren't making the case for ripping that out. We <em>are</em> making the case that the artifacts inside it have changed weight.</p>
 
         <div class="kicker" style="margin-top: 24px;">The silent loser: stakeholder context</div>
-        <p class="tiny" style="line-height: 1.65;">Things move so fast that team members "who used to be intimately involved start to lose context." Stakeholders, customers, internal partners — <strong>it's hard for people to keep up.</strong></p>
+        <p class="tiny" style="line-height: 1.65;">Things move so fast that team members "who used to be intimately involved start to lose context." Stakeholders, customers, internal partners. <strong>It's hard for people to keep up.</strong></p>
 
         <div class="kicker" style="margin-top: 22px;">The hidden win</div>
         <p class="tiny" style="line-height: 1.65;">The same agents producing the code can produce <em>and maintain</em> the secondary artifacts: change logs, release notes, documentation, internal playbooks, support books. The best teams already do this.</p>
@@ -1618,7 +1631,7 @@
           </tbody>
         </table>
         <p class="tiny" style="margin-top: 14px; line-height: 1.6;">
-          <em>"Before, we'd write them and toss them and say the code is the source of truth."</em> Now specs and AS-BUILT architecture are <strong>absolutely critical</strong> — agents need them as context; humans need them as shared mental model.
+          <em>"Before, we'd write them and toss them and say the code is the source of truth."</em> Now specs and AS-BUILT architecture are <strong>absolutely critical</strong>. Agents need them as context; humans need them as shared mental model.
         </p>
       </div>
     </div>
@@ -1629,7 +1642,7 @@
   </section>
 
   <!-- ============================================================ -->
-  <!-- SLIDE 9 — Sequencing                                          -->
+  <!-- SLIDE 9: Sequencing                                          -->
   <!-- ============================================================ -->
   <section class="slide" data-slide="9" id="s9">
     <div class="slide-meta"><span class="bar"></span><span class="num">09</span><span>Q8 · Sequencing</span></div>
@@ -1650,7 +1663,7 @@
         <div style="font-size: 22px; font-weight: 700; color: var(--fg); margin-bottom: 6px;">One controlled team. Greenfield if you can.</div>
         <div class="pill" style="margin-bottom: 12px;">controlled experiment</div>
         <p class="tiny" style="line-height: 1.65;">
-          <em>Fully agentic</em> workflow — agents writing large chunks of code, not just autocompleting — needs a team that's bought in, ideally on a new product surface. Let them establish the approach inside <em>your</em> culture, then expand.
+          <em>Fully agentic</em> workflow (agents writing large chunks of code, not just autocompleting) needs a team that's bought in, ideally on a new product surface. Let them establish the approach inside <em>your</em> culture, then expand.
         </p>
       </div>
     </div>
@@ -1658,7 +1671,7 @@
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 28px; max-width: 1280px;">
       <div>
         <div class="kicker">Pattern that worked</div>
-        <p class="tiny" style="line-height: 1.65;">Stoa: greenfield, small team — not fair to extrapolate. Across the field: <strong>start with one team, ideal circumstances, new product. Establish the approach. Then expand.</strong></p>
+        <p class="tiny" style="line-height: 1.65;">Stoa: greenfield, small team. Not fair to extrapolate. Across the field: <strong>start with one team, ideal circumstances, new product. Establish the approach. Then expand.</strong></p>
       </div>
       <div>
         <div class="kicker" style="color: var(--red);">Pattern that didn't</div>
@@ -1672,7 +1685,7 @@
   </section>
 
   <!-- ============================================================ -->
-  <!-- SLIDE 10 — If starting over                                   -->
+  <!-- SLIDE 10: If starting over                                   -->
   <!-- ============================================================ -->
   <section class="slide" data-slide="10" id="s10">
     <div class="slide-meta"><span class="bar"></span><span class="num">10</span><span>Q9 · If we were starting over</span></div>
@@ -1683,7 +1696,7 @@
         <div class="kicker">Extreme 01 · the timid end</div>
         <div style="font-size: 21px; font-weight: 700; color: var(--fg); margin-bottom: 8px;">Underestimating what agents can do.</div>
         <p class="tiny" style="line-height: 1.65;">
-          Capabilities have changed <strong>dramatically every six months</strong>. If your assumptions are based on the experience you had even six months ago — they're stale.
+          Capabilities have changed <strong>dramatically every six months</strong>. If your assumptions are based on the experience you had even six months ago. They're stale.
         </p>
         <p class="tiny" style="line-height: 1.65; margin-top: 10px;">
           <strong>Countermove:</strong> a special team (or small set of teams) <em>pushing agents past what you'd assume they can do.</em> Give them latitude to break your old mental model.
@@ -1697,18 +1710,18 @@
           <strong>Retain control over intent.</strong> Be explicit about what you want from agents. The intent is yours; the output isn't trustworthy without it.
         </p>
         <p class="tiny" style="line-height: 1.65; color: var(--fg-2); margin-top: 10px;">
-          <strong>Be rigorous and ruthless</strong> in assessing output quality — <em>not</em> in terms of code style. In terms of <strong>functionality and architectural impact.</strong> That is the human's last and most important job.
+          <strong>Be rigorous and ruthless</strong> in assessing output quality. <em>Not</em> in terms of code style. In terms of <strong>functionality and architectural impact.</strong> That is the human's last and most important job.
         </p>
       </div>
     </div>
 
     <div class="pull" style="margin-top: 36px; max-width: 92ch;">
-      "Be rigorous and ruthless in assessing the quality of the output — <span class="accent">not in terms of the code, but the functionality and architectural impact</span>."
+      "Be rigorous and ruthless in assessing the quality of the output: <span class="accent">not in terms of the code, but the functionality and architectural impact</span>."
     </div>
   </section>
 
   <!-- ============================================================ -->
-  <!-- SLIDE 11 — The thesis underneath                              -->
+  <!-- SLIDE 11: The thesis underneath                              -->
   <!-- ============================================================ -->
   <section class="slide" data-slide="11" id="s11">
     <div class="slide-meta"><span class="bar"></span><span class="num">11</span><span>Synthesis · the thesis underneath all nine answers</span></div>
@@ -1753,7 +1766,7 @@
   </section>
 
   <!-- ============================================================ -->
-  <!-- SLIDE 12 — Take it home + Q&A                                 -->
+  <!-- SLIDE 12: Take it home + Q&A                                 -->
   <!-- ============================================================ -->
   <section class="slide" data-slide="12" id="s12">
     <div class="slide-meta"><span class="bar"></span><span class="num">12</span><span>Take it home + open questions</span></div>
@@ -1772,7 +1785,7 @@
       </a>
       <a href="takeaways/ai-pdlc-journey-map.md" class="take-card" data-num="03">
         <h4>AI-PDLC journey map</h4>
-        <p>Which tool, which phase, who owns what — at every step of the loop.</p>
+        <p>Which tool, which phase, who owns what, at every step of the loop.</p>
         <div class="path">takeaways/ai-pdlc-journey-map.md</div>
       </a>
     </div>
@@ -1800,7 +1813,7 @@
       <ul style="list-style: none; padding: 0; margin: 8px 0 0; font-size: 16px; color: var(--fg-2); line-height: 1.85;">
         <li><span class="hl">→</span> Which Blackbaud surface is <em>most ready</em> for a fully-agentic-workflow pilot? (Greenfield &gt; brownfield, by a lot.)</li>
         <li><span class="hl">→</span> What's your current AS-BUILT-doc posture? If "we don't have one," that's the first artifact to commission.</li>
-        <li><span class="hl">→</span> Where would you rather pay the coordination cost — at the tool layer (wide), or the workflow layer (narrow)?</li>
+        <li><span class="hl">→</span> Where would you rather pay the coordination cost: at the tool layer (wide), or the workflow layer (narrow)?</li>
       </ul>
     </div>
 
@@ -1817,8 +1830,19 @@
         <a class="social-link" href="https://x.com/gregce10" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
           <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg>
         </a>
+        <span class="tiny" style="margin-left: 4px;">Co-founder &amp; CPO</span>
       </span>
-      <span class="tiny">Co-founder &amp; CPO, SpecStory &middot; <a href="https://withstoa.com">withstoa.com</a> &middot; deck source: <code>blackbaud.html</code> on branch <code>blackbaud-qa</code></span>
+      <span style="display: inline-flex; align-items: baseline; gap: 8px;">
+        <strong>Jake Levirne</strong>
+        <a class="social-link" href="https://www.linkedin.com/in/jakelevirne/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.063 2.063 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a class="social-link" href="https://x.com/awakenjake" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg>
+        </a>
+        <span class="tiny" style="margin-left: 4px;">Co-founder &amp; CEO</span>
+      </span>
+      <span class="tiny">SpecStory &middot; <a href="https://withstoa.com">withstoa.com</a></span>
     </div>
   </section>
 
