@@ -18,6 +18,8 @@
 
 A 14-slide deck (11 + 3 appendix), four analysis scripts, and three copy-me takeaway artifacts.
 
+> **On branch `blackbaud-qa`:** a parallel 12-slide variant — [`blackbaud.html`](./blackbaud.html) + [`slides/blackbaud-outline.md`](./slides/blackbaud-outline.md) — re-cut as nine substantive answers to the questions Blackbaud is asking about scaling AI agents in software development. Same visual system, different through-line. The Alpine SG deck below is unchanged.
+
 ## The thesis in one paragraph
 
 Coding agents collapsed implementation from days to hours. CI/CD had already collapsed deploys to minutes. The *intent-capture* phase (meetings, decisions, PRDs, tickets) didn't collapse at all. DORA can't see it: DORA's clock starts at `git commit`. That gap has a name now: **Intent Lead Time**. This repo is the argument, with receipts from one repo we shipped over the last 7 months.
